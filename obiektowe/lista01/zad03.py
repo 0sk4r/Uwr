@@ -8,7 +8,7 @@ def dodaj1(a, b):
     c = zespolona(0, 0)
     c.re = a.re + b.re
     c.im = a.im + b.im
-    return c
+    return c.re, c.im
 
 
 def dodaj2(a, b):
@@ -20,7 +20,7 @@ def odejmij1(a, b):
     c = zespolona(0, 0)
     c.re = a.re - b.re
     c.im = a.im - b.im
-    return c
+    return c.re, c.im
 
 
 def odejmij2(a, b):
@@ -32,28 +32,28 @@ def mnozenie1(a, b):
     c = zespolona(0, 0)
     c.re = a.re * b.re - a.im * b.im
     c.im = a.im * b.re + a.re * b.im
-    return c
+    return c.re, c.im
 
 
 def mnozenie2(a, b):
-    a.re = a.re * b.re - a.im * b.im
-    a.im = a.im * b.re + a.re * b.im
+    pom = zespolona(a.re, a.im)
+
+    pom.re = a.re * b.re - a.im * b.im
+    pom.im = a.im * b.re + a.re * b.im
+    a.re = pom.re
+    a.im = pom.im
 
 
 def dzielenie1(a, b):
     c = zespolona(0, 0)
     c.re = a.re * b.re + a.im * b.im / b.re ** 2 + b.im ** 2
     c.im = a.im * b.re - a.re * b.im / b.re ** 2 + b.im ** 2
-    return c
+    return c.re, c.im
 
 
 def dzielenie2(a, b):
-    a.re = a.re * b.re + a.im * b.im / b.re ** 2 + b.im ** 2
-    a.im = a.im * b.re - a.re * b.im / b.re ** 2 + b.im ** 2
-
-
-#x = zespolona(2, 3)
-#y = zespolona(3, 2)
-
-#z = dodaj1(x, y)
-#print(z.re, z.im)
+    pom = zespolona(a.re, a.im)
+    pom.re = a.re * b.re + a.im * b.im / b.re ** 2 + b.im ** 2
+    pom.im = a.im * b.re - a.re * b.im / b.re ** 2 + b.im ** 2
+    a.re = pom.re
+    a.im = pom.im

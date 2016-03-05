@@ -26,7 +26,7 @@ def szukaj(kolekcja, element):
     return 0
 
 
-x = kolekcja(False)
-x.tablica=[2,3,4,5,6,7,5,1,3,5]
+#x = kolekcja(False)
+#x.tablica=[2,3,4,5,6,7,5,1,3,5]
 
-print(szukaj(x,5))
+#print(szukaj(x,5))
