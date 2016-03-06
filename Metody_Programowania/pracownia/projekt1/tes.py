@@ -40,7 +40,7 @@ def transormacja(d, obrotx, obroty):
     mobrotux = [[1,0,0,0],[0,cos(radx),-sin(radx),0],[0,sin(radx),cos(radx),0],[0,0,0,1]]
     mobrotuy = [[cos(rady),0,sin(rady),0],[0,1,0,0],[-sin(rady),0,cos(rady),0],[0,0,0,1]]
     mtrans = [[1,0,0,1],[0,1,0,1],[0,0,1,d],[0,0,0,1]]
-    #return matrixmult(mtrans,matrixmult(mobrotux,mobrotuy))
+    #return matrixmult(mobrotux,mobrotuy)
     return matrixmult(mtrans,matrixmult(mobrotux,mobrotuy))
 
 def matrixmult (A, B):
@@ -69,14 +69,38 @@ def wspto2d(d,fi,psi,wspolrzedne):
     macierz = transormacja(d,fi,psi)
     for wspolrzedna in wspolrzedne:
         trzywym = matrixmult(macierz,wspolrzedna)
+        rzut = d/(trzywym[2][0]+d)
         dwawym.append([trzywym[0][0],trzywym[1][0]])
     return dwawym
 
 def hilbert3d(n,s,u,d,x,y,z,fi,psi):
+    plik = open('plik.ps','w')
+    plik.truncate()
     wspolrzedne = list()
     hilbert(n,u,x,y,z,1,0,0,0,1,0,0,0,1,wspolrzedne)
     print(wspolrzedne)
     punkty = wspto2d(d,fi,psi,wspolrzedne)
+    plik.write('%!PS-Adobe-2.0 EPSF-2.0 \n')
+    plik.write('%%BoundingBox: 0 0'+ ' ' + str(s) + ' ' + str(s)+'\n')
+    plik.write('newpath' +'\n')
+    plik.write('1.0 1.0 moveto'+'\n')
+    for x in punkty:
+        plik.write(str(float(x[0]))+' ' + str(float(x[1])) + ' ' + 'lineto' + ' ' +'\n')
+    plik.write(".4 setlinewidth"+'\n')
+    plik.write("stroke"+'\n')
+    plik.write("showpage"+'\n')
+    plik.write("%%Trailer"+'\n')
+    plik.write("%EOF"+'\n')
+
+
+#hilbert3d(n,s, u,  d,x,y,z,fi,psi)
+hilbert3d(5,500,300,10,100,100,0,30,30)
+def kwadrat2d(s,d,fi,psi):
+    kwadrat = [[[100],[100],[100],[1]],[[100],[200],[100],[1]],[[200],[200],[100],[1]],[[200],[100],[100],[1]],[[100],[100],[100],[1]]]
+    wspolrzedne = list()
+    #hilbert(n,u,x,y,z,1,0,0,0,1,0,0,0,1,wspolrzedne)
+    #print(wspolrzedne)
+    punkty = wspto2d(d,fi,psi,kwadrat)
     print('%!PS-Adobe-2.0 EPSF-2.0')
     print('%%BoundingBox: 0 0', s, s)
     print('newpath')
@@ -89,7 +113,7 @@ def hilbert3d(n,s,u,d,x,y,z,fi,psi):
     print("%%Trailer")
     print("%EOF")
 
-hilbert3d(4,500,300,50,200,100,100,30,30)
+#kwadrat2d(500,10,20,20)
 
 
 
