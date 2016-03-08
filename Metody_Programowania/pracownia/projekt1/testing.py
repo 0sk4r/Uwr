@@ -18,16 +18,37 @@ def hilbert(n, u, x, y, z, wektorxx, wektorxy, wektorxz, wektoryx, wektoryy, wek
             x-= u * wektorzx
             y-= u * wektorzy
             z-= u * wektorzz
-        hilbert(n - 1, u, x + u * wektorxx + u * wektoryx + u * wektorzx, y + u * wektorxy + u * wektoryy + u * wektorzy, z + u * wektorxz + u * wektoryz + u * wektorzz, wektorzx, wektorzy, wektorzz, wektorxx, wektorxy, wektorxz, -wektoryx, -wektoryy, -wektoryz, wspolrzedne)
-        hilbert(n - 1, u, x + u * wektorxx + u * wektorzx, y + u * wektorxy + u * wektorzy, z + u * wektorxz + u * wektorzz, wektoryx, wektoryy, wektoryz, wektorzx, wektorzy, wektorzz, -wektorxx, -wektorxy, -wektorxz, wspolrzedne)
-        hilbert(n - 1, u, x + u * wektorzx, y + u * wektorzy, z + u * wektorzz, wektoryx, wektoryy, wektoryz, wektorzx, wektorzy, wektorzz, -wektorxx, -wektorxy, -wektorxz, wspolrzedne)
-        hilbert(n-1,u, x+u*wektoryx+u*wektorzx, y+u*wektoryy+u*wektorzy, z+u*wektoryz+u*wektorzz, -wektorxx, -wektorxy, -wektorxz, -wektoryx, -wektoryy, -wektoryz, wektorzx, wektorzy, wektorzz,wspolrzedne)
-        hilbert(n - 1, u, x + u * wektoryx, y + u * wektoryy, z + u * wektoryz, -wektorxx, -wektorxy, -wektorxz, -wektoryx, -wektoryy, -wektoryz, wektorzx, wektorzy, wektorzz, wspolrzedne)
-        hilbert(n - 1, u, x, y, z, wektoryx, wektoryy, wektoryz, wektorzx, -wektorzy, -wektorzz, -wektorxx, wektorxy, wektorxz, wspolrzedne)
-        hilbert(n - 1, u, x + u * wektorxx, y + u * wektorxy, z + u * wektorxz, wektoryx, wektoryy, wektoryz, wektorzx, -wektorzy, -wektorzz, -wektorxx, wektorxy, wektorxz, wspolrzedne)
-        hilbert(n - 1, u, x + u * wektorxx + u * wektoryx, y + u * wektorxy + u * wektoryy, z + u * wektorxz + u * wektoryz, -wektorzx, -wektorzy, -wektorzz, wektorxx, wektorxy, wektorxz, wektoryx, wektoryy, wektoryz, wspolrzedne)
 
-        """
+        hilbert(n - 1, u, x, y, z, wektoryx, wektoryy, wektoryz, wektorzx, wektorzy, wektorzz, wektorxx, wektorxy, wektorxz, wspolrzedne)
+        hilbert(n - 1, u, x + u * wektorxx, y + u * wektorxy, z + u * wektorxz, wektorzx, wektorzy, wektorzz, wektorxx, wektorxy, wektorxz, wektoryx, wektoryy, wektoryz, wspolrzedne)
+        hilbert(n - 1, u, x + u * wektorxx + u * wektoryx, y + u * wektorxy + u * wektoryy, z + u * wektorxz + u * wektoryz, wektorzx, wektorzy, wektorzz, wektorxx, wektorxy, wektorxz, wektoryx, wektoryy, wektoryz, wspolrzedne)
+        hilbert(n - 1, u, x + u * wektoryx, y + u * wektoryy, z + u * wektoryz, -wektorxx, -wektorxy, -wektorxz, -wektoryx, -wektoryy, -wektoryz, wektorzx, wektorzy, wektorzz, wspolrzedne)
+        hilbert(n-1,u, x+u*wektoryx+u*wektorzx, y+u*wektoryy+u*wektorzy, z+u*wektoryz+u*wektorzz, -wektorxx, -wektorxy, -wektorxz, -wektoryx, -wektoryy, -wektoryz, wektorzx, wektorzy, wektorzz,wspolrzedne)
+        hilbert(n - 1, u, x + u * wektorxx + u * wektoryx + u * wektorzx, y + u * wektorxy + u * wektoryy + u * wektorzy, z + u * wektorxz + u * wektoryz + u * wektorzz, -wektorzx, -wektorzy, -wektorzz, wektorxx, wektorxy, wektorxz, -wektoryx, -wektoryy, -wektoryz, wspolrzedne)
+        hilbert(n - 1, u, x + u * wektorxx + u * wektorzx, y + u * wektorxy + u * wektorzy, z + u * wektorxz + u * wektorzz, -wektorzx, -wektorzy, -wektorzz, wektorxx, wektorxy, wektorxz, -wektoryx, -wektoryy, -wektoryz, wspolrzedne)
+        hilbert(n - 1, u, x + u * wektorzx, y + u * wektorzy, z + u * wektorzz, wektoryx, wektoryy, wektoryz, -wektorzx, -wektorzy, -wektorzz, -wektorxx, -wektorxy, -wektorxz, wspolrzedne)
+
+
+    """
+        hilbert(n - 1, u, x, y, z, wektorzx, wektorzy, wektorzz, wektorxx, wektorxy, wektorxz, -wektoryx, -wektoryy, -wektoryz, wspolrzedne)
+        hilbert(n - 1, u, x - u * wektorzx , y - u * wektorzy, z - u * wektorzz, wektoryx, wektoryy, wektoryz, wektorzx, wektorzy, wektorzz, -wektorxx, -wektorxy, -wektorxz, wspolrzedne)
+        hilbert(n - 1, u, x - u * wektorxx - u * wektoryx, y - u * wektorxy - u * wektoryy, z - u * wektorxz - u * wektoryz, wektoryx, wektoryy, wektoryz, wektorzx, wektorzy, wektorzz, -wektorxx, -wektorxy, -wektorxz, wspolrzedne)
+        hilbert(n-1,u, x-u*wektorxx, y-u*wektorxy, z-u*wektorxz, -wektorxx, -wektorxy, -wektorxz, -wektoryx, -wektoryy, -wektoryz, wektorzx, wektorzy, wektorzz,wspolrzedne)
+        hilbert(n - 1, u, x - u * wektorxx - u * wektorzx, y - u * wektorxy - wektorzy, z - u * wektorxz - u * wektorzz, -wektorxx, -wektorxy, -wektorxz, -wektoryx, -wektoryy, -wektoryz, wektorzx, wektorzy, wektorzz, wspolrzedne)
+        hilbert(n - 1, u, x - u * wektorxx - u * wektorxy - u * wektorxz, y - u * wektorxy - u * wektoryy - u * wektorzy, z - u * wektorxz - u * wektoryz - u * wektorzz, wektoryx, wektoryy, wektoryz, wektorzx, -wektorzy, -wektorzz, -wektorxx, wektorxy, wektorxz, wspolrzedne)
+        hilbert(n - 1, u,x - u * wektorxy - u * wektorxz, y - u * wektoryy - u * wektorzy, z  - u * wektoryz - u * wektorzz, wektoryx, wektoryy, wektoryz, wektorzx, -wektorzy, -wektorzz, -wektorxx, wektorxy, wektorxz, wspolrzedne)
+        hilbert(n - 1, u, x - u * wektorzx, y - u * wektorzy, z - u * wektorzz, -wektorzx, -wektorzy, -wektorzz, wektorxx, wektorxy, wektorxz, wektoryx, wektoryy, wektoryz, wspolrzedne)
+    """
+    """
+        hilbert(n - 1, u, x, y, z, wektoryx, wektoryy, wektoryz, wektorzx, wektorzy, wektorzz, wektorxx, wektorxy, wektorxz, wspolrzedne)
+        hilbert(n - 1, u, x + u * wektorxx, y + u * wektorxy, z + u * wektorxz, wektorzx, wektorzy, wektorzz, wektorxx, wektorxy, wektorxz, wektoryx, wektoryy, wektoryz, wspolrzedne)
+        hilbert(n - 1, u, x + u * wektorxx + u * wektoryx, y + u * wektorxy + u * wektoryy, z + u * wektorxz + u * wektoryz, wektorzx, wektorzy, wektorzz, wektorxx, wektorxy, wektorxz, wektoryx, wektoryy, wektoryz, wspolrzedne)
+        hilbert(n - 1, u, x + u * wektoryx, y + u * wektoryy, z + u * wektoryz, -wektorxx, -wektorxy, -wektorxz, -wektoryx, -wektoryy, -wektoryz, wektorzx, wektorzy, wektorzz, wspolrzedne)
+        hilbert(n-1,u, x+u*wektoryx+u*wektorzx, y+u*wektoryy+u*wektorzy, z+u*wektoryz+u*wektorzz, -wektorxx, -wektorxy, -wektorxz, -wektoryx, -wektoryy, -wektoryz, wektorzx, wektorzy, wektorzz,wspolrzedne)
+        hilbert(n - 1, u, x + u * wektorxx + u * wektoryx + u * wektorzx, y + u * wektorxy + u * wektoryy + u * wektorzy, z + u * wektorxz + u * wektoryz + u * wektorzz, -wektorzx, -wektorzy, -wektorzz, wektorxx, wektorxy, wektorxz, -wektoryx, -wektoryy, -wektoryz, wspolrzedne)
+        hilbert(n - 1, u, x + u * wektorxx + u * wektorzx, y + u * wektorxy + u * wektorzy, z + u * wektorxz + u * wektorzz, -wektorzx, -wektorzy, -wektorzz, wektorxx, wektorxy, wektorxz, -wektoryx, -wektoryy, -wektoryz, wspolrzedne)
+        hilbert(n - 1, u, x + u * wektorzx, y + u * wektorzy, z + u * wektorzz, wektoryx, wektoryy, wektoryz, -wektorzx, -wektorzy, -wektorzz, -wektorxx, -wektorxy, -wektorxz, wspolrzedne)
+
 
         hilbert(n - 1, u, x + u * wektorxx + u * wektoryx, y + u * wektorxy + u * wektoryy, z + u * wektorxz + u * wektoryz, wektorzx, wektorzy, wektorzz, wektorxx, wektorxy, wektorxz, wektoryx, wektoryy, wektoryz, wspolrzedne)
         hilbert(n - 1, u, x + u * wektorxx, y + u * wektorxy, z + u * wektorxz, wektorzx, wektorzy, wektorzz, wektorxx, wektorxy, wektorxz, wektoryx, wektoryy, wektoryz, wspolrzedne)
@@ -39,15 +60,8 @@ def hilbert(n, u, x, y, z, wektorxx, wektorxy, wektorxz, wektoryx, wektoryy, wek
         hilbert(n - 1, u, x + u * wektorxx + u * wektoryx + u * wektorzx, y + u * wektorxy + u * wektoryy + u * wektorzy, z + u * wektorxz + u * wektoryz + u * wektorzz, -wektorzx, -wektorzy, -wektorzz, wektorxx, wektorxy, wektorxz, -wektoryx, -wektoryy, -wektoryz, wspolrzedne)
 
         oryginal
-        hilbert(n - 1, u, x, y, z, wektoryx, wektoryy, wektoryz, wektorzx, wektorzy, wektorzz, wektorxx, wektorxy, wektorxz, wspolrzedne)
-        hilbert(n - 1, u, x + u * wektorxx, y + u * wektorxy, z + u * wektorxz, wektorzx, wektorzy, wektorzz, wektorxx, wektorxy, wektorxz, wektoryx, wektoryy, wektoryz, wspolrzedne)
-        hilbert(n - 1, u, x + u * wektorxx + u * wektoryx, y + u * wektorxy + u * wektoryy, z + u * wektorxz + u * wektoryz, wektorzx, wektorzy, wektorzz, wektorxx, wektorxy, wektorxz, wektoryx, wektoryy, wektoryz, wspolrzedne)
-        hilbert(n - 1, u, x + u * wektoryx, y + u * wektoryy, z + u * wektoryz, -wektorxx, -wektorxy, -wektorxz, -wektoryx, -wektoryy, -wektoryz, wektorzx, wektorzy, wektorzz, wspolrzedne)
-        hilbert(n-1,u, x+u*wektoryx+u*wektorzx, y+u*wektoryy+u*wektorzy, z+u*wektoryz+u*wektorzz, -wektorxx, -wektorxy, -wektorxz, -wektoryx, -wektoryy, -wektoryz, wektorzx, wektorzy, wektorzz,wspolrzedne)
-        hilbert(n - 1, u, x + u * wektorxx + u * wektoryx + u * wektorzx, y + u * wektorxy + u * wektoryy + u * wektorzy, z + u * wektorxz + u * wektoryz + u * wektorzz, -wektorzx, -wektorzy, -wektorzz, wektorxx, wektorxy, wektorxz, -wektoryx, -wektoryy, -wektoryz, wspolrzedne)
-        hilbert(n - 1, u, x + u * wektorxx + u * wektorzx, y + u * wektorxy + u * wektorzy, z + u * wektorxz + u * wektorzz, -wektorzx, -wektorzy, -wektorzz, wektorxx, wektorxy, wektorxz, -wektoryx, -wektoryy, -wektoryz, wspolrzedne)
-        hilbert(n - 1, u, x + u * wektorzx, y + u * wektorzy, z + u * wektorzz, wektoryx, wektoryy, wektoryz, -wektorzx, -wektorzy, -wektorzz, -wektorxx, -wektorxy, -wektorxz, wspolrzedne)
-        """
+
+    """
 def transormacja(d, obrotx, obroty):
     #zaczynamy od obrotu potem przesuniecie
     radx = radians(obrotx)
@@ -55,8 +69,8 @@ def transormacja(d, obrotx, obroty):
     mobrotux = [[1,0,0,0],[0,cos(radx),-sin(radx),0],[0,sin(radx),cos(radx),0],[0,0,0,1]]
     mobrotuy = [[cos(rady),0,sin(rady),0],[0,1,0,0],[-sin(rady),0,cos(rady),0],[0,0,0,1]]
     mtrans = [[1,0,0,1],[0,1,0,1],[0,0,1,d],[0,0,0,1]]
-    #return matrixmult(mobrotux,mobrotuy)
-    return matrixmult(mtrans,matrixmult(mobrotux,mobrotuy))
+    return matrixmult(mobrotux,mobrotuy)
+    #return matrixmult(mtrans,matrixmult(mobrotux,mobrotuy))
 
 def matrixmult (A, B):
     rows_A = len(A)
@@ -84,8 +98,9 @@ def wspto2d(d,fi,psi,wspolrzedne):
     macierz = transormacja(d,fi,psi)
     for wspolrzedna in wspolrzedne:
         trzywym = matrixmult(macierz,wspolrzedna)
+        #trzywym = wspolrzedna
         rzut = d/(trzywym[2][0]+d)
-        dwawym.append([trzywym[0][0],trzywym[1][0]])
+        dwawym.append([trzywym[0][0],trzywym[1][0],trzywym[2][0]])
     return dwawym
 
 def hilbert3d(n,s,u,d,x,y,z,fi,psi):
@@ -95,19 +110,22 @@ def hilbert3d(n,s,u,d,x,y,z,fi,psi):
     hilbert(n,1,0,0,0,1,0,0,0,1,0,0,0,1,wspolrzedne)
     skaluj(wspolrzedne,u)
     przesun(wspolrzedne,x,y,z)
-    print(len(wspolrzedne))
+    #print(wspolrzedne)
     punkty = wspto2d(d,fi,psi,wspolrzedne)
-    plik.write('%!PS-Adobe-2.0 EPSF-2.0 \n')
-    plik.write('%%BoundingBox: 0 0'+ ' ' + str(s) + ' ' + str(s)+'\n')
-    plik.write('newpath' +'\n')
-    plik.write('1.0 1.0 moveto'+'\n')
-    for x in punkty:
-        plik.write(str(float(x[0]))+' ' + str(float(x[1])) + ' ' + 'lineto' + ' ' +'\n')
-    plik.write(".4 setlinewidth"+'\n')
-    plik.write("stroke"+'\n')
-    plik.write("showpage"+'\n')
-    plik.write("%%Trailer"+'\n')
-    plik.write("%EOF"+'\n')
+    #punkty = rzutuj(punkty1,d)
+    #print(punkty)
+    print('%!PS-Adobe-2.0 EPSF-2.0')
+    print("""%%BoundingBox: 0 0 """),
+    print('%d %d' %(s,s))
+    print('newpath')
+    print('1.0 1.0 moveto')
+    for wsp in punkty:
+        print('%f %f lineto' %(float(wsp[0]),float(wsp[1])))
+    print(".4 setlinewidth")
+    print("stroke")
+    print("showpage")
+    print("%%Trailer")
+    print("%EOF")
 
 def skaluj(wspolrzedne,d):
     for x in range(len(wspolrzedne)):
@@ -121,9 +139,15 @@ def przesun(wspolrzedne,x,y,z):
         wspolrzedne[i][1][0] = wspolrzedne[i][1][0]+y
         wspolrzedne[i][2][0] = wspolrzedne[i][2][0]+z
 
-
+def rzutuj(wspolrzedne,d):
+    wsp2d = list()
+    for i in range(len(wspolrzedne)):
+        x2d = wspolrzedne[i][0]/(1+(wspolrzedne[i][2]/d))
+        x3d = wspolrzedne[i][1]/(1+(wspolrzedne[i][2]/d))
+        wsp2d.append([x2d,x3d])
+    return  wsp2d
 #hilbert3d(n,s, u,  d,x,y,z,fi,psi)
-hilbert3d(3,500,300,10,100,100,0,30,10)
+hilbert3d(2,500,300,100,200 ,200,200,30,10)
 def kwadrat2d(s,d,fi,psi):
     kwadrat = [[[100],[100],[100],[1]],[[100],[200],[100],[1]],[[200],[200],[100],[1]],[[200],[100],[100],[1]],[[100],[100],[100],[1]]]
     wspolrzedne = list()
@@ -143,6 +167,19 @@ def kwadrat2d(s,d,fi,psi):
     print("%EOF")
 
 #kwadrat2d(500,10,20,20)
+
+"""    plik.write('%!PS-Adobe-2.0 EPSF-2.0 \n')
+    plik.write('%%BoundingBox: 0 0'+ ' ' + str(s) + ' ' + str(s)+'\n')
+    plik.write('newpath' +'\n')
+    plik.write('1.0 1.0 moveto'+'\n')
+    for x in punkty:
+        plik.write(str(float(x[0]))+' ' + str(float(x[1])) + ' ' + 'lineto' + ' ' +'\n')
+    plik.write(".4 setlinewidth"+'\n')
+    plik.write("stroke"+'\n')
+    plik.write("showpage"+'\n')
+    plik.write("%%Trailer"+'\n')
+    plik.write("%EOF"+'\n')
+"""
 
 
 
