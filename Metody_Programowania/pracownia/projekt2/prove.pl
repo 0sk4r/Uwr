@@ -21,7 +21,7 @@ usun(A, C v D, E).
 usun(X,X,).
 
 kl2list(H v T,[H|X]):-kl2list(T,X),!.
-kl2list(X,[X]).
+kl2list(X,[X]). 
 
 %sprawdza czy z dwoch klauzul mozna zrobic rezolwente
 rezolwenta(Klauzula1,Klauzula2,Rezolwenta):-
@@ -52,3 +52,5 @@ prove([H|_],M,X):- rezolwenta(M,H,X).
 prove([_|T],M,X):- prove(T,M,X).
 
 %zamiana klauzuli na lista
+
+a b c d
