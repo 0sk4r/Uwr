@@ -88,7 +88,7 @@ lexer(Tokens) -->
                                      (true, tokTrue),
 				     (program, tokProg),
                                      (while, tokWhile),
-				     (begin, tokBeg),
+				     (begin, tokBegin),
 				     (call, tokCall),
 				     (end, tokEnd),
 				     (local, tokLocal),
@@ -177,7 +177,7 @@ identifier(L, Id) -->
 :- op(840, xfy, or).
 :- op(700, xfy, <=).
 :- op(700, xfy, <>).
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %%%%KZI
 program(Ast) -->
     [tokProg, tokVar(_)],
