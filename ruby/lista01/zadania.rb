@@ -18,7 +18,7 @@ def pascal(n)
   end
 end
 
-puts pascal(10)
+
 
 def rozklad(n)
   if n == 1
@@ -39,5 +39,8 @@ def rozklad(n)
   temp
 end
 
+
+puts pascal(10)
+
 print rozklad(1026)
-print rozklad(121)
+print rozklad(131)
