@@ -1,71 +1,63 @@
-const int sensor = A0;
-const int speaker = 8;
-const int led = 10;
-const int button = 9;
+const int sensorPin = A0;
+const int speakerPin = 9;
+const int ledPin = 6;
+const int buttonPin = 8;
 
 unsigned int sensorValue = 0;
 unsigned int delayTime = 0;
-unsigned int ledConstraint = 0;
+unsigned int target = 0;
 unsigned int buttonState = 0;
 unsigned int current_status = 0;
 
 void setup() {
-  pinMode(led, OUTPUT);      
-  pinMode(speaker, OUTPUT);
-  
-  pinMode(button, INPUT);
+  pinMode(ledPin, OUTPUT);      
+  pinMode(speakerPin, OUTPUT);
+  pinMode(buttonPin, INPUT);
   
   randomSeed(analogRead(1));
   
-  reset_program();
-//  current_status = 1;
+  resetr();
   
   Serial.begin(9600);
 }
 
-void reset_program() {
-  ledConstraint = random(600, 900);
+void resetr() {
+  target = random(100, 900);
   current_status = 0;
-  digitalWrite(led, LOW);
-}
-
-void debug_info() {
-  Serial.print("SENSOR = ");
-  Serial.print(sensorValue);
-  
-  Serial.print(" | DELAY = ");
-  Serial.print(delayTime);
-  
-  Serial.print(" | CONS = ");
-  Serial.print(ledConstraint);
-  
-  Serial.print(" | BTN = ");
-  Serial.print(buttonState);
-  
-  Serial.println("");
+  digitalWrite(ledPin, LOW);
 }
 
 void loop(){
-  sensorValue = analogRead(sensor);
-  buttonPress = digitalRead(button);
-  debug_info();
+  sensorValue = analogRead(sensorPin);
+  buttonState = digitalRead(buttonPin);
+  /*
+  Serial.print("sensor = ");
+  Serial.print(sensorValue);
+   
+  Serial.print("   target = ");
+  Serial.print(target);
   
-  if (buttonPress == 1) {
-    reset_program();
+  Serial.print("  button = ");
+  Serial.print(buttonState);
+  Serial.print("\n");
+  */
+  
+  if (buttonState == 1) {
+    resetr();
   }
   
   if (current_status == 0) {    
-    if (sensorValue >= ledConstraint) {
+    if ((sensorValue >= (target-5)) && ((sensorValue <= (target + 5))))  {
       current_status = 1;
-      digitalWrite(led, HIGH);
+      digitalWrite(ledPin, HIGH);
     } else {
-      sensorValue = constrain(sensorValue, 1, ledConstraint);
-      delayTime = map(sensorValue, 1, ledConstraint, 1000, 20);
-      tone(speaker, 500, 10);
+      sensorValue = constrain(sensorValue, 1, target);
+      delayTime = map(sensorValue, 1, target, 1000, 20);
+      tone(speakerPin, 500, 10);
       delay(delayTime);
     }
   } else {
-    tone(speaker, 2000, 200);
+    tone(speakerPin, 2000, 200);
     delay(200);
   }
 }

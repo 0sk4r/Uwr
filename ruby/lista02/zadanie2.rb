@@ -43,13 +43,16 @@ def czlonkowieGrupy(notatnik)
   end
 end
 
+notatnik["Oskar"]=['12345',['grupa1','grupa2']]
+notatnik["Tomasz"]=['312412',['grupa2','grupa3']]
+
 while 1
   puts 'Co chcesz zrobic?
         1. Dodaj osobe
         2. Wyszukaj
         3. Pokaz grupy
         4. Osoby nalezace do grupy
-        5. Wyjdź'
+        5. Wyjście'
   
   opcja = gets.chomp
 
