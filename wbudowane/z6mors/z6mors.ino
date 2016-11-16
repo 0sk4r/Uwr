@@ -1,5 +1,9 @@
 int led = 3;
 int speaker = 6;
+int buttonState;
+int lastButtonState = LOW; 
+unsigned long lastDebounceTime = 0;
+unsigned long debounceDelay = 50;
 
 String mors[] = {
   ".-",    // a
@@ -62,7 +66,7 @@ void loop()
     character = Serial.read();
     Serial.print("Recived: ");
     Serial.println(character);
-    character -= 97;
+    character -= '0';
 
     int i = 0;
     while (mors[character][i] == '.' || mors[character][i] == '-')
