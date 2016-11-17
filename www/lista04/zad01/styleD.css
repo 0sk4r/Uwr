@@ -3,7 +3,7 @@ body {
 	font-family: Arial, sans-serif;
 	display: flex;
 	flex-direction: column;
-	height: 100vh;
+	height: auto;
 
 }
 
@@ -17,46 +17,47 @@ p {
 
 main {
 	display: flex;
-	height: 100%;
+	height: auto;
 }
 
 up{
 	display: flex;
-	height: 100%;
+	height: auto;
 }
 
 logo {
-	background-color: #E6E6FA;
+	background-color: blue;
     height: 50px;
 	flex:1;
 }
 
 header {
-	background-color: #DDA0DD;
+	background-color: purple;
 	height: 50px;
 	flex: 9;
 }
 	
 
 nav {
-	background-color: #ffb380;
+	background-color: orange;
 	height: 25px;
 	flex:1;
 
 }
 article {
-	background-color: #F5FFFA;
-	height: 350px;
+	background-color: skyblue;
+	min-height: 700px;
+	height: auto;
 	flex: 9;
 }
 
 sub {
-	background-color: #DA70D6;
-	height: 350px;
+	background-color: purple;
+	height: auto;
 	flex:1;
 }
 
 footer {
-background-color: #9ACD32;
+background-color: green;
 	height:50px;
 }

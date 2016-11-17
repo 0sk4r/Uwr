@@ -3,7 +3,7 @@ body {
 	font-family: Arial, sans-serif;
 	display: flex;
 	flex-direction: column;
-	height: 100vh;
+	height: auto;
 
 }
 
@@ -26,38 +26,39 @@ up{
 }
 
 logo {
-	background-color: #E6E6FA;
+	background-color: purple;
     height: 50px;
 	flex: 1;
 	
 }
 
 header {
-	background-color: #DDA0DD;
+	background-color: blue;
 	height: 50px;
 	flex: 10;
 }
 	
 
 nav {
-	background-color: #ffb380;
-	height: 400px;
+	background-color: orange;
+	height: auto;
 	flex: 1;
 
 }
 article {
-	background-color: #F5FFFA;
-	height: 400px;
+	background-color: skyblue;
+	min-height: 700px;
+	height: auto;
 	flex: 9;
 }
 
 sub {
-	background-color: #DA70D6;
-	height: 400px;
+	background-color: red;
+	height: auto;
 	flex: 1;
 }
 
 footer {
-background-color: #9ACD32;
+background-color: green;
 	height:50px;
 }

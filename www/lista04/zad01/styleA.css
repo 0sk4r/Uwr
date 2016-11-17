@@ -26,34 +26,35 @@ up{
 }
 
 logo {
-	background-color: #E6E6FA;
-height: 50px;
-flex: 1;
+	background-color: blue;
+	height: 50px;
+	flex: 1;
 	
 	
 }
 
 header {
-	background-color: #DDA0DD;
+	background-color: purple;
 	height: 50px;
 	flex: 9;
 }
 	
 
 nav {
-	background-color: #ffb380;
-	height: 350px;
+	background-color: orange;
+	height: auto;
 	flex:1;
 
 }
 article {
-	background-color: #F5FFFA;
-	height: 350px;
+	background-color: deepskyblue;
+	min-height: 700px;
+	height: auto;
 	flex: 9;
 }
 
 footer {
 	
-background-color: #9ACD32;
+background-color: green;
 	height:auto;
 }
