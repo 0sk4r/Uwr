@@ -1,14 +1,12 @@
 module Debug
   def check
-    self.methods.grep(/^test_/) { |method| puts "#{method}: #{send(method)}" }
+    self.methods.grep(/^test_/) { |method| "#{method}: #{send(method)}" }
   end
 end
 
 class TestClass
   include Debug
-  def initialize
 
-  end
   def test_abc
     "Metoda testowa 1"
   end
@@ -21,5 +19,4 @@ class TestClass
 end
 
 x = TestClass.new
-puts 'Klasa X:'
-x.check
+puts 'Klasa X:', x.check
