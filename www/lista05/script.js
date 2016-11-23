@@ -50,7 +50,7 @@ function validatePesel(x) {
     var rok=parseInt(pesel.substring(0,2),10);
     var miesiac = parseInt(pesel.substring(2,4),10)-1;
    var dzien = parseInt(pesel.substring(4,6),10);
-   // Powszechnie uwaza sie, iz daty w numerach pesel obejmuja tylko ludzi urodzonych do 2000 roku. Na szczescie prawodawcy o tym pomysleli i do miesiaca dodawane sa liczby tak, by pesele starczyly az do 23 wieku. 
+
    if(miesiac>80) {
         rok = rok + 1800;
         miesiac = miesiac - 80;
@@ -71,7 +71,6 @@ function validatePesel(x) {
    {
         rok += 1900;
    }
-   // Daty sa ok. Teraz ustawiamy.
    var urodzony=new Date(rok,miesiac,dzien);
    var data1 = new Date(data);
    console.log(data1);
