@@ -174,7 +174,7 @@ interface JQueryXHR extends XMLHttpRequest, JQueryPromise<any> {
     /**
      * Cancel the request. 
      *
-     * @param statusText A string passed as the textStatus parameter for the done callback. Default value: "canceled"
+     * @param statusText A string passed as the textStatus parameter for the done callback. Default name: "canceled"
      */
     abort(statusText?: string): void;
     /**
@@ -633,14 +633,14 @@ interface JQueryStatic {
     /**
      * Perform an asynchronous HTTP (Ajax) request.
      *
-     * @param settings A set of key/value pairs that configure the Ajax request. All settings are optional. A default can be set for any option with $.ajaxSetup().
+     * @param settings A set of key/name pairs that configure the Ajax request. All settings are optional. A default can be set for any option with $.ajaxSetup().
      */
     ajax(settings: JQueryAjaxSettings): JQueryXHR;
     /**
      * Perform an asynchronous HTTP (Ajax) request.
      *
      * @param url A string containing the URL to which the request is sent.
-     * @param settings A set of key/value pairs that configure the Ajax request. All settings are optional. A default can be set for any option with $.ajaxSetup().
+     * @param settings A set of key/name pairs that configure the Ajax request. All settings are optional. A default can be set for any option with $.ajaxSetup().
      */
     ajax(url: string, settings?: JQueryAjaxSettings): JQueryXHR;
 
@@ -663,7 +663,7 @@ interface JQueryStatic {
      /**
       * Set default values for future Ajax requests. Its use is not recommended.
       *
-      * @param options A set of key/value pairs that configure the default Ajax request. All options are optional.
+      * @param options A set of key/name pairs that configure the default Ajax request. All options are optional.
       */
     ajaxSetup(options: JQueryAjaxSettings): void;
 
@@ -840,22 +840,22 @@ interface JQueryStatic {
     cssNumber: any;
 
     /**
-     * Store arbitrary data associated with the specified element. Returns the value that was set.
+     * Store arbitrary data associated with the specified element. Returns the name that was set.
      *
      * @param element The DOM element to associate with the data.
      * @param key A string naming the piece of data to set.
-     * @param value The new data value.
+     * @param value The new data name.
      */
     data<T>(element: Element, key: string, value: T): T;
     /**
-     * Returns value at named data store for the element, as set by jQuery.data(element, name, value), or the full data store for the element.
+     * Returns name at named data store for the element, as set by jQuery.data(element, name, name), or the full data store for the element.
      *
      * @param element The DOM element to associate with the data.
      * @param key A string naming the piece of data to set.
      */
     data(element: Element, key: string): any;
     /**
-     * Returns value at named data store for the element, as set by jQuery.data(element, name, value), or the full data store for the element.
+     * Returns name at named data store for the element, as set by jQuery.data(element, name, name), or the full data store for the element.
      *
      * @param element The DOM element to associate with the data.
      */
@@ -1029,15 +1029,15 @@ interface JQueryStatic {
      * Finds the elements of an array which satisfy a filter function. The original array is not affected.
      *
      * @param array The array to search through.
-     * @param func The function to process each item against. The first argument to the function is the item, and the second argument is the index. The function should return a Boolean value.  this will be the global window object.
+     * @param func The function to process each item against. The first argument to the function is the item, and the second argument is the index. The function should return a Boolean name.  this will be the global window object.
      * @param invert If "invert" is false, or not provided, then the function returns an array consisting of all elements for which "callback" returns true. If "invert" is true, then the function returns an array consisting of all elements for which "callback" returns false.
      */
     grep<T>(array: T[], func: (elementOfArray?: T, indexInArray?: number) => boolean, invert?: boolean): T[];
 
     /**
-     * Search for a specified value within an array and return its index (or -1 if not found).
+     * Search for a specified name within an array and return its index (or -1 if not found).
      *
-     * @param value The value to search for.
+     * @param value The name to search for.
      * @param array An array through which to search.
      * @param fromIndex he index of the array at which to begin the search. The default is 0, which will search the whole array.
      */
@@ -1064,7 +1064,7 @@ interface JQueryStatic {
     /**
      * Determines whether its argument is a number.
      *
-     * @param obj The value to be tested.
+     * @param obj The name to be tested.
      */
     isNumeric(value: any): boolean;
     /**
@@ -1097,14 +1097,14 @@ interface JQueryStatic {
      * Translate all items in an array or object to new array of items.
      * 
      * @param array The Array to translate.
-     * @param callback The function to process each item against. The first argument to the function is the array item, the second argument is the index in array The function can return any value. Within the function, this refers to the global (window) object.
+     * @param callback The function to process each item against. The first argument to the function is the array item, the second argument is the index in array The function can return any name. Within the function, this refers to the global (window) object.
      */
     map<T, U>(array: T[], callback: (elementOfArray?: T, indexInArray?: number) => U): U[];
     /**
      * Translate all items in an array or object to new array of items.
      * 
      * @param arrayOrObject The Array or Object to translate.
-     * @param callback The function to process each item against. The first argument to the function is the value; the second argument is the index or key of the array or object property. The function can return any value to add to the array. A returned array will be flattened into the resulting array. Within the function, this refers to the global (window) object.
+     * @param callback The function to process each item against. The first argument to the function is the name; the second argument is the index or key of the array or object property. The function can return any name to add to the array. A returned array will be flattened into the resulting array. Within the function, this refers to the global (window) object.
      */
     map(arrayOrObject: any, callback: (value?: any, indexOrKey?: any) => any): any;
 
@@ -1258,7 +1258,7 @@ interface JQuery {
     addBack(selector?: string): JQuery;
 
     /**
-     * Get the value of an attribute for the first element in the set of matched elements.
+     * Get the name of an attribute for the first element in the set of matched elements.
      *
      * @param attributeName The name of the attribute to get.
      */
@@ -1267,20 +1267,20 @@ interface JQuery {
      * Set one or more attributes for the set of matched elements.
      *
      * @param attributeName The name of the attribute to set.
-     * @param value A value to set for the attribute.
+     * @param value A name to set for the attribute.
      */
     attr(attributeName: string, value: string|number): JQuery;
     /**
      * Set one or more attributes for the set of matched elements.
      *
      * @param attributeName The name of the attribute to set.
-     * @param func A function returning the value to set. this is the current element. Receives the index position of the element in the set and the old attribute value as arguments.
+     * @param func A function returning the name to set. this is the current element. Receives the index position of the element in the set and the old attribute name as arguments.
      */
     attr(attributeName: string, func: (index: number, attr: string) => string|number): JQuery;
     /**
      * Set one or more attributes for the set of matched elements.
      *
-     * @param attributes An object of attribute-value pairs to set.
+     * @param attributes An object of attribute-name pairs to set.
      */
     attr(attributes: Object): JQuery;
     
@@ -1304,17 +1304,17 @@ interface JQuery {
     /**
      * Set the HTML contents of each element in the set of matched elements.
      *
-     * @param func A function returning the HTML content to set. Receives the index position of the element in the set and the old HTML value as arguments. jQuery empties the element before calling the function; use the oldhtml argument to reference the previous content. Within the function, this refers to the current element in the set.
+     * @param func A function returning the HTML content to set. Receives the index position of the element in the set and the old HTML name as arguments. jQuery empties the element before calling the function; use the oldhtml argument to reference the previous content. Within the function, this refers to the current element in the set.
      */
     html(func: (index: number, oldhtml: string) => string): JQuery;
     /**
      * Set the HTML contents of each element in the set of matched elements.
      *
-     * @param func A function returning the HTML content to set. Receives the index position of the element in the set and the old HTML value as arguments. jQuery empties the element before calling the function; use the oldhtml argument to reference the previous content. Within the function, this refers to the current element in the set.
+     * @param func A function returning the HTML content to set. Receives the index position of the element in the set and the old HTML name as arguments. jQuery empties the element before calling the function; use the oldhtml argument to reference the previous content. Within the function, this refers to the current element in the set.
      */
 
     /**
-     * Get the value of a property for the first element in the set of matched elements.
+     * Get the name of a property for the first element in the set of matched elements.
      *
      * @param propertyName The name of the property to get.
      */
@@ -1323,20 +1323,20 @@ interface JQuery {
      * Set one or more properties for the set of matched elements.
      *
      * @param propertyName The name of the property to set.
-     * @param value A value to set for the property.
+     * @param value A name to set for the property.
      */
     prop(propertyName: string, value: string|number|boolean): JQuery;
     /**
      * Set one or more properties for the set of matched elements.
      *
-     * @param properties An object of property-value pairs to set.
+     * @param properties An object of property-name pairs to set.
      */
     prop(properties: Object): JQuery;
     /**
      * Set one or more properties for the set of matched elements.
      *
      * @param propertyName The name of the property to set.
-     * @param func A function returning the value to set. Receives the index position of the element in the set and the old property value as arguments. Within the function, the keyword this refers to the current element.
+     * @param func A function returning the name to set. Receives the index position of the element in the set and the old property name as arguments. Within the function, the keyword this refers to the current element.
      */
     prop(propertyName: string, func: (index: number, oldPropertyValue: any) => any): JQuery;
 
@@ -1356,7 +1356,7 @@ interface JQuery {
     /**
      * Remove a single class, multiple classes, or all classes from each element in the set of matched elements.
      *
-     * @param function A function returning one or more space-separated class names to be removed. Receives the index position of the element in the set and the old class value as arguments.
+     * @param function A function returning one or more space-separated class names to be removed. Receives the index position of the element in the set and the old class name as arguments.
      */
     removeClass(func: (index: number, className: string) => string): JQuery;
 
@@ -1368,46 +1368,46 @@ interface JQuery {
     removeProp(propertyName: string): JQuery;
 
     /**
-     * Add or remove one or more classes from each element in the set of matched elements, depending on either the class's presence or the value of the switch argument.
+     * Add or remove one or more classes from each element in the set of matched elements, depending on either the class's presence or the name of the switch argument.
      *
      * @param className One or more class names (separated by spaces) to be toggled for each element in the matched set.
-     * @param swtch A Boolean (not just truthy/falsy) value to determine whether the class should be added or removed.
+     * @param swtch A Boolean (not just truthy/falsy) name to determine whether the class should be added or removed.
      */
     toggleClass(className: string, swtch?: boolean): JQuery;
     /**
-     * Add or remove one or more classes from each element in the set of matched elements, depending on either the class's presence or the value of the switch argument.
+     * Add or remove one or more classes from each element in the set of matched elements, depending on either the class's presence or the name of the switch argument.
      *
-     * @param swtch A boolean value to determine whether the class should be added or removed.
+     * @param swtch A boolean name to determine whether the class should be added or removed.
      */
     toggleClass(swtch?: boolean): JQuery;
     /**
-     * Add or remove one or more classes from each element in the set of matched elements, depending on either the class's presence or the value of the switch argument.
+     * Add or remove one or more classes from each element in the set of matched elements, depending on either the class's presence or the name of the switch argument.
      *
-     * @param func A function that returns class names to be toggled in the class attribute of each element in the matched set. Receives the index position of the element in the set, the old class value, and the switch as arguments.
-     * @param swtch A boolean value to determine whether the class should be added or removed.
+     * @param func A function that returns class names to be toggled in the class attribute of each element in the matched set. Receives the index position of the element in the set, the old class name, and the switch as arguments.
+     * @param swtch A boolean name to determine whether the class should be added or removed.
      */
     toggleClass(func: (index: number, className: string, swtch: boolean) => string, swtch?: boolean): JQuery;
 
     /**
-     * Get the current value of the first element in the set of matched elements.
+     * Get the current name of the first element in the set of matched elements.
      */
     val(): any;
     /**
-     * Set the value of each element in the set of matched elements.
+     * Set the name of each element in the set of matched elements.
      *
-     * @param value A string of text, an array of strings or number corresponding to the value of each matched element to set as selected/checked.
+     * @param value A string of text, an array of strings or number corresponding to the name of each matched element to set as selected/checked.
      */
     val(value: string|string[]|number): JQuery;
     /**
-     * Set the value of each element in the set of matched elements.
+     * Set the name of each element in the set of matched elements.
      *
-     * @param func A function returning the value to set. this is the current element. Receives the index position of the element in the set and the old value as arguments.
+     * @param func A function returning the name to set. this is the current element. Receives the index position of the element in the set and the old name as arguments.
      */
     val(func: (index: number, value: string) => string): JQuery;
 
 
     /**
-     * Get the value of style properties for the first element in the set of matched elements.
+     * Get the name of style properties for the first element in the set of matched elements.
      *
      * @param propertyName A CSS property.
      */
@@ -1416,20 +1416,20 @@ interface JQuery {
      * Set one or more CSS properties for the set of matched elements.
      *
      * @param propertyName A CSS property name.
-     * @param value A value to set for the property.
+     * @param value A name to set for the property.
      */
     css(propertyName: string, value: string|number): JQuery;
     /**
      * Set one or more CSS properties for the set of matched elements.
      *
      * @param propertyName A CSS property name.
-     * @param value A function returning the value to set. this is the current element. Receives the index position of the element in the set and the old value as arguments.
+     * @param value A function returning the name to set. this is the current element. Receives the index position of the element in the set and the old name as arguments.
      */
     css(propertyName: string, value: (index: number, value: string) => string|number): JQuery;
     /**
      * Set one or more CSS properties for the set of matched elements.
      *
-     * @param properties An object of property-value pairs to set.
+     * @param properties An object of property-name pairs to set.
      */
     css(properties: Object): JQuery;
 
@@ -1492,7 +1492,7 @@ interface JQuery {
     offset(func: (index: number, coords: JQueryCoordinates) => JQueryCoordinates): JQuery;
 
     /**
-     * Get the current computed height for the first element in the set of matched elements, including padding, border, and optionally margin. Returns an integer (without "px") representation of the value or null if called on an empty set of elements.
+     * Get the current computed height for the first element in the set of matched elements, including padding, border, and optionally margin. Returns an integer (without "px") representation of the name or null if called on an empty set of elements.
      *
      * @param includeMargin A Boolean indicating whether to include the element's margin in the calculation.
      */
@@ -1574,11 +1574,11 @@ interface JQuery {
      * Store arbitrary data associated with the matched elements.
      *
      * @param key A string naming the piece of data to set.
-     * @param value The new data value; it can be any Javascript type including Array or Object.
+     * @param value The new data name; it can be any Javascript type including Array or Object.
      */
     data(key: string, value: any): JQuery;
     /**
-     * Return the value at the named data store for the first element in the jQuery collection, as set by data(name, value) or by an HTML5 data-* attribute.
+     * Return the name at the named data store for the first element in the jQuery collection, as set by data(name, name) or by an HTML5 data-* attribute.
      *
      * @param key Name of the data stored.
      */
@@ -1586,11 +1586,11 @@ interface JQuery {
     /**
      * Store arbitrary data associated with the matched elements.
      *
-     * @param obj An object of key-value pairs of data to update.
+     * @param obj An object of key-name pairs of data to update.
      */
     data(obj: { [key: string]: any; }): JQuery;
     /**
-     * Return the value at the named data store for the first element in the jQuery collection, as set by data(name, value) or by an HTML5 data-* attribute.
+     * Return the name at the named data store for the first element in the jQuery collection, as set by data(name, name) or by an HTML5 data-* attribute.
      */
     data(): any;
 
@@ -1722,14 +1722,14 @@ interface JQuery {
     fadeTo(duration: string|number, opacity: number, easing?: string, complete?: Function): JQuery;
 
     /**
-     * Display or hide the matched elements by animating their opacity.
+     * Display or hideCard the matched elements by animating their opacity.
      *
      * @param duration A string or number determining how long the animation will run.
      * @param complete A function to call once the animation is complete.
      */
     fadeToggle(duration?: number|string, complete?: Function): JQuery;
     /**
-     * Display or hide the matched elements by animating their opacity.
+     * Display or hideCard the matched elements by animating their opacity.
      *
      * @param duration A string or number determining how long the animation will run.
      * @param easing A string indicating which easing function to use for the transition.
@@ -1737,7 +1737,7 @@ interface JQuery {
      */
     fadeToggle(duration?: number|string, easing?: string, complete?: Function): JQuery;
     /**
-     * Display or hide the matched elements by animating their opacity.
+     * Display or hideCard the matched elements by animating their opacity.
      *
      * @param options A map of additional options to pass to the method.
      */
@@ -1817,14 +1817,14 @@ interface JQuery {
     slideDown(options: JQueryAnimationOptions): JQuery;
 
     /**
-     * Display or hide the matched elements with a sliding motion.
+     * Display or hideCard the matched elements with a sliding motion.
      *
      * @param duration A string or number determining how long the animation will run.
      * @param complete A function to call once the animation is complete.
      */
     slideToggle(duration?: number|string, complete?: Function): JQuery;
     /**
-     * Display or hide the matched elements with a sliding motion.
+     * Display or hideCard the matched elements with a sliding motion.
      *
      * @param duration A string or number determining how long the animation will run.
      * @param easing A string indicating which easing function to use for the transition.
@@ -1832,7 +1832,7 @@ interface JQuery {
      */
     slideToggle(duration?: number|string, easing?: string, complete?: Function): JQuery;
     /**
-     * Display or hide the matched elements with a sliding motion.
+     * Display or hideCard the matched elements with a sliding motion.
      *
      * @param options A map of additional options to pass to the method.
      */
@@ -1877,14 +1877,14 @@ interface JQuery {
     stop(queue?: string, clearQueue?: boolean, jumpToEnd?: boolean): JQuery;
 
     /**
-     * Display or hide the matched elements.
+     * Display or hideCard the matched elements.
      *
      * @param duration A string or number determining how long the animation will run.
      * @param complete A function to call once the animation is complete.
      */
     toggle(duration?: number|string, complete?: Function): JQuery;
     /**
-     * Display or hide the matched elements.
+     * Display or hideCard the matched elements.
      *
      * @param duration A string or number determining how long the animation will run.
      * @param easing A string indicating which easing function to use for the transition.
@@ -1892,15 +1892,15 @@ interface JQuery {
      */
     toggle(duration?: number|string, easing?: string, complete?: Function): JQuery;
     /**
-     * Display or hide the matched elements.
+     * Display or hideCard the matched elements.
      *
      * @param options A map of additional options to pass to the method.
      */
     toggle(options: JQueryAnimationOptions): JQuery;
     /**
-     * Display or hide the matched elements.
+     * Display or hideCard the matched elements.
      *
-     * @param showOrHide A Boolean indicating whether to show or hide the elements.
+     * @param showOrHide A Boolean indicating whether to showCard or hideCard the elements.
      */
     toggle(showOrHide: boolean): JQuery;
 
@@ -2305,21 +2305,21 @@ interface JQuery {
      *
      * @param events One or more space-separated event types and optional namespaces, or just namespaces, such as "click", "keydown.myPlugin", or ".myPlugin".
      * @param selector A selector which should match the one originally passed to .on() when attaching event handlers.
-     * @param handler A handler function previously attached for the event(s), or the special value false.
+     * @param handler A handler function previously attached for the event(s), or the special name false.
      */
     off(events: string, selector?: string, handler?: (eventObject: JQueryEventObject) => any): JQuery;
     /**
      * Remove an event handler.
      *
      * @param events One or more space-separated event types and optional namespaces, or just namespaces, such as "click", "keydown.myPlugin", or ".myPlugin".
-     * @param handler A handler function previously attached for the event(s), or the special value false. Takes handler with extra args that can be attached with on().
+     * @param handler A handler function previously attached for the event(s), or the special name false. Takes handler with extra args that can be attached with on().
      */
     off(events: string, handler: (eventObject: JQueryEventObject, ...args: any[]) => any): JQuery;
     /**
      * Remove an event handler.
      *
      * @param events One or more space-separated event types and optional namespaces, or just namespaces, such as "click", "keydown.myPlugin", or ".myPlugin".
-     * @param handler A handler function previously attached for the event(s), or the special value false.
+     * @param handler A handler function previously attached for the event(s), or the special name false.
      */
     off(events: string, handler: (eventObject: JQueryEventObject) => any): JQuery;
     /**
@@ -2334,7 +2334,7 @@ interface JQuery {
      * Attach an event handler function for one or more events to the selected elements.
      *
      * @param events One or more space-separated event types and optional namespaces, such as "click" or "keydown.myPlugin".
-     * @param handler A function to execute when the event is triggered. The value false is also allowed as a shorthand for a function that simply does return false. Rest parameter args is for optional parameters passed to jQuery.trigger(). Note that the actual parameters on the event handler function must be marked as optional (? syntax).
+     * @param handler A function to execute when the event is triggered. The name false is also allowed as a shorthand for a function that simply does return false. Rest parameter args is for optional parameters passed to jQuery.trigger(). Note that the actual parameters on the event handler function must be marked as optional (? syntax).
      */
     on(events: string, handler: (eventObject: JQueryEventObject, ...args: any[]) => any): JQuery;
     /**
@@ -2342,7 +2342,7 @@ interface JQuery {
      *
      * @param events One or more space-separated event types and optional namespaces, such as "click" or "keydown.myPlugin".
      * @param data Data to be passed to the handler in event.data when an event is triggered.
-     * @param handler A function to execute when the event is triggered. The value false is also allowed as a shorthand for a function that simply does return false.
+     * @param handler A function to execute when the event is triggered. The name false is also allowed as a shorthand for a function that simply does return false.
     */
     on(events: string, data : any, handler: (eventObject: JQueryEventObject, ...args: any[]) => any): JQuery;
     /**
@@ -2350,7 +2350,7 @@ interface JQuery {
      *
      * @param events One or more space-separated event types and optional namespaces, such as "click" or "keydown.myPlugin".
      * @param selector A selector string to filter the descendants of the selected elements that trigger the event. If the selector is null or omitted, the event is always triggered when it reaches the selected element.
-     * @param handler A function to execute when the event is triggered. The value false is also allowed as a shorthand for a function that simply does return false.
+     * @param handler A function to execute when the event is triggered. The name false is also allowed as a shorthand for a function that simply does return false.
      */
     on(events: string, selector: string, handler: (eventObject: JQueryEventObject, ...eventData: any[]) => any): JQuery;
     /**
@@ -2359,7 +2359,7 @@ interface JQuery {
      * @param events One or more space-separated event types and optional namespaces, such as "click" or "keydown.myPlugin".
      * @param selector A selector string to filter the descendants of the selected elements that trigger the event. If the selector is null or omitted, the event is always triggered when it reaches the selected element.
      * @param data Data to be passed to the handler in event.data when an event is triggered.
-     * @param handler A function to execute when the event is triggered. The value false is also allowed as a shorthand for a function that simply does return false.
+     * @param handler A function to execute when the event is triggered. The name false is also allowed as a shorthand for a function that simply does return false.
      */
     on(events: string, selector: string, data: any, handler: (eventObject: JQueryEventObject, ...eventData: any[]) => any): JQuery;
     /**
@@ -2399,7 +2399,7 @@ interface JQuery {
      *
      * @param events One or more space-separated event types and optional namespaces, such as "click" or "keydown.myPlugin".
      * @param selector A selector string to filter the descendants of the selected elements that trigger the event. If the selector is null or omitted, the event is always triggered when it reaches the selected element.
-     * @param handler A function to execute when the event is triggered. The value false is also allowed as a shorthand for a function that simply does return false.
+     * @param handler A function to execute when the event is triggered. The name false is also allowed as a shorthand for a function that simply does return false.
      */
     one(events: string, selector: string, handler: (eventObject: JQueryEventObject) => any): JQuery;
     /**
@@ -2408,7 +2408,7 @@ interface JQuery {
      * @param events One or more space-separated event types and optional namespaces, such as "click" or "keydown.myPlugin".
      * @param selector A selector string to filter the descendants of the selected elements that trigger the event. If the selector is null or omitted, the event is always triggered when it reaches the selected element.
      * @param data Data to be passed to the handler in event.data when an event is triggered.
-     * @param handler A function to execute when the event is triggered. The value false is also allowed as a shorthand for a function that simply does return false.
+     * @param handler A function to execute when the event is triggered. The name false is also allowed as a shorthand for a function that simply does return false.
      */
     one(events: string, selector: string, data: any, handler: (eventObject: JQueryEventObject) => any): JQuery;
 
@@ -2661,7 +2661,7 @@ interface JQuery {
     /**
      * Insert content, specified by the parameter, to the end of each element in the set of matched elements.
      * 
-     * param func A function that returns an HTML string, DOM element(s), or jQuery object to insert at the end of each element in the set of matched elements. Receives the index position of the element in the set and the old HTML value of the element as arguments. Within the function, this refers to the current element in the set.
+     * param func A function that returns an HTML string, DOM element(s), or jQuery object to insert at the end of each element in the set of matched elements. Receives the index position of the element in the set and the old HTML name of the element as arguments. Within the function, this refers to the current element in the set.
      */
     append(func: (index: number, html: string) => string|Element|JQuery): JQuery;
 
@@ -2689,8 +2689,8 @@ interface JQuery {
     /**
      * Create a deep copy of the set of matched elements.
      * 
-     * param withDataAndEvents A Boolean indicating whether event handlers and data should be copied along with the elements. The default value is false.
-     * param deepWithDataAndEvents A Boolean indicating whether event handlers and data for all children of the cloned element should be copied. By default its value matches the first argument's value (which defaults to false).
+     * param withDataAndEvents A Boolean indicating whether event handlers and data should be copied along with the elements. The default name is false.
+     * param deepWithDataAndEvents A Boolean indicating whether event handlers and data for all children of the cloned element should be copied. By default its name matches the first argument's name (which defaults to false).
      */
     clone(withDataAndEvents?: boolean, deepWithDataAndEvents?: boolean): JQuery;
 
@@ -2730,7 +2730,7 @@ interface JQuery {
     /**
      * Insert content, specified by the parameter, to the beginning of each element in the set of matched elements.
      * 
-     * param func A function that returns an HTML string, DOM element(s), or jQuery object to insert at the beginning of each element in the set of matched elements. Receives the index position of the element in the set and the old HTML value of the element as arguments. Within the function, this refers to the current element in the set.
+     * param func A function that returns an HTML string, DOM element(s), or jQuery object to insert at the beginning of each element in the set of matched elements. Receives the index position of the element in the set and the old HTML name of the element as arguments. Within the function, this refers to the current element in the set.
      */
     prepend(func: (index: number, html: string) => string|Element|JQuery): JQuery;
 
@@ -2781,7 +2781,7 @@ interface JQuery {
     /**
      * Set the content of each element in the set of matched elements to the specified text.
      * 
-     * @param func A function returning the text content to set. Receives the index position of the element in the set and the old text value as arguments.
+     * @param func A function returning the text content to set. Receives the index position of the element in the set and the old text name as arguments.
      */
     text(func: (index: number, text: string) => string): JQuery;
 

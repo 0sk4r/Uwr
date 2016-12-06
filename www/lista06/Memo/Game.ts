@@ -3,7 +3,7 @@
 
 
 class Game {
-    private Images = [
+    private fileList: string[] = [
         "0.png",
         "1.png",
         "2.png",
@@ -23,81 +23,73 @@ class Game {
     ];
 
     private cards: Card[];
-    private selectedCard1: Card;
-    private selectedCard2: Card;
+    private select1: Card;
+    private select2: Card;
 
     private startTime: Date;
+
     constructor() {
         this.startTime = new Date();
-        console.log(this.startTime);
-        this.cards = this.initCards();
-        this.shuffleCards();
+        this.cards = this.makeCards();
+        Game.random(this.cards);
         this.drawCards();
-        this.selectedCard1 = null;
-        this.selectedCard2 = null;
+        this.select1 = null;
+        this.select2 = null;
     }
 
-    private shuffleCards(): void {
-        Game.shuffle(this.cards);
-    }
-
-    private initCards(): Card[] {
-        //let elements = document.getElementsByClassName('card');
-        let elements = this.Images;
-        return Array.prototype.map.call(elements, function (el, i) {
+    private makeCards(): Card[] {
+        return Array.prototype.map.call(this.fileList, function (el, i) {
             return new Card(el);
         });
     }
 
-    // from http://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array-in-javascript
-    private static shuffle(o) {
+    private static random(o) {
         let j, x, i = o.length;
         for (; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
     }
 
     private drawCards(): void {
         let that = this;
-        $('.game-field').empty();
-        this.cards.forEach(function (el) {
-            el.hide();
-            $('.game-field').append(el.element);
-            el.onSelect(function (card: Card) {
+        this.cards.forEach(function (card) {
+            card.hideCard();
+            $('.board').append(card.element);
+            card.onSelect(function (card: Card) {
                 that.cardSelected(card);
             });
         });
     }
 
     cardSelected(card: Card): void {
-        if (!this.selectedCard1) {
-            card.show();
-            this.selectedCard1 = card;
-        } else if (!this.selectedCard2) {
-            card.show();
-            this.selectedCard2 = card;
+        if (!this.select1) {
+            card.showCard();
+            this.select1 = card;
+        } else if (card == this.select1){
+            return;
+        }
+        else if (!this.select2) {
+            card.showCard();
+            this.select2 = card;
             this.checkCards();
         } else {
-            this.selectedCard1.hide();
-            this.selectedCard2.hide();
-            this.selectedCard1 = null;
-            this.selectedCard2 = null;
+            this.select1.hideCard();
+            this.select2.hideCard();
+            this.select1 = null;
+            this.select2 = null;
         }
     }
 
     private checkCards(): void {
-        // check if clicked two times on the same card
-        if (this.selectedCard1 == this.selectedCard2)
+        if (this.select1 == this.select2)
             return;
 
-        // if cards don't match, return
-        if (!this.selectedCard1.isPair(this.selectedCard2))
+        if (!this.select1.match(this.select2))
             return;
 
-        // yay, cards match!
-        this.selectedCard1.matchFound();
-        this.selectedCard2.matchFound();
+        this.select1.setFound();
+        this.select2.setFound();
 
-        this.selectedCard1 = null;
-        this.selectedCard2 = null;
+        this.select1 = null;
+        this.select2 = null;
 
         this.checkAllFound();
     }

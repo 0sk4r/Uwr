@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="lol.db">
+  <database-model serializer="dbm" rdbms="SQLITE" format-version="4.0">
+    <root id="1"/>
+    <schema id="2" parent="1">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <table id="3" parent="2" name="Notepad"/>
+    <column id="4" parent="3" name="Name">
+      <DataType>TEXT(0,-1)|12</DataType>
+    </column>
+    <column id="5" parent="3" name="Phone">
+      <Position>1</Position>
+      <DataType>INT(0,-1)|4</DataType>
+    </column>
+    <column id="6" parent="3" name="Email">
+      <Position>2</Position>
+      <DataType>TEXT(0,-1)|12</DataType>
+    </column>
+    <column id="7" parent="3" name="Nick">
+      <Position>3</Position>
+      <DataType>TEXT(0,-1)|12</DataType>
+    </column>
+  </database-model>
+</dataSource>

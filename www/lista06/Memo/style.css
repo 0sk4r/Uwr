@@ -1,13 +1,14 @@
-.game-field {
-    width: 512px;
-    background: blue;
+.board {
+    width: 800px;
 }
 
 .card {
     float: left;
-    width: 128px;
+    width: 20%;
     height: 128px;
     padding: 5px;
+    margin: 5px;
+    border: 5px solid;
 
 }
 
@@ -22,5 +23,5 @@
 }
 .card-hidden {
     background-image: url("tlo.png");
-    object-fit: fill;
+    background-size: 100% 100%;
 }

@@ -1,3 +1,4 @@
 /// <reference path="Game.ts" />
-
-new Game();
+$( document ).ready(function() {
+    new Game();
+});

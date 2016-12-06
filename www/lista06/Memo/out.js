@@ -1,21 +1,18 @@
-/**
- * Created by oskar on 26.11.2016.
- */
 var Card = (function () {
-    function Card(element) {
+    function Card(file) {
         this.element = document.createElement("div");
         this.element.setAttribute("class", "card");
         var img = document.createElement("img");
-        img.setAttribute("src", "images/cards/" + element);
+        img.setAttribute("src", "cards/" + file);
         this.element.appendChild(img);
-        this.value = element;
+        this.name = file;
         this.found = false;
     }
-    Card.prototype.hide = function () {
+    Card.prototype.hideCard = function () {
         $(this.element).addClass('card-hidden');
     };
-    Card.prototype.isPair = function (other) {
-        return this.value == other.value;
+    Card.prototype.match = function (card) {
+        return this.name == card.name;
     };
     Card.prototype.onSelect = function (func) {
         var that = this;
@@ -24,11 +21,11 @@ var Card = (function () {
                 func(that);
         });
     };
-    Card.prototype.show = function () {
+    Card.prototype.showCard = function () {
         $(this.element).removeClass('card-hidden');
-        $(this.element.firstChild).hide().slideDown();
+        $(this.element.firstChild).hide().fadeToggle();
     };
-    Card.prototype.matchFound = function () {
+    Card.prototype.setFound = function () {
         this.found = true;
     };
     return Card;
@@ -37,7 +34,7 @@ var Card = (function () {
 /// <reference path="Card.ts" />
 var Game = (function () {
     function Game() {
-        this.Images = [
+        this.fileList = [
             "0.png",
             "1.png",
             "2.png",
@@ -56,69 +53,61 @@ var Game = (function () {
             "7.png"
         ];
         this.startTime = new Date();
-        console.log(this.startTime);
-        this.cards = this.initCards();
-        this.shuffleCards();
+        this.cards = this.makeCards();
+        Game.random(this.cards);
         this.drawCards();
-        this.selectedCard1 = null;
-        this.selectedCard2 = null;
+        this.select1 = null;
+        this.select2 = null;
     }
-    Game.prototype.shuffleCards = function () {
-        Game.shuffle(this.cards);
-    };
-    Game.prototype.initCards = function () {
-        //let elements = document.getElementsByClassName('card');
-        var elements = this.Images;
-        return Array.prototype.map.call(elements, function (el, i) {
+    Game.prototype.makeCards = function () {
+        return Array.prototype.map.call(this.fileList, function (el, i) {
             return new Card(el);
         });
     };
-    // from http://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array-in-javascript
-    Game.shuffle = function (o) {
+    Game.random = function (o) {
         var j, x, i = o.length;
         for (; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x)
             ;
     };
     Game.prototype.drawCards = function () {
         var that = this;
-        $('.game-field').empty();
-        this.cards.forEach(function (el) {
-            el.hide();
-            $('.game-field').append(el.element);
-            el.onSelect(function (card) {
+        this.cards.forEach(function (card) {
+            card.hideCard();
+            $('.board').append(card.element);
+            card.onSelect(function (card) {
                 that.cardSelected(card);
             });
         });
     };
     Game.prototype.cardSelected = function (card) {
-        if (!this.selectedCard1) {
-            card.show();
-            this.selectedCard1 = card;
+        if (!this.select1) {
+            card.showCard();
+            this.select1 = card;
         }
-        else if (!this.selectedCard2) {
-            card.show();
-            this.selectedCard2 = card;
+        else if (card == this.select1) {
+            return;
+        }
+        else if (!this.select2) {
+            card.showCard();
+            this.select2 = card;
             this.checkCards();
         }
         else {
-            this.selectedCard1.hide();
-            this.selectedCard2.hide();
-            this.selectedCard1 = null;
-            this.selectedCard2 = null;
+            this.select1.hideCard();
+            this.select2.hideCard();
+            this.select1 = null;
+            this.select2 = null;
         }
     };
     Game.prototype.checkCards = function () {
-        // check if clicked two times on the same card
-        if (this.selectedCard1 == this.selectedCard2)
+        if (this.select1 == this.select2)
             return;
-        // if cards don't match, return
-        if (!this.selectedCard1.isPair(this.selectedCard2))
+        if (!this.select1.match(this.select2))
             return;
-        // yay, cards match!
-        this.selectedCard1.matchFound();
-        this.selectedCard2.matchFound();
-        this.selectedCard1 = null;
-        this.selectedCard2 = null;
+        this.select1.setFound();
+        this.select2.setFound();
+        this.select1 = null;
+        this.select2 = null;
         this.checkAllFound();
     };
     Game.prototype.checkAllFound = function () {
@@ -133,4 +122,6 @@ var Game = (function () {
     return Game;
 }());
 /// <reference path="Game.ts" />
-new Game();
+$(document).ready(function () {
+    new Game();
+});

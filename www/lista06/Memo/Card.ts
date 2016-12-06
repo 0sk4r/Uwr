@@ -1,28 +1,27 @@
-    /**
-     * Created by oskar on 26.11.2016.
-     */
     class Card {
         element: Element;
-        value: string;
+        name: string;
         found: boolean;
 
-        constructor(element: string) {
+        constructor(file: string) {
             this.element = document.createElement("div");
             this.element.setAttribute("class", "card");
 
             let img = document.createElement("img");
-            img.setAttribute("src","images/cards/" +  element);
+            img.setAttribute("src","cards/" +  file);
+
             this.element.appendChild(img);
-            this.value = element;
+            
+            this.name = file;
             this.found = false;
         }
 
-        hide(): void {
+        hideCard(): void {
             $(this.element).addClass('card-hidden');
         }
 
-        isPair(other: Card): boolean {
-            return this.value == other.value
+        match(card: Card): boolean {
+            return this.name == card.name
         }
 
         onSelect(func) {
@@ -33,12 +32,12 @@
             });
         }
 
-        show(): void {
+        showCard(): void {
             $(this.element).removeClass('card-hidden');
-            $(this.element.firstChild).hide().slideDown();
+            $(this.element.firstChild).hide().fadeToggle();
         }
 
-        matchFound(): void {
+        setFound(): void {
             this.found = true;
         }
     }
