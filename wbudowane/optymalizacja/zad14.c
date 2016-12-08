@@ -4,14 +4,15 @@
 #include <sys/time.h>
 #include <inttypes.h>
 #include <stdbool.h>
+
 #define size 75000000
 
-
 uint32_t array[size];
-uint32_t init32(){
-    uint32_t init32;
-    init32 = ((double)rand()/RAND_MAX)*0xFFFFFFFF;
-    return init32;
+
+uint32_t genInt32(){
+    uint32_t int32;
+    int32 = ((double)rand()/RAND_MAX)*0xFFFFFFFF;
+    return int32;
 }
 
 bool sposobjeden(uint32_t x){
@@ -20,6 +21,8 @@ bool sposobjeden(uint32_t x){
     return power;
 }
 
+
+//brute force
 bool sposobdwa(uint32_t x){
     int count = 0;
     uint32_t negacja = ~(x);
@@ -34,19 +37,19 @@ bool sposobdwa(uint32_t x){
 int main(void){
 
     int i,y = 0,x = 0;
-    double elapsed; // in milliseconds
+    double elapsed;
 	clock_t start, end;
     srand(time(0));
 
     for (i=0;i<size;i++){
         //wypelnianie tablicy
-        array[i] = init32();
+        array[i] = genInt32();
     }
 
     start = clock();
     for (i=0;i<size;i++){
 
-        if(sposobjeden(array[i])) x++;
+        if(!sposobjeden(array[i])) x++;
     }
     end = clock();
 	elapsed = ((double) (end - start) * 1000) / CLOCKS_PER_SEC;
@@ -58,12 +61,12 @@ int main(void){
     start = clock();
     for (i=0;i<size;i++){
 
-        if(sposobdwa(array[i])) y++;
+        if(!sposobdwa(array[i])) y++;
     }
     end = clock();
 	elapsed = ((double) (end - start) * 1000) / CLOCKS_PER_SEC;
 	printf("ilosc liczb: %i\n",y);
-	printf("1. sposob potrzebowal %f ms\n", elapsed);
+	printf("2. sposob potrzebowal %f ms\n", elapsed);
 
 
     //printf("%i\n",x);
