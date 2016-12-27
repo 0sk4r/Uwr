@@ -1,9 +1,20 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <inttypes.h>
 #include <math.h>
 #include <time.h>
 #include <sys/time.h>
+
+#define size 75000000
+long long int sum1=0,sum2=0,sum3=0;
+uint32_t array[size];
+
+uint32_t genInt32(){
+    uint32_t int32;
+    int32 = ((double)rand()/RAND_MAX)*0xFFFFFFFF;
+    return int32;
+}
 
 uint32_t metoda1(uint32_t x)
 {
@@ -51,51 +62,49 @@ uint32_t metoda3(uint32_t x)
 
 int main(void)
 {
-    uint32_t toRev = 1234567890;
-
-    printf("Liczba: %d\n", toRev);
-
-    int iteracji = 100000000;
-    double elapsed;
+    int i; 
+    for (i=0;i<size;i++){
+        //wypelnianie tablicy
+        array[i] = genInt32();
+    }
+    double delta;
     clock_t start, end;
 
 
     //metoda 1
 
     start = clock();
-    for (int i = 0; i < iteracji; i++)
-    {
-        metoda1(toRev);
+    for (int i = 0; i < size; i++)
+    {   
+        //printf("%lu\n",array[i]); 
+        sum1+=metoda1(array[i]);
     }
+
     end = clock();
-    elapsed = ((double)(end - start) * 1000) / CLOCKS_PER_SEC;
-    printf("1 metoda: %f ms\n", elapsed);
+    delta = ((double)(end - start) * 1000) / CLOCKS_PER_SEC;
+    printf("1 metoda: %f ms\n", delta);
 
     //metoda 2
 
     start = clock();
-    for (int i = 0; i < iteracji; i++)
+    for (int i = 0; i < size; i++)
     {
-        metoda2(toRev);
+        sum2+=metoda2(array[i]);
     }
     end = clock();
-    elapsed = ((double)(end - start) * 1000) / CLOCKS_PER_SEC;
-    printf("2 metoda:  %f ms\n", elapsed);
+    delta = ((double)(end - start) * 1000) / CLOCKS_PER_SEC;
+    printf("2 metoda:  %f ms\n", delta);
 
     //metoda 3
 
     start = clock();
-    for (int i = 0; i < iteracji; i++)
+    for (int i = 0; i < size; i++)
     {
-        metoda3(toRev);
+        sum3+=metoda3(array[i]);
     }
     end = clock();
-    elapsed = ((double)(end - start) * 1000) / CLOCKS_PER_SEC;
-    printf("3. metoda: %f ms\n", elapsed);
-
-    printf("%d\n", metoda1(toRev));
-    printf("%d\n", metoda2(toRev));
-    printf("%d\n", metoda3(toRev));
-
+    delta = ((double)(end - start) * 1000) / CLOCKS_PER_SEC;
+    printf("3. metoda: %f ms\n", delta);
+    printf("%lu %lu %lu",sum1,sum2,sum3);
     return 0;
 }
