@@ -4,13 +4,21 @@
 #include <avr/power.h>
 #include <avr/sleep.h>
 
-#define BLINK_DELAY_MS 1000
+#define BLINK_DELAY_MS 500
 
 //przerwanie
 ISR(INT0_vect)
 {
-  unsigned char i, temp;
+  
+  unsigned char i;
 
+  if(!(PIND & (1 << 7))){
+    PORTB |= 0xFF;
+  }
+  if(!(PIND & (1 << 6))){
+    PORTB |= 0x00;
+  }
+  
   for (i = 0; i < 5; i++)
   {
     PORTB |= (1 << PB2);

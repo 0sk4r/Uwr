@@ -68,7 +68,7 @@ void setup() {
 void loop() {
   int reading = analogRead(sensor );
   //Serial.println(reading);
-  if (lenght > 0 && millis() - time > 2000)
+  if (lenght > 0 && millis() - time > 40)
   {
     if (lenght > 4)
     {
@@ -92,11 +92,11 @@ void loop() {
 
 
 
-      if (reading > 150) {
+      if (reading > 500) {
         if (millis() - time > 2000) Serial.print(" ");
         time = millis();
-        while (analogRead(sensor) > 150) {}
-        if (millis() - time > 300) {
+        while (analogRead(sensor) > 500) {}
+        if (millis() - time > 7) {
           morse_code += "-";
         }
         else {

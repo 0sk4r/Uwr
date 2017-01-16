@@ -33,17 +33,17 @@ String mors[] = {
 void short_signal()
 {
   digitalWrite(led, HIGH);
-  delay(100);
+  delay(5);
   digitalWrite(led, LOW);
-  delay(150);
+  delay(20);
 }
 
 void long_signal()
 {
   digitalWrite(led, HIGH);
-  delay(400);
+  delay(10);
   digitalWrite(led, LOW);
-  delay(150);
+  delay(20);
 }
 
 void setup()
@@ -73,6 +73,6 @@ void loop()
       }
       i++;
     }
-    delay(2500);
+    delay(50);
   }
 }
