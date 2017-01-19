@@ -1,14 +1,14 @@
 CC = gcc -pthread
 CFLAGS = -std=gnu99 -Wall
 
-all : prog valet smoker
+all : main valet smoker
 
 clean :
 	rm -f *.o
 
-prog : prog.o
+main : main.o
 
-prog.o : prog.c
+main.o : main.c
 
 valet : valet.o
 

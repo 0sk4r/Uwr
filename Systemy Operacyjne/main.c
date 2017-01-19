@@ -1,9 +1,9 @@
-/*
-Kamil Matuszewski - problem palaczy tytoniu.
-Problem palaczy tytoniu rozwiązany przy pomocy semaforów.
-Program działa na procesach, i do użycia wymaga systemu linux.
-Wersja: 22.01.2016
+/* 
+Oskar Sobczyk - Problem palaczy tytoniu
+nr indeksu 281822
+18.01.2017
 */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

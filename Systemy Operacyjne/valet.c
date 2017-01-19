@@ -1,9 +1,9 @@
-/*
-Kamil Matuszewski - problem palaczy tytoniu.
-Problem palaczy tytoniu rozwiązany przy pomocy semaforów.
-Program działa na procesach, i do użycia wymaga systemu linux.
-Wersja: 22.01.2016
+/* 
+Oskar Sobczyk - Problem palaczy tytoniu
+nr indeksu 281822
+18.01.2017
 */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -15,10 +15,6 @@ Wersja: 22.01.2016
 #include <semaphore.h>
 #include <unistd.h>
 #include <time.h>
-
-//Tobacco : 001
-//Paper : 010
-//Matches : 100
 
 int main(int argc, char* argv[])
 {
@@ -43,17 +39,17 @@ int main(int argc, char* argv[])
 	
 	 	if(items==0)
 	 	{
-		 printf("Agent: Kładę na stole papier i zapałki.\n");
+		 printf("Lokaj: Wykładam papier i zapałki.\n");
 		 sem_post(sem_tobacco);
 		}
 		else if(items==1)
 		{
-		 printf("Agent: Kładę na stole tytoń i zapałki.\n");
+		 printf("Lokaj: Wykładam tytoń i zapałki.\n");
 		 sem_post(sem_paper);
 		}
 		else
 		{
-		 printf("Agent: Kładę na stole tytoń i papier.\n");
+		 printf("Lokaj: Wykładam tytoń i papier.\n");
 		 sem_post(sem_matches);
 		}
 	}
