@@ -10,7 +10,7 @@ int number = 0;
 
 unsigned int binaryToGray(unsigned int num)
 {
-  return num ^ (num >> 1);
+  return (num ^ (num >> 1));
 }
 
 //przerwanie
@@ -44,7 +44,7 @@ int main (void)
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);
   sleep_enable();
 
-  //ustawienie pinb1 i pinb2 na wyjscie
+  //ustawienie portowb na wyjscie
   DDRB |= 0xFF;
   //ustawienie portow pind na wejscie
   DDRD &= 0x00;

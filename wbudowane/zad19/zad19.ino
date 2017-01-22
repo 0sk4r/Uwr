@@ -1,10 +1,10 @@
 short pinX = 1;
 short pinY = 0;
 
-short pinB = 8;
-short pinR = 9;
+short pinB = 7;
+short pinR = 6;
 
-short pinButton = 6;
+short pinButton = 2;
 
 short valueBlue;
 short valueRed;
@@ -13,7 +13,7 @@ unsigned long time;
 unsigned long timeDifference = 0;
 bool changed = true;
 
-short tolerance = 20;
+short tolerance = 30;
 
 bool gameOver = false;
 
@@ -68,16 +68,20 @@ void loop() {
     valueBlue = random(256);
     valueRed = random(256);
     gameOver = false;
+    valueBlue = random(256);
+    valueRed = random(256);
+    analogWrite(pinB, valueBlue);
+    analogWrite(pinR, valueRed);
   }
 
   y = analogRead(pinY);
   x = analogRead(pinX);
   
   x -= 450;
-  x = map(x, 0, 512, 0, 255);
+  x = map(x, 0, 1000, 0, 255);
   
   y -= 450;
-  y = map(y, 0, 512, 0, 255);
+  y = map(y, 0, 1000, 0, 255);
   
   if (x > 0 && y > 0) {
     maxChangeX = max(x, maxChangeX);
@@ -91,18 +95,20 @@ void loop() {
    
     currentValueBlue = (maxChangeY);    
     currentValueRed = (maxChangeX);
-    
-    Serial.print(valueRed);
-    Serial.print(" ");
-    Serial.print(valueBlue);
-    Serial.print(" => ");
-    
+    Serial.print("Max: X=");
     Serial.print(currentValueRed);    
     Serial.print(" ");
-    Serial.println(currentValueBlue);   
+    Serial.print("Max: Y=");
+    Serial.print(currentValueBlue);   
+Serial.print(" ");
+    Serial.print("Cel: X=");
+    Serial.print(valueRed);
+    Serial.print(" ");
+    Serial.print("Y=");
+    Serial.println(valueBlue);    
 
-    if (wPrzedziale(currentValueRed, valueRed - tolerance, valueRed + tolerance) && 
-        wPrzedziale(currentValueBlue, valueBlue - tolerance, valueBlue + tolerance)) {
+    if (range(currentValueRed, valueRed - tolerance, valueRed + tolerance) && 
+        range(currentValueBlue, valueBlue - tolerance, valueBlue + tolerance)) {
         gameOver = true;
         migniecie();
     }
@@ -113,7 +119,7 @@ void loop() {
   }
 }
 
-bool wPrzedziale(short val, short minimum, short maximum) 
+bool range(short val, short minimum, short maximum) 
 {
   minimum = max(0, minimum);
   maximum = min(255, maximum);

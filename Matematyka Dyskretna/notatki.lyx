@@ -1,0 +1,335 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language polish
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language polish
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Matematyka dyskretna (L)
+\end_layout
+
+\begin_layout Author
+
+\noun on
+notatki
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Grafy
+\end_layout
+
+\begin_layout Subsection*
+Definicje
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Automofrizm garfu
+\series default
+ Wzajemnie jednoznaczne przekształcenie φ zbioru wierzchołków grafu prostego
+ w ten sam zbiór takie, że wierzchołki
+\series bold
+ 
+\emph on
+φ(v)
+\series default
+\emph default
+ oraz 
+\series bold
+\emph on
+φ(w)
+\series default
+\emph default
+ są sąsiednie wtedy i tylko wtedy, gdy
+\series bold
+\emph on
+ v
+\emph default
+ 
+\series default
+i 
+\series bold
+\emph on
+w
+\series default
+\emph default
+ są sąsiednie.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Centrum grafu 
+\series default
+Wierzchołek grafu spójnego taki, że największa z odległości od centrum do
+ innych wierzchołków grafu jest najmniejsza.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Cykl 
+\series default
+zamknięta droga prosta 
+\begin_inset Formula $e_{1}$
+\end_inset
+
+,
+\begin_inset Formula $e_{2}$
+\end_inset
+
+,…,
+\begin_inset Formula $e_{n}$
+\end_inset
+
+ taka że krawędź 
+\begin_inset Formula $e_{n}$
+\end_inset
+
+ kończy się w początkowym wierzchołku drogi.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Droga 
+\series default
+wyznaczona przez krawędzie trasa, polegająca na podróżowaniu od wierzchołka
+ do wierzchołka po łączących je krawędziach
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Droga prosta 
+\series default
+dorga nie zawierająca dwuch tych samych krawędzi
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Długość dorgi
+\series default
+ liczba krawędzi
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Droga acykliczna 
+\series default
+droga nie zawierająca cykli
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Drzewo spinające/rozpinające 
+\series default
+drzewo które zawiera wszystkie wierzchołki grafu i jest bez cykli
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Rozmiar grafu 
+\series default
+lizczba krawędzi grafu
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Rząd grafu 
+\series default
+liczba wierzchołków
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Stopień wierzchołka 
+\emph on
+v 
+\series default
+\emph default
+liczba kończących się w wierzhołku krawędzi.
+ Oznacza się jako
+\series bold
+\emph on
+ deg(v)
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Scieżka 
+\series default
+to samo co droga tylko określone przez wierzchołki
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Graf spójny 
+\series default
+graf spełniający warunek że dla każdej pary wierzhołków istnieje ścieżka,
+ która je łączy.
+ Posiada jedną spójną składową
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Spójna składowa
+\series default
+ jest to taki podgraf który można wydzielić z całego grafu bez usuwania
+ krawędzi
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Drzewo
+\series default
+ spójny graf acykliczny
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Graf acykliczny 
+\series default
+graf nie zawierający cykli
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Graf dwudzielny 
+\series default
+graf, którego zbiór wierzchołków można podzielić na dwa rozłączne zbiory
+ tak, że krawędzie nie łączą wierzchołków tego samego zbioru.
+ Równoważnie: graf, który nie zawiera cykli nieparzystej długości.
+ Jeśli pomiędzy wszystkimi parami wierzchołków należących do różnych zbiorów
+ istnieje krawędź, graf taki nazywamy pełnym grafem dwudzielnym lub kliką.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename C:/Users/oskar/Downloads/Biparite_graph.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Cykl eulerowski 
+\series default
+to zamknięta marszruta przechodząca przez każdą krawędź grafu dokładnie
+ raz.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Graf eulerowski 
+\series default
+to graf posiadający cykl Eulera.
+\begin_inset Newline newline
+\end_inset
+
+Graf 
+\series bold
+\emph on
+G = (V,E)
+\series default
+\emph default
+ jest eulerowski wtedy i tylko wtedy, gdy jest spójny i stopień każdego
+ wierzchołka jest parzysty.
+\end_layout
+
+\end_body
+\end_document
