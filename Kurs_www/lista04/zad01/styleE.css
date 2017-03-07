@@ -1,0 +1,64 @@
+body {
+	color: #fff;
+	font-family: Arial, sans-serif;
+	display: flex;
+	flex-direction: column;
+	height: auto;
+
+}
+
+header, logo, nav, article, sub, footer { padding: 10px; }
+
+p {
+  text-align: center;
+	color: black;
+}
+
+
+main {
+	display: flex;
+	height: 100%;
+}
+
+up{
+	display: flex;
+	height: 100%;
+}
+
+logo {
+	background-color: purple;
+    height: 50px;
+	flex: 1;
+	
+}
+
+header {
+	background-color: blue;
+	height: 50px;
+	flex: 10;
+}
+	
+
+nav {
+	background-color: orange;
+	height: auto;
+	flex: 1;
+
+}
+article {
+	background-color: skyblue;
+	min-height: 700px;
+	height: auto;
+	flex: 9;
+}
+
+sub {
+	background-color: red;
+	height: auto;
+	flex: 1;
+}
+
+footer {
+background-color: green;
+	height:50px;
+}

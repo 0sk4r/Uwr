@@ -1,0 +1,5 @@
+C:\Uwr\obiektowe\lista02\zad01\zad01\bin\Release\zad01.exe.config
+C:\Uwr\obiektowe\lista02\zad01\zad01\bin\Release\zad01.exe
+C:\Uwr\obiektowe\lista02\zad01\zad01\bin\Release\zad01.pdb
+C:\Uwr\obiektowe\lista02\zad01\zad01\obj\Release\zad01.exe
+C:\Uwr\obiektowe\lista02\zad01\zad01\obj\Release\zad01.pdb

@@ -1,0 +1,6 @@
+C:\Uwr\obiektowe\lista04\zad03\zad03\bin\Debug\zad03.exe.config
+C:\Uwr\obiektowe\lista04\zad03\zad03\bin\Debug\zad03.exe
+C:\Uwr\obiektowe\lista04\zad03\zad03\bin\Debug\zad03.pdb
+C:\Uwr\obiektowe\lista04\zad03\zad03\obj\Debug\zad03.exe
+C:\Uwr\obiektowe\lista04\zad03\zad03\obj\Debug\zad03.pdb
+C:\Uwr\obiektowe\lista04\zad03\zad03\obj\Debug\zad03.csprojResolveAssemblyReference.cache
