@@ -1,5 +1,0 @@
-C:\Uwr\obiektowe\lista03\zad1\zad1\bin\Release\zad1.exe.config
-C:\Uwr\obiektowe\lista03\zad1\zad1\bin\Release\zad1.exe
-C:\Uwr\obiektowe\lista03\zad1\zad1\bin\Release\zad1.pdb
-C:\Uwr\obiektowe\lista03\zad1\zad1\obj\Release\zad1.exe
-C:\Uwr\obiektowe\lista03\zad1\zad1\obj\Release\zad1.pdb

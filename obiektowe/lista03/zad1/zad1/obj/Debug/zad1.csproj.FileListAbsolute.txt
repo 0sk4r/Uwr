@@ -1,6 +1,0 @@
-C:\Uwr\obiektowe\lista03\zad1\zad1\bin\Debug\zad1.exe.config
-C:\Uwr\obiektowe\lista03\zad1\zad1\obj\Debug\zad1.csprojResolveAssemblyReference.cache
-C:\Uwr\obiektowe\lista03\zad1\zad1\bin\Debug\zad1.exe
-C:\Uwr\obiektowe\lista03\zad1\zad1\bin\Debug\zad1.pdb
-C:\Uwr\obiektowe\lista03\zad1\zad1\obj\Debug\zad1.exe
-C:\Uwr\obiektowe\lista03\zad1\zad1\obj\Debug\zad1.pdb
