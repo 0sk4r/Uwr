@@ -1,0 +1,6 @@
+﻿  Source.c
+c:\uwr\windows\1.1\1.1.2\1.1.2\source.c(56): warning C4133: '=': incompatible types - from 'char *' to 'LPCWSTR'
+c:\uwr\windows\1.1\1.1.2\1.1.2\source.c(76): warning C4133: 'function': incompatible types - from 'char [14]' to 'LPCWSTR'
+c:\uwr\windows\1.1\1.1.2\1.1.2\source.c(36): warning C4716: 'CreateVector2': must return a value
+  1.1.2.vcxproj -> C:\Uwr\windows\1.1\1.1.2\Debug\1.1.2.exe
+  1.1.2.vcxproj -> C:\Uwr\windows\1.1\1.1.2\Debug\1.1.2.pdb (Full PDB)

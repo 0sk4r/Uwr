@@ -1,0 +1,7 @@
+﻿  Source.c
+c:\uwr\windows\1.1\1.1.5\1.1.5\source.c(32): warning C4133: '=': incompatible types - from 'char *' to 'LPCWSTR'
+c:\uwr\windows\1.1\1.1.5\1.1.5\source.c(52): warning C4133: 'function': incompatible types - from 'char [7]' to 'LPCWSTR'
+c:\uwr\windows\1.1\1.1.5\1.1.5\source.c(105): warning C4133: 'function': incompatible types - from 'char [7]' to 'LPCWSTR'
+c:\uwr\windows\1.1\1.1.5\1.1.5\source.c(82): warning C4101: 'tmp': unreferenced local variable
+  1.1.5.vcxproj -> C:\Uwr\windows\1.1\1.1.5\Debug\1.1.5.exe
+  1.1.5.vcxproj -> C:\Uwr\windows\1.1\1.1.5\Debug\1.1.5.pdb (Full PDB)
