@@ -1,9 +1,8 @@
 #include "stdio.h"
 #include <string>
 #include "vector"
-#include <iostream>
 #include "stack"
-
+#include "iostream"
 using namespace std;
 
 int main()
@@ -13,15 +12,12 @@ int main()
     {
     }
     int V = n * m;
-    string wiersz;
-    //vector<int> *sasiedztwa = new vector<int>[ (n * m) + 1 ];
-    int sasiedztwa[V][4];
-    for(int i = 0;i<V;i++){
-        for(int j=0;j<4;j++) sasiedztwa[i][j]=0;
-    }
+    char buffer1[m + 2], buffer2[m + 2];
+    vector<int> sasiedztwa[V + 2];
     int spojne[V];
     int licznik = 0;
-
+    int kol = 0;
+    /*
     for (int i = 0; i < n; i++)
     {
         char buffer[m];
@@ -30,101 +26,134 @@ int main()
         }
         wiersz += buffer;
     }
-
-    for (int i = 0; i < n * m; i++)
+*/
+        
+    scanf("%s", buffer1);
+    scanf("%s", buffer2);
+    for (int j = 0; j <n; j++)
     {
-        if (wiersz[i] == 'B')
+        for (int i = 0; i < m; i++)
         {
-            if ((wiersz[i + m] == 'C' || wiersz[i + m] == 'D' || wiersz[i + m] == 'F') && i / m != n + 1)
+            kol = licznik + i;
+            //printf("%d \n",kol);  
+            if (buffer1[i] == 'A')
             {
-                sasiedztwa[i].push_back(i + m);
-                sasiedztwa[i + m].push_back(i);
             }
-            if (sasiedztwa[i].empty())
-                sasiedztwa[i].push_back(-1);
-        }
-        else if (wiersz[i] == 'D')
-        {
-            if ((wiersz[i + 1] == 'C' || wiersz[i + 1] == 'B' || wiersz[i + 1] == 'F') && i % m + 1 != m)
+            else if (buffer1[i] == 'B')
             {
-                sasiedztwa[i].push_back(i + 1);
-                sasiedztwa[i + 1].push_back(i);
+                if ((buffer2[i] == 'C' || buffer2[i] == 'D' || buffer2[i] == 'F') && (kol / m != n-1))
+                {
+                    sasiedztwa[kol].push_back(kol + m);
+                    sasiedztwa[kol + m].push_back(kol);
+                }
+                if (sasiedztwa[kol].empty())
+                    sasiedztwa[kol].push_back(-1);
             }
-            if (sasiedztwa[i].empty())
-                sasiedztwa[i].push_back(-1);
-        }
-        else if (wiersz[i] == 'E')
-        {
-            if ((wiersz[i + 1] == 'B' || wiersz[i + 1] == 'C' || wiersz[i + 1] == 'F') && i % m + 1 != m)
+            else if (buffer1[i] == 'D')
             {
-                sasiedztwa[i].push_back(i + 1);
-                sasiedztwa[i + 1].push_back(i);
+                if ((buffer1[i + 1] == 'C' || buffer1[i + 1] == 'B' || buffer1[i + 1] == 'F') && (i !=m-1))
+                {
+                    sasiedztwa[kol].push_back(kol + 1);
+                    sasiedztwa[kol + 1].push_back(kol);
+                }
+                if (sasiedztwa[kol].empty())
+                    sasiedztwa[kol].push_back(-1);
             }
-            if ((wiersz[i + m] == 'C' || wiersz[i + m] == 'D' || wiersz[i + m] == 'F') && i / 4 != n + 1)
+            else if (buffer1[i] == 'E')
             {
-                sasiedztwa[i].push_back(i + m);
-                sasiedztwa[i + m].push_back(i);
+                if ((buffer1[i + 1] == 'B' || buffer1[i + 1] == 'C' || buffer1[i + 1] == 'F') && (i !=m-1))
+                {
+                    sasiedztwa[kol].push_back(kol + 1);
+                    sasiedztwa[kol + 1].push_back(kol);
+                }
+                if ((buffer2[i] == 'C' || buffer2[i] == 'D' || buffer2[i] == 'F') && (kol / m != n-1))
+                {
+                    sasiedztwa[kol].push_back(kol + m);
+                    sasiedztwa[kol + m].push_back(kol);
+                }
+                if (sasiedztwa[kol].empty())
+                    sasiedztwa[kol].push_back(-1);
             }
-            if (sasiedztwa[i].empty())
-                sasiedztwa[i].push_back(-1);
-        }
-        else if (wiersz[i] == 'F')
-        {
-            if ((wiersz[i + 1] == 'B' || wiersz[i + 1] == 'C' || wiersz[i + 1] == 'F') && i % m + 1 != m)
+            else if (buffer1[i] == 'F')
             {
-                //printf("test1");
-                sasiedztwa[i].push_back(i + 1);
-                sasiedztwa[i + 1].push_back(i);
-            }
-            if ((wiersz[i + m] == 'C' || wiersz[i + m] == 'D' || wiersz[i + m] == 'F') && i / 4 != n + 1)
-            {
-                //printf("test1");
+                if ((buffer1[i + 1] == 'B' || buffer1[i + 1] == 'C' || buffer1[i + 1] == 'F') && (i !=m-1))
+                {
+                    //printf("test1");
+                    sasiedztwa[kol].push_back(kol + 1);
+                    sasiedztwa[kol + 1].push_back(kol);
+                }
+                if ((buffer2[i] == 'C' || buffer2[i] == 'D' || buffer2[i] == 'F') && (kol / m != n-1))
+                {
 
-                sasiedztwa[i].push_back(i + m);
-                sasiedztwa[i + m].push_back(i);
+                    sasiedztwa[kol].push_back(kol + m);
+                    sasiedztwa[kol + m].push_back(kol);
+                }
+                if (sasiedztwa[kol].empty())
+                {
+                    //printf("test1");
+                    sasiedztwa[kol].push_back(-1);
+                }
             }
-            if (sasiedztwa[i].empty())
-                sasiedztwa[i].push_back(-1);
+            else if (buffer1[i] == 'C')
+            {
+                if (sasiedztwa[kol].empty())
+                    sasiedztwa[kol].push_back(-1);
+            }
         }
-        else if (wiersz[i] == 'C')
+
+        for (int x = 0; x < m; x++)
         {
-            if (sasiedztwa[i].empty())
-                sasiedztwa[i].push_back(-1);
+            buffer1[x] = buffer2[x];
         }
+        //*buffer1 = *buffer2;
+        scanf("%s", buffer2);
+        licznik += m;
     }
+    
+    /*
 
+    for (int i = 0; i <= V; i++) // wypisujemy graf
+    {
+        cout << endl
+             << "Sasiedzi wierzcholka " << i << ": ";
+        for (vector<int>::iterator it = sasiedztwa[i].begin(); it != sasiedztwa[i].end(); ++it)
+            cout << *it << ", ";
+    }
+    */
+    
     for (int i = 0; i <= V; i++)
     {
         spojne[i] = 0;
     }
-    
-    stack<int> stos;
 
+    stack<int> stos;
+licznik = 0;
     for (int i = 0; i < V; i++)
     {
         if (spojne[i] == 0 && sasiedztwa[i].empty() == false)
         {
-            //printf("%d\n",i);
             licznik += 1;
-            stos.push(i);
-            spojne[i] = licznik;
-            while (stos.empty() == false)
+            if (sasiedztwa[i][0] != -1)
             {
-                int v = stos.top();
-                stos.pop();
-                for (unsigned int j = 0; j < sasiedztwa[v].size(); j++)
+                stos.push(i);
+                spojne[i] = licznik;
+                while (stos.empty() == false)
                 {
-                    if (spojne[sasiedztwa[v][j]] == 0)
+                    int v = stos.top();
+                    stos.pop();
+                    for (unsigned int j = 0; j < sasiedztwa[v].size(); j++)
                     {
-                        //printf("%d\n",sasiedztwa[v][j]);
-                        stos.push(sasiedztwa[v][j]);
-                        spojne[sasiedztwa[v][j]] = licznik;
+                        if (spojne[sasiedztwa[v][j]] == 0)
+                        {
+                            stos.push(sasiedztwa[v][j]);
+                            spojne[sasiedztwa[v][j]] = licznik;
+                        }
                     }
                 }
             }
         }
     }
     printf("%d \n", licznik);
-
     return 0;
+
 }

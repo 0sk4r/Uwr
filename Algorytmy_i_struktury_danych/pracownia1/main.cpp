@@ -1,7 +1,6 @@
 #include "stdio.h"
 #include <string>
 #include "vector"
-#include <iostream>
 #include "stack"
 
 using namespace std;
@@ -14,7 +13,8 @@ int main()
     }
     int V = n * m;
     string wiersz;
-    vector<int> *sasiedztwa = new vector<int>[ (n * m) ];
+    char buffer1[m+2],buffer2[m+2];
+    vector<int> sasiedztwa[V+2];
     int spojne[V];
     int licznik = 0;
 
@@ -32,7 +32,7 @@ int main()
         if(wiersz[i] == 'A'){}
         else if (wiersz[i] == 'B')
         {
-            if ((wiersz[i + m] == 'C' || wiersz[i + m] == 'D' || wiersz[i + m] == 'F') && i / m != n - 1)
+            if ((wiersz[i + m] == 'C' || wiersz[i + m] == 'D' || wiersz[i + m] == 'F') && (i / m != n - 1))
             {
                 sasiedztwa[i].push_back(i + m);
                 sasiedztwa[i + m].push_back(i);
@@ -57,7 +57,7 @@ int main()
                 sasiedztwa[i].push_back(i + 1);
                 sasiedztwa[i + 1].push_back(i);
             }
-            if ((wiersz[i + m] == 'C' || wiersz[i + m] == 'D' || wiersz[i + m] == 'F') && i / m != n - 1)
+            if ((wiersz[i + m] == 'C' || wiersz[i + m] == 'D' || wiersz[i + m] == 'F') && (i / m != n - 1))
             {
                 sasiedztwa[i].push_back(i + m);
                 sasiedztwa[i + m].push_back(i);
@@ -73,7 +73,7 @@ int main()
                 sasiedztwa[i].push_back(i + 1);
                 sasiedztwa[i + 1].push_back(i);
             }
-            if ((wiersz[i + m] == 'C' || wiersz[i + m] == 'D' || wiersz[i + m] == 'F') && i / m != n - 1)
+            if ((wiersz[i + m] == 'C' || wiersz[i + m] == 'D' || wiersz[i + m] == 'F') && (i / m != n - 1))
             {
 
                 sasiedztwa[i].push_back(i + m);
@@ -90,7 +90,9 @@ int main()
                 sasiedztwa[i].push_back(-1);
         }
     }
-
+    wiersz = "";
+    
+    
     for (int i = 0; i <= V; i++)
     {
         spojne[i] = 0;
@@ -123,6 +125,5 @@ int main()
         }
     }
     printf("%d \n", licznik);
-
     return 0;
 }
