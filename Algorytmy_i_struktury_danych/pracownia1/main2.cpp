@@ -1,7 +1,4 @@
 #include "stdio.h"
-#include <string>
-#include "vector"
-#include "iostream"
 #include "queue"
 using namespace std;
 
@@ -36,7 +33,6 @@ int main()
         {
             if (odwiedzony[x][y] == 0 && map[x][y] != 'A')
             {
-                //printf("%c x: %d y:%d \n",map[x][y],x,y);
                 licznik += 1;
                 kolejka.push(x * m + y);
                 odwiedzony[x][y] = 1;
@@ -46,7 +42,6 @@ int main()
                     kolejka.pop();
                     int i = v / m;
                     int j = v % m;
-                    //printf("v: %d\n",v);
 
                     if (map[i][j] == 'B')
                     {
