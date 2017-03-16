@@ -11,6 +11,16 @@
 % G³ówny predykat rozwi¹zuj¹cy zadanie.
 % UWAGA: to nie jest jeszcze rozwi¹zanie; nale¿y zmieniæ jego
 % definicjê.
+lsort([], []).
+lsort([H|T],[H|R]) :-
+        length(H, Lh),
+        forall(member(M, T),
+               (length(M, Lm),
+                Lh =< Lm)),
+        lsort(T, R), !.
+lsort([F,S|T], R) :-
+        append(T,[F],X),
+        lsort([S|X], R).
 
 
 
@@ -43,6 +53,7 @@ get_clauses_list([X], [L]) :-
 get_clauses_list([H|T], [H1|T1]) :-
 		cl2set(H, H1), get_clauses_list(T, T1).
 
+predykat(X,Y) :- get_clauses_list(X,Z),	lsort(Z,Y).
 
 %solve(Clauses, Solution) :-
 
