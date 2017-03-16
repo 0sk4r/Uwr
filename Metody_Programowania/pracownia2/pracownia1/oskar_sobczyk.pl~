@@ -53,7 +53,7 @@ get_clauses_list([X], [L]) :-
 get_clauses_list([H|T], [H1|T1]) :-
 		cl2set(H, H1), get_clauses_list(T, T1).
 
-predykat(X,Y) :- get_clauses_list(X,Z),	sort(Z,Y).
+predykat(X,Y) :- get_clauses_list(X,Z),	lsort(Z,Y).
 
 %solve(Clauses, Solution) :-
 

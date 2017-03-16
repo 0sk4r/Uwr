@@ -55,6 +55,11 @@ get_clauses_list([H|T], [H1|T1]) :-
 
 predykat(X,Y) :- get_clauses_list(X,Z),	lsort(Z,Y).
 
+flatten1([] , []) :- !.
+flatten1([L|Ls], FlatL) :-
+	       !,
+		flatten1(
+
 %solve(Clauses, Solution) :-
 
 
