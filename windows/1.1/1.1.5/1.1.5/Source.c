@@ -4,13 +4,14 @@
 #include <stdio.h>
 #include <time.h>
 
-
+#define ID_TIMER 1
+#define TICK 100
 
 
 /* Deklaracja wyprzedzaj¹ca: funkcja obs³ugi okna */
 LRESULT CALLBACK WindowProcedure(HWND, UINT, WPARAM, LPARAM);
 /* Nazwa klasy okna */
-char szClassName[] = "window";
+char szClassName[] = "zadania 1.1.5 ";
 
 HWND hProgressbar, hStatusbar, hListbox, hbutton;
 
@@ -84,7 +85,7 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message,
 
   switch (message)
   {
-  case WM_LBUTTONDOWN:
+  case WM_TIMER:
     counter += 1;
     swprintf_s(buf, 80, TEXT("Total clicks: %d"), counter);
     SendMessage(hProgressbar, PBM_SETPOS, counter,(LPARAM) MAKELONG(0,50));
@@ -93,6 +94,7 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message,
     SendMessage(hStatusbar, SB_SETTEXT, 0, (LPARAM)buf);
     break;
   case WM_DESTROY:
+	KillTimer(hwnd, ID_TIMER);
     PostQuitMessage(0);
     break;
   case WM_SIZE:
@@ -103,6 +105,7 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message,
     hStatusbar = CreateWindowEx(0, STATUSCLASSNAME, TEXT("Total clicks: 0"), WS_CHILD | WS_VISIBLE, 0, 0, 0, 0, hwnd, 0, *hMainInstance, 0);
     hListbox = CreateWindowEx(0, WC_LISTBOX, NULL, WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_AUTOHSCROLL, 5, 50, 500, 200, hwnd, 0, *hMainInstance, 0);
 	hbutton = CreateWindowEx(0, "BUTTON", "Click!", WS_CHILD | WS_VISIBLE,600, 100, 150, 30, hwnd, NULL, *hMainInstance, NULL);
+	SetTimer(hwnd, ID_TIMER, TICK, NULL);
     break;
   case WM_PAINT:
     hdc = BeginPaint(hwnd, &ps);

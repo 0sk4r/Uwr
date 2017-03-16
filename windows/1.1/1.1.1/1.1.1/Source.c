@@ -7,8 +7,6 @@ LRESULT CALLBACK WindowProcedure(HWND, UINT, WPARAM, LPARAM);
 /* Nazwa klasy okna */
 char szClassName[] = "Zadanie 1.1.1";
 
-static const int STEP = 4;
-
 inline int function1(int x)
 {
 	return abs(x);
@@ -16,10 +14,10 @@ inline int function1(int x)
 
 inline int function2(int x)
 {
-	return x * x / 10;
+	return x * x/20;
 }
 
-int xs, ys;
+int xmax, ymax;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
@@ -92,42 +90,42 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message,
 		PostQuitMessage(0);
 		break;
 	case WM_SIZE:
-		xs = LOWORD(lParam);
-		ys = HIWORD(lParam);
+		xmax = LOWORD(lParam);
+		ymax = HIWORD(lParam);
 
 		GetClientRect(hwnd, &rect);
 		InvalidateRect(hwnd, &rect, 1);
 
 		break;
 	case WM_PAINT:
-		xcenter = xs / 2;
-		ycenter = ys / 2;
+		xcenter = xmax / 2;
+		ycenter = ymax / 2;
 
-		pen_red = CreatePen(PS_DOT, 2, RGB(255, 0, 0));
-		pen_green = CreatePen(PS_DASHDOTDOT, 2, RGB(0, 255, 0));
+		pen_red = CreatePen(PS_DOT, 1, RGB(255, 0, 0));
+		pen_green = CreatePen(PS_DASH, 1, RGB(0, 255, 0));
 		pen_black = CreatePen(PS_SOLID, 2, RGB(0, 0, 0));
 
 		hdc = BeginPaint(hwnd, &ps);
 		
 		
-		//osie
+		//osie wspolrzednych
 		SelectObject(hdc, pen_black);
 		MoveToEx(hdc, xcenter, 0, 0);
-		LineTo(hdc, xcenter, ys);
+		LineTo(hdc, xcenter, ymax);
 		MoveToEx(hdc, 0, ycenter, 0);
-		LineTo(hdc, xs, ycenter);
+		LineTo(hdc, xmax, ycenter);
 
 		//f1
 		SelectObject(hdc, pen_red);
 		MoveToEx(hdc, xcenter, ycenter - function1(0), 0);
-		for (int x = xcenter - STEP; x > 0; x -= STEP) // x <= 0
+		for (int x = xcenter; x > 0; x -= 10) 
 		{
 			int y = ycenter - function1(x - xcenter);
 			LineTo(hdc, x, y);
 			MoveToEx(hdc, x, y, 0);
 		}
 		MoveToEx(hdc, xcenter, ycenter - function1(0), 0);
-		for (int x = xcenter + STEP; x < xs; x += STEP) // x >= 0
+		for (int x = xcenter; x < xmax; x += 10)
 		{
 			int y = ycenter - function1(x - xcenter);
 			LineTo(hdc, x, y);
@@ -137,14 +135,14 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message,
 		//f2
 		SelectObject(hdc, pen_green);
 		MoveToEx(hdc, xcenter, ycenter - function2(0), 0);
-		for (int x = xcenter - STEP; x > 0; x -= STEP) // x <= 0
+		for (int x = xcenter; x > 0; x -= 10)
 		{
 			int y = ycenter - function2(x - xcenter);
 			LineTo(hdc, x, y);
 			MoveToEx(hdc, x, y, 0);
 		}
 		MoveToEx(hdc, xcenter, ycenter - function2(0), 0);
-		for (int x = xcenter + STEP; x < xs; x += STEP) // x >= 0
+		for (int x = xcenter; x < xmax; x += 10)
 		{
 			int y = ycenter - function2(x - xcenter);
 			LineTo(hdc, x, y);

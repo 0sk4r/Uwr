@@ -16,7 +16,7 @@ LRESULT CALLBACK WindowProcedure(HWND, UINT, WPARAM, LPARAM);
 /* Nazwa klasy okna */
 char szClassName[] = "WindowClass";
 
-HWND frmUczelnia, btnAkceptuj, btnAnuluj, frmStudia, txtNazwa, txtAdres, cmbCykl,
+HWND formUczelnia, btnAkceptuj, btnAnuluj, formStudia, txtNazwa, txtAdres, cmbCykl,
      chkDzienne, chkUzupelniajace;
 
 HINSTANCE * hMainInstance;
@@ -95,10 +95,10 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message,
     PostQuitMessage(0);
     break;
   case WM_CREATE:
-    frmUczelnia = CreateWindowEx(0, WC_BUTTON, TEXT("Uczelnia"), WS_CHILD | BS_GROUPBOX | WS_VISIBLE, 5, 5, 475, 100, hwnd, 0, *hMainInstance, 0);
-    frmStudia = CreateWindowEx(0, WC_BUTTON, TEXT("Rodzaj studiów"), WS_CHILD | BS_GROUPBOX | WS_VISIBLE, 5, 105, 475, 100, hwnd, 0, *hMainInstance, 0);
-    txtNazwa = CreateWindowEx(WS_EX_CLIENTEDGE, WC_EDIT, "", WS_CHILD | WS_VISIBLE, 70, 25, 390, 20, frmUczelnia, 0, *hMainInstance, 0);
-    txtAdres = CreateWindowEx(WS_EX_CLIENTEDGE, WC_EDIT, "", WS_CHILD | WS_VISIBLE, 70, 55, 390, 20, frmUczelnia, 0, *hMainInstance, 0);
+    formUczelnia = CreateWindowEx(0, WC_BUTTON, TEXT("Uczelnia"), WS_CHILD | BS_GROUPBOX | WS_VISIBLE, 5, 5, 475, 100, hwnd, 0, *hMainInstance, 0);
+    formStudia = CreateWindowEx(0, WC_BUTTON, TEXT("Rodzaj studiów"), WS_CHILD | BS_GROUPBOX | WS_VISIBLE, 5, 105, 475, 100, hwnd, 0, *hMainInstance, 0);
+    txtNazwa = CreateWindowEx(WS_EX_CLIENTEDGE, WC_EDIT, "", WS_CHILD | WS_VISIBLE, 70, 25, 390, 20, formUczelnia, 0, *hMainInstance, 0);
+    txtAdres = CreateWindowEx(WS_EX_CLIENTEDGE, WC_EDIT, "", WS_CHILD | WS_VISIBLE, 70, 55, 390, 20, formUczelnia, 0, *hMainInstance, 0);
     cmbCykl = CreateWindowEx(0, TEXT("COMBOBOX"), "", WS_CHILD | CBS_DROPDOWN | WS_VISIBLE, 100, 135, 370, 100, hwnd, ID_CYKL, *hMainInstance, 0);
     SendMessage(cmbCykl, CB_ADDSTRING, 0, TEXT("3-letnie"));
     SendMessage(cmbCykl, CB_ADDSTRING, 0, TEXT("3,5-letnie"));

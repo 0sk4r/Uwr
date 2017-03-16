@@ -103,7 +103,7 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message,
 
   RECT rect;
   HDC hdc;
-
+  HBRUSH NewBrush;
   PAINTSTRUCT ps;
 
   switch (message)
@@ -139,16 +139,15 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message,
     ys = HIWORD(lParam);
 
     ball->x = xs / 2;
-    ball->y = 0;
+    ball->y = ys;
 
     GetClientRect(hwnd, &rect);
     InvalidateRect(hwnd, &rect, 1);
 
     break;
   case WM_PAINT:
+	hdc = BeginPaint(hwnd, &ps);
 
-    hdc = BeginPaint(hwnd, &ps);
-    // draw ball
     Ellipse(hdc, left(ball), top(ball), right(ball), bottom(ball));
 
     EndPaint(hwnd, &ps);

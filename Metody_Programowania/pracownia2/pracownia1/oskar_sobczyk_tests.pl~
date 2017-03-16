@@ -1,0 +1,13 @@
+% Definiujemy modu³ zawieraj¹cy testy.
+% Nale¿y zmieniæ nazwê modu³u na {imie}_{nazwisko}_tests gdzie za
+% {imie} i {nazwisko} nale¿y podstawiæ odpowiednio swoje imiê
+% i nazwisko bez znaków diakrytycznych
+:- module(imie_nazwisko_tests, [tests/5]).
+
+% definiujemy operatory ~/1 oraz v/2
+:- op(200, fx, ~).
+:- op(500, xfy, v).
+
+% Zbiór faktów definiuj¹cych testy
+% Nale¿y zdefiniowaæ swoje testy
+tests(excluded_middle, validity, [p v ~p], 500, solution([(p,t)])).

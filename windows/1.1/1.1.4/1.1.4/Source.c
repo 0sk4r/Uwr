@@ -33,11 +33,11 @@ INT_PTR CALLBACK DialogBoxWindowProcedure(HWND hwnd, UINT message,
       bufNazwa = (LPSTR)LocalAlloc(GPTR, 100);
       bufAdres = (LPSTR)LocalAlloc(GPTR, 100);
       bufCykl = (LPSTR)LocalAlloc(GPTR, 100);
-
+	  
       GetWindowText(GetDlgItem(hwnd, IDC_EDIT1), bufNazwa, 100);
       GetWindowText(GetDlgItem(hwnd, IDC_EDIT2), bufAdres, 100);
       GetWindowText(GetDlgItem(hwnd, IDC_COMBO1), bufCykl, 100);
-
+	 
       StringCchCopy(buf, 500, bufNazwa);
       StringCchCat(buf, 400, "\n");
       StringCchCat(buf, 500, bufAdres);
