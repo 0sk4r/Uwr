@@ -1,0 +1,14 @@
+﻿  Source.c
+c:\uwr\windows\1.2\1.2.1\1.2.1\source.c(22): warning C4047: 'function': 'LPSTR' differs in levels of indirection from 'LPCSTR [260]'
+c:\uwr\windows\1.2\1.2.1\1.2.1\source.c(22): warning C4024: 'SHGetSpecialFolderPathA': different types for formal and actual parameter 2
+c:\uwr\windows\1.2\1.2.1\1.2.1\source.c(24): warning C4047: 'function': 'STRSAFE_LPSTR' differs in levels of indirection from 'LPCSTR [260]'
+c:\uwr\windows\1.2\1.2.1\1.2.1\source.c(24): warning C4024: 'StringCchCatA': different types for formal and actual parameter 1
+c:\uwr\windows\1.2\1.2.1\1.2.1\source.c(26): warning C4047: 'function': 'LPCSTR' differs in levels of indirection from 'LPCSTR [260]'
+c:\uwr\windows\1.2\1.2.1\1.2.1\source.c(26): warning C4024: 'CreateFileA': different types for formal and actual parameter 1
+c:\uwr\windows\1.2\1.2.1\1.2.1\source.c(39): warning C4047: 'function': 'LPCSTR' differs in levels of indirection from 'LPCSTR [260]'
+c:\uwr\windows\1.2\1.2.1\1.2.1\source.c(39): warning C4024: 'ShellExecuteA': different types for formal and actual parameter 3
+c:\uwr\windows\1.2\1.2.1\1.2.1\source.c(44): warning C4133: 'function': incompatible types - from 'char [28]' to 'const wchar_t *const '
+c:\uwr\windows\1.2\1.2.1\1.2.1\source.c(46): warning C4133: 'function': incompatible types - from 'WCHAR [64]' to 'LPCSTR'
+c:\uwr\windows\1.2\1.2.1\1.2.1\source.c(39): warning C4047: 'initializing': 'int' differs in levels of indirection from 'HINSTANCE'
+  1.2.1.vcxproj -> C:\Uwr\windows\1.2\1.2.1\Debug\1.2.1.exe
+  1.2.1.vcxproj -> C:\Uwr\windows\1.2\1.2.1\Debug\1.2.1.pdb (Full PDB)

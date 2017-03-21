@@ -1,0 +1,5 @@
+﻿  Source.c
+c:\uwr\windows\1.2\1.2.2\1.2.2\source.c(19): warning C4133: '=': incompatible types - from 'char *' to 'LPCWSTR'
+c:\uwr\windows\1.2\1.2.2\1.2.2\source.c(54): warning C4133: 'function': incompatible types - from 'char [5]' to 'LPCWSTR'
+  1.2.2.vcxproj -> C:\Uwr\windows\1.2\1.2.2\Debug\1.2.2.exe
+  1.2.2.vcxproj -> C:\Uwr\windows\1.2\1.2.2\Debug\1.2.2.pdb (Full PDB)

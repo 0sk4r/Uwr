@@ -1,14 +1,3 @@
-:- module(sat_dimac_internal,
-    [ sat_internal/2
-    , dpll/2
-    , dpll/3,
-    , vars_dimac/2
-    , to_positive/2
-    , assign_free_vars/2
-    , simpl/3
-    , simpl_line/3
-    ]).
-
 :- use_module(library(lists)).
 :- use_module('./parser_dimac_internal').
 :- use_module(library(readutil)).
@@ -61,8 +50,8 @@ simpl_line((Var,_),Line0,Line0) :-
     \+ member(Var,Line0),
     \+ member(NegVar,Line0).
 
-empty_clause(dimac0) :-
-    element([],dimac0).
+empty_clause(Dimac0) :-
+    member([],Dimac0).
 
 assign_unit_clauses(VarValues,Dimac0,Dimac1) :-
     get_unit_clauses(Dimac0,Units),
@@ -111,10 +100,6 @@ dpll(VarValues,Dimac0,Dimac1) :-
     dpll(VarValues1,IDimac2,Dimac1).
 dpll([],Dimac,Dimac).
 
-
-sat_internal(DimacCodes,Model) :-
-    parse_dimac(DimacCodes,Dimac),
-    dpll(Dimac,Model).
 
 
 boolean('T').
