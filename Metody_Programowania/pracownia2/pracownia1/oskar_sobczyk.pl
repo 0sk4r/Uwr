@@ -1,16 +1,26 @@
-% Definiujemy modu³ zawieraj¹cy rozwi¹zanie.
-% Nale¿y zmieniæ nazwê modu³u na {imie}_{nazwisko} gdzie za
-% {imie} i {nazwisko} nale¿y podstawiæ odpowiednio swoje imiê
-% i nazwisko bez znaków diakrytycznych
+% Definiujemy moduï¿½ zawierajï¿½cy rozwiï¿½zanie.
+% Naleï¿½y zmieniï¿½ nazwï¿½ moduï¿½u na {imie}_{nazwisko} gdzie za
+% {imie} i {nazwisko} naleï¿½y podstawiï¿½ odpowiednio swoje imiï¿½
+% i nazwisko bez znakï¿½w diakrytycznych
 %:- module(imie_nazwisko, [solve/2]).
 
 % definiujemy operatory ~/1 oraz v/2
 :- op(200, fx, ~).
 :- op(500, xfy, v).
 
-% G³ówny predykat rozwi¹zuj¹cy zadanie.
-% UWAGA: to nie jest jeszcze rozwi¹zanie; nale¿y zmieniæ jego
-% definicjê.
+% Gï¿½ï¿½wny predykat rozwiï¿½zujï¿½cy zadanie.
+% UWAGA: to nie jest jeszcze rozwiï¿½zanie; naleï¿½y zmieniï¿½ jego
+% definicjï¿½.
+lsort([], []).
+lsort([H|T],[H|R]) :-
+        length(H, Lh),
+        forall(member(M, T),
+               (length(M, Lm),
+                Lh =< Lm)),
+        lsort(T, R), !.
+lsort([F,S|T], R) :-
+        append(T,[F],X),
+        lsort([S|X], R).
 
 
 
