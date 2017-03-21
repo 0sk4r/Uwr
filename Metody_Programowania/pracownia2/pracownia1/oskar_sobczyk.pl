@@ -47,74 +47,73 @@ argumentlist(Clauses, Odp) :-
 % predykat upraszczajacy klauzule. Jesli klauzula jest juz spelniona to
 % ja pomija. Jesli natomiast klauzula nie jest spelniona wywola na niej
 % predykat simplifyClause
-simplify((Var,'t'),[Line0|Lines0], Lines1) :-
-    member(Var,Line0),
-    simplify((Var,'t'),Lines0,Lines1),!.
+simplify([Clause|Clauses],(Var,'t'), ClausesOut) :-
+    member(Var,Clause),
+    simplify(Clauses, (Var,'t'),ClausesOut),!.
 
-simplify((Var,'f'),[Line0|Lines0], Lines1) :-
-    member(~Var,Line0),
-    simplify((Var,'f'),Lines0,Lines1),!.
+simplify([Clause|Clauses], (Var,'f'), ClausesOut) :-
+    member(~Var,Clause),
+    simplify(Clauses, (Var,'f'), ClausesOut),!.
 
-simplify((Var,Value),[Line0|Lines0], [Line1|Lines1]) :-
-    simplifyClause((Var,Value),Line0,Line1),
-    simplify((Var,Value),Lines0,Lines1).
+simplify([Clause|Clauses],(Var,Bool), [ClauseSimp|ClausesOut]) :-
+    simplifyClause(Clause,(Var,Bool),ClauseSimp),
+    simplify(Clauses, (Var,Bool),ClausesOut).
 
-simplify((_,_),[],[]).
+simplify([], (_,_),[]).
 
 %predykat upraszcza klauzule - usuwa z niej juz zwartosciowane zmienne
-simplifyClause((Var,'f'),Line0,Line1) :-
-    member(Var,Line0),
-    subtract(Line0,[Var],Line1),!.
+simplifyClause(Clause, (Var,'f'), ClauseOut) :-
+    member(Var,Clause),
+    subtract(Clause,[Var],ClauseOut),!.
 
-simplifyClause((Var,'t'),Line0,Line1) :-
-    member(~Var,Line0),
-    subtract(Line0,[~Var],Line1),!.
+simplifyClause(Clause, (Var,'t'), ClauseOut) :-
+    member(~Var,Clause),
+    subtract(Clause,[~Var],ClauseOut),!.
 
-simplifyClause((Var,_),Line0,Line0).
+simplifyClause(Clause, (Var,_), Clause).
 %    \+ member(Var,Line0),
 %    \+ member(~Var,Line0).
 
 % predykat zwraca liste zmiennych ktore wystepuja jako pojedyncze
 % klauzule
-getSingleVars([[Unit]|Lines],[Unit|Units]) :-
-    getSingleVars(Lines,Units).
+getSingleVars([[Var]|Clauses],[Var|Vars]) :-
+    !,getSingleVars(Clauses,Vars).
 
-getSingleVars([Line|Lines],Units) :-
-    dif(Line,[_]),
-    getSingleVars(Lines,Units).
+getSingleVars([Clause|Clauses],Vars) :-
+	getSingleVars(Clauses,Vars).
 
 getSingleVars([],[]).
 
 % predykat przyjmuje liste pojedynczych zmiennych, wartosciuje je a
 % nastepnie upraszcza klauzule ktore zawiaraly te zmienne
-removeSingleVar([~Var | Vars], VarValues, Dimac0, Dimac1) :-
+removeSingleVar(Clauses, [~Var | Vars], VarsBool, ClausesOut) :-
 	!,VarValue = (Var, 'f'),
-	member(VarValue, VarValues),
-	simplify(VarValue, Dimac0, IDimac1),
-	removeSingleVar(Vars, VarValues, IDimac1, Dimac1).
+	member(VarValue, VarsBool),
+	simplify(Clauses,VarValue,ClausesSimp),
+	removeSingleVar(ClausesSimp,Vars, VarsBool, ClausesOut).
 
-removeSingleVar([Var | Vars], VarValues, Dimac0, Dimac1) :-
+removeSingleVar(Clauses, [Var | Vars], VarsBool, ClausesOut) :-
 	!,VarValue = (Var, 't'),
-	member(VarValue, VarValues),
-	simplify(VarValue, Dimac0, IDimac1),
-	removeSingleVar(Vars, VarValues, IDimac1, Dimac1).
+	member(VarValue, VarsBool),
+	simplify(Clauses, VarValue, ClausesSimp),
+	removeSingleVar(ClausesSimp, Vars, VarsBool, ClausesOut).
 
-removeSingleVar([],_,Dimac0,Dimac0).
+removeSingleVar(Clauses, [],_,Clauses).
 
 
 % Predykat zajmujacy sie wartosciowaniem zmiennych wystepujacych jako
 % pojedyncze klauzule
-evaluateSingleVars(VarValues,Dimac0,Dimac1) :-
-    getSingleVars(Dimac0,Units),
-    (dif(Units,[]) ->
-        !,
-        removeSingleVar(Units,VarValues,Dimac0,IDimac1),
-        evaluateSingleVars(VarValues,IDimac1,Dimac1)
-    ; !, Dimac0 = Dimac1
-    ).
+evaluateSingleVars(VarsBool,Clauses,ClausesOut) :-
+    getSingleVars(Clauses,Units),
+    \+ [] = Units,
+    !,
+    removeSingleVar(Clauses,Units,VarsBool,Clauses2),
+    evaluateSingleVars(VarsBool,Clauses2,ClausesOut).
 
-evaluateSingleVars(_,Dimac0,Dimac0) :-
-    getSingleVars(Dimac0,[]).
+evaluateSingleVars(VarsValues, Clauses, Clauses) :-!.
+
+evaluateSingleVars(_,Clauses,Clauses) :-
+    getSingleVars(Clauses,[]),!.
 
 
 solve([],_) :- !, fail.
@@ -130,7 +129,7 @@ solve(Clauses, Arguments, ClausesOut) :-
 	Arguments = [(Var,Val) | VarsBool],
 	evaluateSingleVars(Arguments, Clauses, Clauses1),
 	bool(Val),
-	simplify((Var, Val),Clauses1, Clauses2),
+	simplify(Clauses1, (Var, Val), Clauses2),
 	solve(Clauses2, VarsBool, ClausesOut).
 
 
