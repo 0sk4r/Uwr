@@ -1,4 +1,4 @@
-#include "sendUtils.h"
+#include "send.h"
 
 //Obliczanie sumy kontrolnej pakietu
 u_int16_t checkSum(const void *buff, int length)

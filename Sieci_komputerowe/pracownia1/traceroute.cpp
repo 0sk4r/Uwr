@@ -1,6 +1,6 @@
-#include "ioUtils.h"
-#include "sendUtils.h"
-#include "receiveUtils.h"
+#include "print.h"
+#include "send.h"
+#include "receive.h"
 
 //maksymalna wartosc ttl
 #define MAX_TTL 30

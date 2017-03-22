@@ -1,4 +1,4 @@
-#include "receiveUtils.h"
+#include "receive.h"
 #include <sys/time.h>
 
 //odbiera pakiet i zwraca go w postaci struktury
@@ -86,7 +86,7 @@ int endTrace(string sender[3], string ip)
 int reciveAnswer(int sockfd, int identifier, int ttl, string ip)
 {
 
-    clock_t start = clock();
+    //clock_t start = clock();
 
     timeval time;
     gettimeofday(&time, NULL);
