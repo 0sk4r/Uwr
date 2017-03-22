@@ -3,8 +3,7 @@
 #define send_Included 1
 
 #include "print.h"
-#include <cassert>
-#include "stdint.h"
+
 
 u_int16_t checkSum (const void *buff, int length);
 
