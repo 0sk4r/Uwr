@@ -44,9 +44,9 @@ argumentlist(Clauses, Odp) :-
 		sort(Xs, Args),
                 varBoolList(Args, Odp).
 
-% predykat upraszczajacy klauzule. Jesli klauzula jest juz spelniona to
-% ja pomija. Jesli natomiast klauzula nie jest spelniona wywola na niej
-% predykat simplifyClause
+% predykat upraszczajacy liste klauzul wzgledem zmiennej Var. Jesli
+% klauzula jest juz spelniona to ja pomija. Jesli natomiast klauzula nie
+% jest spelniona wywola na niej predykat simplifyClause
 simplify([Clause|Clauses],(Var,'t'), ClausesOut) :-
     member(Var,Clause),
     simplify(Clauses, (Var,'t'),ClausesOut),!.
@@ -61,7 +61,8 @@ simplify([Clause|Clauses],(Var,Bool), [ClauseSimp|ClausesOut]) :-
 
 simplify([], (_,_),[]).
 
-%predykat upraszcza klauzule - usuwa z niej juz zwartosciowane zmienne
+% predykat upraszcza klauzule wzgledem zmiennej Var - usuwa z niej
+% zmienna Var
 simplifyClause(Clause, (Var,'f'), ClauseOut) :-
     member(Var,Clause),
     subtract(Clause,[Var],ClauseOut),!.
@@ -75,7 +76,7 @@ simplifyClause(Clause, (Var,_), Clause).
 %    \+ member(~Var,Line0).
 
 % predykat zwraca liste zmiennych ktore wystepuja jako pojedyncze
-% klauzule
+% klauzule np. [p],[~q]
 getSingleVars([[Var]|Clauses],[Var|Vars]) :-
     !,getSingleVars(Clauses,Vars).
 
@@ -103,14 +104,14 @@ removeSingleVar(Clauses, [],_,Clauses).
 
 % Predykat zajmujacy sie wartosciowaniem zmiennych wystepujacych jako
 % pojedyncze klauzule
-evaluateSingleVars(VarsBool,Clauses,ClausesOut) :-
+evaluateSingleVars(Clauses,VarsBool,ClausesOut) :-
     getSingleVars(Clauses,Units),
     \+ [] = Units,
     !,
     removeSingleVar(Clauses,Units,VarsBool,Clauses2),
-    evaluateSingleVars(VarsBool,Clauses2,ClausesOut).
+    evaluateSingleVars(Clauses2,VarsBool,ClausesOut).
 
-evaluateSingleVars(VarsValues, Clauses, Clauses) :-!.
+evaluateSingleVars(Clauses, VarsValues, Clauses) :-!.
 
 evaluateSingleVars(_,Clauses,Clauses) :-
     getSingleVars(Clauses,[]),!.
