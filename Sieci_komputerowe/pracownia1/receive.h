@@ -15,7 +15,7 @@ struct packet getPacket(int sockfd, int PID);
 
 int packetError (int val);
 
-int validType(int a);
+//int validType(int a);
 
 int endTrace(string sender[3], string ip);
 

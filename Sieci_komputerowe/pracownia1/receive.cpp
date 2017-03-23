@@ -1,5 +1,5 @@
 #include "receive.h"
-#include <sys/time.h>
+
 
 //odbiera pakiet i zwraca go w postaci struktury
 struct packet getPacket(int sockfd, int identifier)
@@ -75,12 +75,12 @@ int packetError(int val)
 }
 
 // Funkcja sprawdzajaca, czy otrzymany naglowek ICMP jest typu echo reply lub time exceeded
-int validType(int a) { return (a == ICMP_ECHOREPLY || a == ICMP_TIME_EXCEEDED); }
+//int validType(int a) { return (a == ICMP_ECHOREPLY || a == ICMP_TIME_EXCEEDED); }
 
 // Funkcja okreslajaca czy otrzymalismy odpowiedz od trace'owanego adresu
 int endTrace(string sender[3], string ip)
 {
-    return (!sender[0].compare(ip) || !sender[1].compare(ip) || !sender[2].compare(ip));
+    return (sender[0].compare(ip) || sender[1].compare(ip) || sender[2].compare(ip));
 }
 
 int reciveAnswer(int sockfd, int identifier, int ttl, string ip)
@@ -159,7 +159,7 @@ int reciveAnswer(int sockfd, int identifier, int ttl, string ip)
 
     //Sprawdzenie czy dotarlismy do celu
     if (endTrace(incoming_ip, ip))
-        return 1;
-    else
         return -1;
+    else
+        return 1;
 }
