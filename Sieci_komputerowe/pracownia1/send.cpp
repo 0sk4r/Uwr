@@ -1,3 +1,7 @@
+/*
+*   Oskar Sobczyk
+*/
+
 #include "send.h"
 
 //Obliczanie sumy kontrolnej pakietu

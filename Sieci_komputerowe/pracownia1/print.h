@@ -1,3 +1,7 @@
+/*
+*   Oskar Sobczyk
+*/
+
 #ifndef print_Included
 #define print_Included 1
 
@@ -17,6 +21,6 @@
 
 using namespace std;
 
-void printResult (int ttl, int time, string sender[3]);
+void print (int ttl, int time, string sender[3]);
 
 #endif

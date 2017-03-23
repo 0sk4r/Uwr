@@ -1,3 +1,6 @@
+/*
+*   Oskar Sobczyk
+*/
 
 #ifndef send_Included
 #define send_Included 1

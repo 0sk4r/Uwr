@@ -1,8 +1,15 @@
+/*
+*   Oskar Sobczyk
+*/
+
 #include "print.h"
 
-void printResult (int ttl, int time, string sender[3]) {
+void print (int ttl, int time, string sender[3]) {
+
     if (ttl < 10) printf(" ");
+
     printf(" %d. ", ttl);
+
     if (time == -2) printf("*\n");
     else {
 
