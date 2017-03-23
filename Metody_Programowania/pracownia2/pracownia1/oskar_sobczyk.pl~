@@ -128,7 +128,7 @@ solve(Clauses, Solution) :-
 solve(Clauses, Arguments, ClausesOut) :-
 	\+ member([],Clauses),
 	Arguments = [(Var,Val) | VarsBool],
-	evaluateSingleVars(Arguments, Clauses, Clauses1),
+	evaluateSingleVars(Clauses, Arguments, Clauses1),
 	bool(Val),
 	simplify(Clauses1, (Var, Val), Clauses2),
 	solve(Clauses2, VarsBool, ClausesOut).
