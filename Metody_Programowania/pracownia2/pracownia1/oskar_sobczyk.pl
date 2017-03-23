@@ -65,11 +65,11 @@ simplify([], (_,_),[]).
 % zmienna Var
 simplifyClause(Clause, (Var,'f'), ClauseOut) :-
     member(Var,Clause),
-    subtract(Clause,[Var],ClauseOut),!.
+    delete(Clause,Var,ClauseOut),!.
 
 simplifyClause(Clause, (Var,'t'), ClauseOut) :-
     member(~Var,Clause),
-    subtract(Clause,[~Var],ClauseOut),!.
+    delete(Clause,~Var,ClauseOut),!.
 
 simplifyClause(Clause, (Var,_), Clause).
 %    \+ member(Var,Line0),
