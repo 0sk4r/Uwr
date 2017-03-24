@@ -105,7 +105,7 @@ int reciveAnswer(int sockfd, int identifier, int ttl, string ip)
             struct packet pakiet = getPacket(sockfd, identifier);
 
             // obsluga bledu
-            if (pakiet.error < 0)
+            if (pakiet.error == -1)
             {
                 fprintf(stderr, "recvfrom error: %s\n", strerror(errno));
             }
