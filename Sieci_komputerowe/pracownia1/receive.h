@@ -11,7 +11,7 @@ struct packet {
         string IP;
 };
 
-struct packet getPacket(int sockfd, int PID);
+struct packet recivePacket(int sockfd, int PID);
 
 int packetError (int val);
 

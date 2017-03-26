@@ -2,7 +2,7 @@
 
 
 //odbiera pakiet i zwraca go w postaci struktury
-struct packet getPacket(int sockfd, int identifier)
+struct packet receivePacket(int sockfd, int identifier)
 {
     struct sockaddr_in sender;
     socklen_t sender_len = sizeof(sender);
@@ -112,7 +112,7 @@ int reciveAnswer(int sockfd, int identifier, int ttl, string ip)
         if (ready)
         {
             //odebranie pakietu
-            struct packet pakiet = getPacket(sockfd, identifier);
+            struct packet pakiet = receivePacket(sockfd, identifier);
 
             // obsluga bledu
             if (pakiet.error < 0)

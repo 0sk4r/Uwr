@@ -12,6 +12,9 @@
 % UWAGA: to nie jest jeszcze rozwiï¿½zanie; naleï¿½y zmieniï¿½ jego
 % definicjï¿½.
 
+%predykat definiujacy funkcje boolowska
+bool('t').
+bool('f').
 
 
 %predykat przeksztalcajacy klauzule na liste jej literalow
@@ -27,14 +30,14 @@ tolist([H | T],[H1 | T1]):-
 
 %predykat usuwaj¹cy negacje przed zmienna
 delnegation([~Z|Zs],[Z|Ns]) :-
-    delnegation(Zs,Ns), !.
+	delnegation(Zs,Ns), !.
 delnegation([Z|Zs],[Z|Ns]) :-
         delnegation(Zs,Ns).
 delnegation([],[]).
 
 %predykat tworzy liste skladajaca sie z krotek (Zmienna, _)
 varBoolList([Head0|Tail0],[(Head0,_)|Tail1]) :-
-    varBoolList(Tail0,Tail1).
+	varBoolList(Tail0,Tail1).
 varBoolList([],[]).
 
 %zwraca liste argumentow
@@ -48,37 +51,36 @@ argumentlist(Clauses, Odp) :-
 % klauzula jest juz spelniona to ja pomija. Jesli natomiast klauzula nie
 % jest spelniona wywola na niej predykat simplifyClause
 simplify([Clause|Clauses],(Var,'t'), ClausesOut) :-
-    member(Var,Clause),
-    simplify(Clauses, (Var,'t'),ClausesOut),!.
+	member(Var,Clause),
+	simplify(Clauses, (Var,'t'),ClausesOut),!.
 
 simplify([Clause|Clauses], (Var,'f'), ClausesOut) :-
-    member(~Var,Clause),
-    simplify(Clauses, (Var,'f'), ClausesOut),!.
+	member(~Var,Clause),
+	simplify(Clauses, (Var,'f'), ClausesOut),!.
 
 simplify([Clause|Clauses],(Var,Bool), [ClauseSimp|ClausesOut]) :-
-    simplifyClause(Clause,(Var,Bool),ClauseSimp),
-    simplify(Clauses, (Var,Bool),ClausesOut).
+	simplifyClause(Clause,(Var,Bool),ClauseSimp),
+	simplify(Clauses, (Var,Bool),ClausesOut).
 
 simplify([], (_,_),[]).
 
 % predykat upraszcza klauzule wzgledem zmiennej Var - usuwa z niej
 % zmienna Var
 simplifyClause(Clause, (Var,'f'), ClauseOut) :-
-    member(Var,Clause),
-    delete(Clause,Var,ClauseOut),!.
+	member(Var,Clause),
+	delete(Clause,Var,ClauseOut),!.
 
 simplifyClause(Clause, (Var,'t'), ClauseOut) :-
-    member(~Var,Clause),
-    delete(Clause,~Var,ClauseOut),!.
+	member(~Var,Clause),
+	delete(Clause,~Var,ClauseOut),!.
 
-simplifyClause(Clause, (Var,_), Clause).
-%    \+ member(Var,Line0),
-%    \+ member(~Var,Line0).
+simplifyClause(Clause, (_,_), Clause).
 
 % predykat zwraca liste zmiennych ktore wystepuja jako pojedyncze
 % klauzule np. [p],[~q]
 getSingleVars([[Var]|Clauses],[Var|Vars]) :-
-    !,getSingleVars(Clauses,Vars).
+	!,
+	getSingleVars(Clauses,Vars).
 
 getSingleVars([Clause|Clauses],Vars) :-
 	getSingleVars(Clauses,Vars).
@@ -88,13 +90,15 @@ getSingleVars([],[]).
 % predykat przyjmuje liste pojedynczych zmiennych, wartosciuje je a
 % nastepnie upraszcza klauzule ktore zawiaraly te zmienne
 removeSingleVar(Clauses, [~Var | Vars], VarsBool, ClausesOut) :-
-	!,VarValue = (Var, 'f'),
+	!,
+	VarValue = (Var, 'f'),
 	member(VarValue, VarsBool),
 	simplify(Clauses,VarValue,ClausesSimp),
 	removeSingleVar(ClausesSimp,Vars, VarsBool, ClausesOut).
 
 removeSingleVar(Clauses, [Var | Vars], VarsBool, ClausesOut) :-
-	!,VarValue = (Var, 't'),
+	!,
+	VarValue = (Var, 't'),
 	member(VarValue, VarsBool),
 	simplify(Clauses, VarValue, ClausesSimp),
 	removeSingleVar(ClausesSimp, Vars, VarsBool, ClausesOut).
@@ -105,37 +109,34 @@ removeSingleVar(Clauses, [],_,Clauses).
 % Predykat zajmujacy sie wartosciowaniem zmiennych wystepujacych jako
 % pojedyncze klauzule
 evaluateSingleVars(Clauses,VarsBool,ClausesOut) :-
-    getSingleVars(Clauses,Units),
-    \+ [] = Units,
-    !,
-    removeSingleVar(Clauses,Units,VarsBool,Clauses2),
-    evaluateSingleVars(Clauses2,VarsBool,ClausesOut).
+	getSingleVars(Clauses,Units),
+	\+ [] = Units,
+	!,
+	removeSingleVar(Clauses,Units,VarsBool,Clauses2),
+	evaluateSingleVars(Clauses2,VarsBool,ClausesOut).
 
-evaluateSingleVars(Clauses, VarsValues, Clauses) :-!.
+evaluateSingleVars(Clauses, _, Clauses) :-!.
 
 evaluateSingleVars(_,Clauses,Clauses) :-
-    getSingleVars(Clauses,[]),!.
+	getSingleVars(Clauses,[]),!.
 
 
 solve([],_) :- !, fail.
 
 solve(Clauses, Solution) :-
-         tolist(Clauses, Clist),
-         argumentlist(Clist,Arguments),
-	 solve(Clist, Arguments, []),
+         tolist(Clauses, Clist), %zamiana klauzul na liste
+         argumentlist(Clist,Arguments), %stworzenie listy argumentow
+	 findEvaluation(Clist, Arguments, []), %szukanie wartoscioan
 	 Solution = Arguments.
 
-solve(Clauses, Arguments, ClausesOut) :-
+%predykat szukajacy wartosciowan
+findEvaluation(Clauses, Arguments, ClausesOut) :-
 	\+ member([],Clauses),
-	Arguments = [(Var,Val) | VarsBool],
+	[(Var,Val) | VarsBool] = Arguments,
 	evaluateSingleVars(Clauses, Arguments, Clauses1),
 	bool(Val),
 	simplify(Clauses1, (Var, Val), Clauses2),
-	solve(Clauses2, VarsBool, ClausesOut).
+	findEvaluation(Clauses2, VarsBool, ClausesOut).
 
 
-solve(Clauses, [], Clauses).
-
-bool('t').
-bool('f').
-
+findEvaluation(Clauses, [], Clauses).
