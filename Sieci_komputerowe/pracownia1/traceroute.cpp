@@ -1,3 +1,7 @@
+/*
+*   Oskar Sobczyk
+*/
+
 #include "print.h"
 #include "send.h"
 #include "receive.h"
@@ -9,6 +13,20 @@ int main(int argc, char *argv[])
 {
     // Weryfikacja poprawnej ilosci argumentow na wejsciu
     if (argc != 2) printf("nieprawidlowa ilosc argumentow!\n");
+    
+    
+    //konwersja ip na strukture
+    struct sockaddr_in targetIP;
+    bzero(&targetIP, sizeof(targetIP));
+    targetIP.sin_family = AF_INET;
+    int ip = inet_pton(AF_INET, argv[1], &(targetIP.sin_addr));
+    
+    
+    //weryfikacja poprawnosci ip
+    if(!ip) {
+        printf("Niepoprawny adres IP!");
+        return EXIT_FAILURE;
+    }
 
     //Tworzy gniazdo surowe
     int sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
@@ -17,17 +35,8 @@ int main(int argc, char *argv[])
     if (sockfd < 0)
     {
         fprintf(stderr, "Wystapil blad podczas tworzenia gniazda: %s\n", strerror(errno));
+        return EXIT_FAILURE;
     }
-
-    //konwersja ip na strukture
-    struct sockaddr_in targetIP;
-    bzero(&targetIP, sizeof(targetIP));
-    targetIP.sin_family = AF_INET;
-    int ip = inet_pton(AF_INET, argv[1], &(targetIP.sin_addr));
-
-    //weryfikacja poprawnosci ip
-    if(!ip) printf("Niepoprawny adres IP!");
-
 
     int counter = 0; //numery kolejnych pakietow
     int identifier = getpid(); //identyfikator pakietow jakie wysyla proces
@@ -43,6 +52,7 @@ int main(int argc, char *argv[])
         if (setSocket < 0)
         {
             fprintf(stderr, "Wystapil blad podczas zmient TTL: %s\n", strerror(errno));
+            return EXIT_FAILURE;
         }
 
         //Wyslanie 3 pakietow icmp_echo

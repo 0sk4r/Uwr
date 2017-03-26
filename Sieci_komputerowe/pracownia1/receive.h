@@ -1,3 +1,7 @@
+/*
+*   Oskar Sobczyk
+*/
+
 #ifndef recive_Included
 #define receive_Included 1
 
@@ -13,11 +17,8 @@ struct packet {
 
 struct packet recivePacket(int sockfd, int PID);
 
-int packetError (int val);
-
-//int validType(int a);
-
 int endTrace(string sender[3], string ip);
 
 int reciveAnswer(int sockfd, int identifier,int ttl, string ip);
+
 #endif

@@ -1,5 +1,8 @@
-#include "receive.h"
+/*
+*   Oskar Sobczyk
+*/
 
+#include "receive.h"
 
 //odbiera pakiet i zwraca go w postaci struktury
 struct packet receivePacket(int sockfd, int identifier)
@@ -61,40 +64,28 @@ struct packet receivePacket(int sockfd, int identifier)
     return recivedPacket;
 }
 
-// Sprawdzanie poprawnosci odbioru pakietu
-int packetError(int val)
-{
-    string empty = "Resource temporarily unavailable";
-    if (val < 0 && empty.compare(strerror(errno)) != 0)
-    {
-        fprintf(stderr, "recvfrom error: %s\n", strerror(errno));
-        return 1;
-    }
-    else
-        return 0;
-}
-
-// Funkcja sprawdzajaca, czy otrzymany naglowek ICMP jest typu echo reply lub time exceeded
-//int validType(int a) { return (a == ICMP_ECHOREPLY || a == ICMP_TIME_EXCEEDED); }
-
 // Funkcja okreslajaca czy otrzymalismy odpowiedz od trace'owanego adresu
 int endTrace(string sender[3], string ip)
 {
     return (sender[0].compare(ip) || sender[1].compare(ip) || sender[2].compare(ip));
 }
 
+//funkcja odbierajaca pakiety
 int reciveAnswer(int sockfd, int identifier, int ttl, string ip)
 {
 
-    //clock_t start = clock();
-
+    //czas startu oczekiwania
     timeval time;
     gettimeofday(&time, NULL);
     long long startTime = ((long long)time.tv_sec * 1000) + (time.tv_usec / 1000);
 
+    
     int answer = 0, total_time = 0, avg_time;
+    
+    //tablica w ktorej zapisane sa adresy ip z ktorych przyszla odpowiedz
     string incoming_ip[3] = {"", "", ""};
 
+    //struktury wykorzystywane przez select
     fd_set descriptors;
     FD_ZERO(&descriptors);
     FD_SET(sockfd, &descriptors);
@@ -103,10 +94,9 @@ int reciveAnswer(int sockfd, int identifier, int ttl, string ip)
     timeout.tv_usec = (1000 % 1000) * 1000;
 
     // Petla oczekujaca na przyjscie pakietow zwrotnych
-    //while (answer < 3 && (clock() - start) / CLOCKS_PER_SEC < 1)
     while (answer < 3)
     {
-
+        
         int ready = select(sockfd + 1, &descriptors, NULL, NULL, &timeout);
 
         if (ready)
@@ -115,7 +105,7 @@ int reciveAnswer(int sockfd, int identifier, int ttl, string ip)
             struct packet pakiet = receivePacket(sockfd, identifier);
 
             // obsluga bledu
-            if (pakiet.error < 0)
+            if (pakiet.error == -1)
             {
                 fprintf(stderr, "recvfrom error: %s\n", strerror(errno));
             }
@@ -137,6 +127,7 @@ int reciveAnswer(int sockfd, int identifier, int ttl, string ip)
         else
             break;
     }
+
     //jesli nie otrzymano 3 odpowiedzi
     if (answer != 3)
     {
@@ -151,11 +142,10 @@ int reciveAnswer(int sockfd, int identifier, int ttl, string ip)
     }
     else
     {
-        //avg_time = total_time * 1000 / CLOCKS_PER_SEC / 3;
         avg_time = total_time / 3; //jesli otrzymano wszystkie odpowiedzi
     }
 
-    printResult(ttl, avg_time, incoming_ip); //wypisanie wyniku
+    print(ttl, avg_time, incoming_ip); //wypisanie wyniku
 
     //Sprawdzenie czy dotarlismy do celu
     if (endTrace(incoming_ip, ip))
