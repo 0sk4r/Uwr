@@ -2,15 +2,12 @@
 % Nale�y zmieni� nazw� modu�u na {imie}_{nazwisko} gdzie za
 % {imie} i {nazwisko} nale�y podstawi� odpowiednio swoje imi�
 % i nazwisko bez znak�w diakrytycznych
-%:- module(imie_nazwisko, [solve/2]).
+:- module(oskar_sobczyk, [solve/2]).
 
 % definiujemy operatory ~/1 oraz v/2
 :- op(200, fx, ~).
 :- op(500, xfy, v).
 
-% G��wny predykat rozwi�zuj�cy zadanie.
-% UWAGA: to nie jest jeszcze rozwi�zanie; nale�y zmieni� jego
-% definicj�.
 
 %predykat definiujacy funkcje boolowska
 bool('t').
@@ -82,7 +79,7 @@ getSingleVars([[Var]|Clauses],[Var|Vars]) :-
 	!,
 	getSingleVars(Clauses,Vars).
 
-getSingleVars([Clause|Clauses],Vars) :-
+getSingleVars([_|Clauses],Vars) :-
 	getSingleVars(Clauses,Vars).
 
 getSingleVars([],[]).
@@ -121,13 +118,6 @@ evaluateSingleVars(_,Clauses,Clauses) :-
 	getSingleVars(Clauses,[]),!.
 
 
-solve([],_) :- !, fail.
-
-solve(Clauses, Solution) :-
-         tolist(Clauses, Clist), %zamiana klauzul na liste
-         argumentlist(Clist,Arguments), %stworzenie listy argumentow
-	 findEvaluation(Clist, Arguments, []), %szukanie wartoscioan
-	 Solution = Arguments.
 
 %predykat szukajacy wartosciowan
 findEvaluation(Clauses, Arguments, ClausesOut) :-
@@ -140,3 +130,11 @@ findEvaluation(Clauses, Arguments, ClausesOut) :-
 
 
 findEvaluation(Clauses, [], Clauses).
+
+solve([],_) :- !, fail.
+
+solve(Clauses, Solution) :-
+         tolist(Clauses, Clist), %zamiana klauzul na liste
+         argumentlist(Clist,Arguments), %stworzenie listy argumentow
+	 findEvaluation(Clist, Arguments, []), %szukanie wartoscioan
+	 Solution = Arguments.
