@@ -1,12 +1,12 @@
 % Sprawdzaczka do zadania 2
 %
-% Sprawdzaczkê nale¿y uruchomiæ w katalogu w którym znajduj¹ siê testy
-% i rozwi¹zania:
+% SprawdzaczkÄ™ naleÅ¼y uruchomiÄ‡ w katalogu w ktÃ³rym znajdujÄ… siÄ™ testy
+% i rozwiÄ…zania:
 %
 % $ swipl prac2.pl
 %
-% Predykat test_all/0 uruchamia rozwi¹zanie na wszystkich testach
-% is wyœwietla raport. np.
+% Predykat test_all/0 uruchamia rozwiÄ…zanie na wszystkich testach
+% is wyÅ›wietla raport. np.
 %
 % ?- test_all.
 % excluded_middle                0.003s ok
@@ -15,45 +15,45 @@
 % big_test                       tle
 % tricky                         3.243s invalid answer
 %
-% Predykaty test_all_resolve/0 oraz test_all_prove/0 dzia³aj¹ podobnie,
-% z t¹ ró¿nic¹, ¿e uruchamiaj¹ tylko testy dla predykatu odpowiednio
+% Predykaty test_all_resolve/0 oraz test_all_prove/0 dziaÅ‚ajÄ… podobnie,
+% z tÄ… rÃ³Å¼nicÄ…, Å¼e uruchamiajÄ… tylko testy dla predykatu odpowiednio
 % resolve/4 oraz prove/2
 %
-% Za pomoc¹ predykatu run_test/1 mo¿na uruchomiæ pojedynczy test podaj¹c
-% jego nazwê:
+% Za pomocÄ… predykatu run_test/1 moÅ¼na uruchomiÄ‡ pojedynczy test podajÄ…c
+% jego nazwÄ™:
 %
 % ?- run_test(excluded_middle).
 % excluded_middle                0.003s ok
 %
-% Dla ka¿dego uruchomionego testu sprawdzaczka wyœwietla czas dzia³ania
-% (o ile test siê w~pe³ni wykona³) oraz status wykonania. Mo¿liwe wartoœci
+% Dla kaÅ¼dego uruchomionego testu sprawdzaczka wyÅ›wietla czas dziaÅ‚ania
+% (o ile test siÄ™ w~peÅ‚ni wykonaÅ‚) oraz status wykonania. MoÅ¼liwe wartoÅ›ci
 % to:
 %
-% ok             - program przeszed³ test
-% wrong answer   - b³êdna odpowiedŸ
+% ok             - program przeszedÅ‚ test
+% wrong answer   - bÅ‚Ä™dna odpowiedÅº
 % tle            - przekroczony limit czasu
 % invalid test   - niepoprawny format testu
-% invalid answer - niepoprawna format rozwi¹zania. W przypdaku predykatu
-%     resolve/4 mo¿e oznaczaæ, ¿e predykat zakoñczy³ siê wiêcej ni¿
+% invalid answer - niepoprawna format rozwiÄ…zania. W przypdaku predykatu
+%     resolve/4 moÅ¼e oznaczaÄ‡, Å¼e predykat zakoÅ„czyÅ‚ siÄ™ wiÄ™cej niÅ¼
 %     jednym sukcesem
 %
-% Sprawdzaczka udostêpnia jeszcze dwa predykty, u³atwiaj¹ce odpluskwianie
+% Sprawdzaczka udostÄ™pnia jeszcze dwa predykty, uÅ‚atwiajÄ…ce odpluskwianie
 % kodu:
 %
-% show_proof(+Input, +Proof) - wyœwietla dowód Proof (np. rezultat dzia³ania
-%   predykatu prove/2) w czytelnej postaci. Input powinno byæ list¹ aksjomatów
+% show_proof(+Input, +Proof) - wyÅ›wietla dowÃ³d Proof (np. rezultat dziaÅ‚ania
+%   predykatu prove/2) w czytelnej postaci. Input powinno byÄ‡ listÄ… aksjomatÃ³w
 %
-% test_and_show(+Name) - uruchania predykat prove/2 na teœcie o nazwie Name
-%   i wyœwietla wyprodukowany dowód za pomoc¹ show_proof
+% test_and_show(+Name) - uruchania predykat prove/2 na teÅ›cie o nazwie Name
+%   i wyÅ›wietla wyprodukowany dowÃ³d za pomocÄ… show_proof
 %
-% UWAGA: niniejsza sprawdzaczka nie sprawdza wszystkich warunków na³o¿onych
-% na format testów i wyników dzia³ania programu. Zachêcamy jednak do
+% UWAGA: niniejsza sprawdzaczka nie sprawdza wszystkich warunkÃ³w naÅ‚oÅ¼onych
+% na format testÃ³w i wynikÃ³w dziaÅ‚ania programu. ZachÄ™camy jednak do
 % modyfikowania i ulepszania jej kodu.
-%
-% Do poprawnego dzia³ania sprawdzaczki nale¿y jeszcze zmodyfikowaæ
-% poni¿sze dwa wiersze:
-:- use_module(imie_nazwisko_tests).
-:- use_module(imie_nazwisko).
+% 
+% Do poprawnego dziaÅ‚ania sprawdzaczki naleÅ¼y jeszcze zmodyfikowaÄ‡
+% poniÅ¼sze dwa wiersze:
+:- use_module(oskar_sobczyk_tests).
+:- use_module(oskar_sobczyk).
 
 :- op(200, fx, ~).
 :- op(500, xfy, v).
@@ -115,7 +115,7 @@ print_status(wa(Time))  :- format("~3fs wrong answer~n", [Time]).
 print_status(inv(Time)) :- format("~3fs invalid answer~n", [Time]).
 
 % =============================================================================
-% Poprawnoœæ danych
+% PoprawnoÅ›Ä‡ danych
 
 validate_resolve_test(Name, Var, Clause1, Clause2, Resolvent) :-
   atom(Name),
@@ -260,17 +260,3 @@ show_proof([(C, Orig)|Proof], N, Input, Prev) :-
   M is N + 1,
   put_assoc(N, Prev, C, NextPrev),
   ( Proof=[], C=[], !; show_proof(Proof, M, Input, NextPrev)).
-
-
-
-
-
-
-
-
-
-
-
-
-
-

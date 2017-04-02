@@ -2,7 +2,7 @@
 % Nale¿y zmieniæ nazwê modu³u na {imie}_{nazwisko} gdzie za
 % {imie} i {nazwisko} nale¿y podstawiæ odpowiednio swoje imiê
 % i nazwisko bez wielkich liter oraz znaków diakrytycznych
-%:- module(oskar_sobczyk, [resolve/4, prove/2]).
+:- module(oskar_sobczyk, [resolve/4, prove/2]).
 
 % definiujemy operatory ~/1 oraz v/2
 :- op(200, fx, ~).
@@ -63,7 +63,9 @@ delNeg([Var | T],Out) :-
 delNeg([Var | T], [Var | T1]) :-
 	delNeg(T,T1).
 
+
 %predykat z polecenia
+
 resolve(Var, PosClause, NegClause, Resolvent):-
     kl2list(PosClause, PosList), %zamiana klauzul na listy
     kl2list(NegClause, NegList),
@@ -72,8 +74,8 @@ resolve(Var, PosClause, NegClause, Resolvent):-
     delete(NegList, NegVar, Res2), %usuniecie negatywnego wystapienia
     append(Res1, Res2, List), %polaczenie list
     sort(List, ListSorted), %posortowanie ktore rowniez usuwa duplikaty literalow
-    delNeg(ListSorted, ClList),%usuniecie wykluczajacych sie literalow
-    list2kl(ClList,Resolvent). % zamiana listy na klauzule
+    %delNeg(ListSorted, ClList),%usuniecie wykluczajacych sie literalow
+    list2kl(ListSorted,Resolvent). % zamiana listy na klauzule
 
 % predykat resolve1 wykorzystywany w predykacie prove. Jest analogiczny
 % do resolve z ta roznica ze dziala od razu na klauzulach w postaci
@@ -116,7 +118,7 @@ prove(Clauses, Out) :-
 	prove(ClausesList, ListOfAxionim,Index, Proof),
 	reverse(Proof, Proof1), %rozwiazanie bedzie w odwrotnej kolejnosci wiec je odwracamy
 	writeProof(Proof1,Out), %usuniecie indeksow klauzul z listy
-	write(Out),!.
+	!.
 
 prove([[] | _], X,_, X).
 
@@ -164,7 +166,7 @@ findNum([(_,_,_) | T] ,Clause, Nmbr) :- findNum(T, Clause, Nmbr).
 
 %usuwa numery indeksow z dowodu
 writeProof([],[]).
-writeProof([(Clause, Poch, _) | T],[(Clause, (Poch))| Steps]) :-
+writeProof([(Clause, Poch, _) | T],[Clause, (Poch)| Steps]) :-
 	writeProof(T,Steps).
 
 
