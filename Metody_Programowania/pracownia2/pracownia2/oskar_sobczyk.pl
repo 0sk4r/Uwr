@@ -80,13 +80,13 @@ resolve(Var, PosClause, NegClause, Resolvent):-
 % list
 resolve2(Var, Clause1, Clause2, Resolvent) :-
 	delete(Clause1, Var, Res1),
-	delete(Clause2, Var, Res2),
+    %delete(Clause2, Var, Res2),
 	neg(Var, NegVar),
-	delete(Res1, NegVar, Res3),
-	delete(Res2, NegVar, Res4),
-	append(Res3, Res4, List),
-	sort(List, ListSorted),
-	delNeg(ListSorted, Resolvent).
+    %delete(Res1, NegVar, Res3),
+	delete(Clause2, NegVar, Res4),
+	append(Res1, Res4, List),
+	sort(List, Resolvent).
+    %delNeg(ListSorted, Resolvent).
 
 
 
@@ -99,7 +99,10 @@ initList(Clauses, ListOfAxionim) :-
 initList([], ListOfAxionim, ListOfAxionim,_) :- !.
 initList([H|T], ListOfAxionim, Acc,Num) :-
 	NewNum is Num + 1,
-		initList(T, ListOfAxionim, [(H, (axionim), Num) | Acc],NewNum).
+    kl2list(H,ClList),
+    sort(ClList, ListSorted),
+    list2kl(ListSorted, Clause),
+	initList(T, ListOfAxionim, [(Clause, (axionim), Num) | Acc],NewNum).
 
 prove(Clauses, Out) :-
 	initList(Clauses, ListOfAxionim),
@@ -143,8 +146,12 @@ resolventForVar([_ | Vars], Clauses, FirstClause, Var) :-
 findResolvent([Clause | Clauses], Clause, Resolvent, Var) :-
 	resolventForVar(Clause, Clauses, Resolvent,Var).
 
+findResolvent([_ | []],_,_,_) :- !.
+
 findResolvent([ _ | Clauses], Res1, Res2, Var) :-
 	findResolvent(Clauses, Res1, Res2, Var).
+
+%findResolvent([],_,_,_) :- !.
 
 
 %znajduje indeks klauzuli
