@@ -86,10 +86,14 @@ resolve2(Var, Clause1, Clause2, Resolvent) :-
 	delete(Clause2, NegVar, Res4),
 	append(Res1, Res4, List),
 	sort(List, Resolvent).
-    %delNeg(ListSorted, Resolvent).
+  %  \+ delNeg(ListSorted, Resolvent).
 
 
-
+find_op([]) :- !.
+find_op([H | T]) :-
+	neg(H, H1),
+	\+ member(H1, T),
+	find_op(T).
 
 % inicjuje liste w ktorej bedzie trzymane nasze rozwiazanie, wrzuca do
 % niej axionimy. Dodatkowo numeruje klauzule
@@ -120,6 +124,7 @@ prove([H | T], ListOfAxionim,Num,Proof) :-
 	findResolvent([H | T], Res1, Res2, Var), %szukamy 2 klauzul w ktorych mozna zastosowac rezolucje
 	resolve2(Var, Res1, Res2, Resolvent), %konstrukcja rezolwenty
 	\+ member(Resolvent, [H|T]), %sprawdzenie czy rezolwenta juz nie zostala obliczona
+	find_op(Resolvent),
 	list2kl(Res1, Res1Cl),
 	list2kl(Res2, Res2Cl),
 	list2kl(Resolvent, ResolventCl), %zamiana list na klauzule
@@ -141,12 +146,11 @@ resolventForVar([Var | Vars], [_ | Clauses ], Res,Var) :-
 resolventForVar([_ | Vars], Clauses, FirstClause, Var) :-
 	resolventForVar(Vars, Clauses, FirstClause, Var).
 
+%findResolvent([Clause], _, _, _) :- !.
 
 %szuka par rezolwent i zmiennej po ktorej jest rezolewnta
 findResolvent([Clause | Clauses], Clause, Resolvent, Var) :-
 	resolventForVar(Clause, Clauses, Resolvent,Var).
-
-findResolvent([_ | []],_,_,_) :- !.
 
 findResolvent([ _ | Clauses], Res1, Res2, Var) :-
 	findResolvent(Clauses, Res1, Res2, Var).
