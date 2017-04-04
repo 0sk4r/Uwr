@@ -2,7 +2,7 @@
 % Nale¿y zmieniæ nazwê modu³u na {imie}_{nazwisko} gdzie za
 % {imie} i {nazwisko} nale¿y podstawiæ odpowiednio swoje imiê
 % i nazwisko bez wielkich liter oraz znaków diakrytycznych
-:- module(oskar_sobczyk, [resolve/4, prove/2]).
+%:- module(oskar_sobczyk, [resolve/4, prove/2]).
 
 % definiujemy operatory ~/1 oraz v/2
 :- op(200, fx, ~).
@@ -111,7 +111,7 @@ initList([H|T], ListOfAxionim, Acc,Num) :-
     kl2list(H,ClList),
     sort(ClList, ListSorted),
     list2kl(ListSorted, Clause),
-	initList(T, ListOfAxionim, [(Clause, (axiom), Num) | Acc],NewNum).
+	initList(T, ListOfAxionim, [(Clause, axiom, Num) | Acc],NewNum).
 
 prove(Clauses, Out) :-
 	initList(Clauses, ListOfAxionim),
@@ -170,7 +170,7 @@ findNum([(_,_,_) | T] ,Clause, Nmbr) :- findNum(T, Clause, Nmbr).
 
 %usuwa numery indeksow z dowodu
 writeProof([],[]).
-writeProof([(Clause, Poch, _) | T],[Clause, (Poch)| Steps]) :-
+writeProof([(Clause, Poch, _) | T],[(Clause, Poch)| Steps]) :-
 	writeProof(T,Steps).
 
 

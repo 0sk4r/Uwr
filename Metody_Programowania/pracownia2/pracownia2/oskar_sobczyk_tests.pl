@@ -16,9 +16,9 @@ resolve_tests(repeated_negvar,p,p v ~q, ~p v ~q, ~q).
 
 resolve_tests(repeated2,p,p v p v p v p v p v p v p v q, ~p v ~p v ~p v ~p v ~p v q,q).
 
-resolve_tests(test, q, p v q v p, p v ~q v p, p).
+resolve_tests(resolve_test, q, p v q v p, p v ~q v p, p).
 
-resolve_tests(test2, q, p v ~p v q, p v ~p v ~q, p v ~p).
+resolve_tests(resolve_test2, q, p v ~p v q, p v ~p v ~q, p v ~p).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -46,10 +46,13 @@ prove_tests(long_single_var, validity,[p,p,p,p,p,p,p,p,p,p,p,p,p],sat).
 
 prove_tests(sat, validity, [q v ~q, p v ~q, ~p],sat).
 
-prove_tests(sat_perf,performance, [ p v q v r, ~r v ~q v ~p, ~q v r, ~r v p ], sat).
+prove_tests(sat_perf,performance, [p v q v r, ~r v ~q v ~p, ~q v r, ~r v p], sat).
 
-prove_tests(sat_perf2, performance, [p v q v r, ~r v ~q v ~p, ~q v r, ~r v p],sat).
+prove_tests(sat_perf2, performance,[p v q v r, ~r v ~q v ~p, ~q v r, ~r],sat).
 
+prove_tests(sat_perf3, performance,[~a v ~b, a, b v ~c, c v ~d, d v ~e, e v ~k],sat).
+
+prove_tests(last_sat, validity, [a v b, c v d, e v k],sat).
 
 %UNSAT
 
@@ -70,3 +73,5 @@ prove_tests(short,validity,[p v p, ~p],unsat).
 prove_tests(unsat5, validity,[~t v a, ~t v ~r v s, ~a v r,t,~s],unsat).
 
 prove_tests(unsat6, validity,[p v s, ~s v r, ~p v r, ~r v z, ~z],unsat).
+
+prove_tests(unsat7,validity,[p v t v z v q , a v b v c v q,~p,~t,~z,~q,~a,~b,~c,~q],unsat).
