@@ -1,0 +1,5 @@
+def test(_) = 1
+
+def testin(_) =
+	let C1 = test(_)
+	C1
