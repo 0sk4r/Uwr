@@ -6,7 +6,7 @@
     comments: char sing sequences started with (* and ended with *)
     identificators: sequences of ASCII letters, digits 0-9, signs _ and '
 */
-
+/Users/oskar/Uwr/Metody_Programowania/pracownia2/pracownia3/algol1.pl
 lexer(Tokens) -->
    blank_sign,
    (  (  ":=",      !, { Token = tokAssgn }
