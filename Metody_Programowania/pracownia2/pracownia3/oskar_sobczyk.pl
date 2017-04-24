@@ -110,11 +110,19 @@ lexer(Tokens) -->
          { Tokens = [] }
    ).
 
+  
+white_space-->
+   [Char], { code_type(Char, space) }, !, blank_sign.
 white_space -->
-   [Char], { code_type(Char, space) }, !, white_space.
+    "(*", !, comment.
 white_space -->
    [].
-   
+comment -->
+      "*)", !, blank_sign.
+comment -->
+      [_], !, comment.
+
+
 digit(D) -->
    [D],
       { code_type(D, digit) }.
@@ -142,6 +150,22 @@ alphanum([]) -->
 identifier(L, Id) -->
    alphanum(As),
       { atom_codes(Id, [L|As]) }.
+
+
+
+%%%%%%%%%%%% PARSER %%%%%%%%%%%%%%%%%%
+
+
+
+program(X) -->
+    
+
+definition(X) -->
+    [tokDef],
+    identifier(),
+    [tokAssgn],
+
+
 
 
 
