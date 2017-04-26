@@ -124,9 +124,8 @@ definicja(X) -->
 
 %problem
 wzorzec(X) -->
-    ([tokVar(Var)], !, {X = var(no, Var)}
-
-    ;wzorzec(Res1), [tokComma],!,  wzorzec(Res2), {X = pair(no, Res1, Res2)} 
+    ([tokVar(Var)],( [tokComma],!,  wzorzec(Res2), {X = pair(no, Res1, Res2)} 
+      ; [] {X = var(no, Var)})
     
     ;[tokUnderline], !, {X = empty(no)}
 
