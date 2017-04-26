@@ -172,11 +172,12 @@ wybor_bitow(X) -->
 
 
 wyrazenie_atomowe(X) -->
-    ([tokVar(Var)],!, {X = var(no, Var)}
+    ([tokVar(Var)],([tokLParen],!, wyrazenie(W), [tokRParen], {X = call(no, Var, W)}
+                    ;[],!, {X = var(no, Var)}
     
     ; [tokNumber(Num)],!, {X = num(no, Num)}
     
-    ; wywolanie_funkcji(W),!, {X = W}
+    %; wywolanie_funkcji(W),!, {X = W}
 
     ; pusty_wektor(W),!, {X = W}
 
