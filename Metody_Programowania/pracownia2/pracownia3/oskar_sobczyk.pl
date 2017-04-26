@@ -122,16 +122,17 @@ definicja(X) -->
     { X = def(Name,P,E)}.
 
 
-%problem
+%dziala
 wzorzec(X) -->
-    ([tokVar(Var)],( [tokComma],!,  wzorzec(Res2), {X = pair(no, Res1, Res2)} 
-      ; [] {X = var(no, Var)})
-    
+    ([tokVar(Var)],( [tokComma],!,  wzorzec(Res2), {X = pair(no, var(no,Var), Res2)}
+                   ; [], {X = var(no, Var)})
+
     ;[tokUnderline], !, {X = empty(no)}
 
     ;[tokLParen], !, wzorzec(Res), [tokRParen], {X = Res}
-    
+
     ).
+
 
 wyrazenie(X) -->
     ([tokIf],!, wyrazenie(Expr1), [tokThen], wyrazenie(Expr2), [tokElse], wyrazenie(Expr3), {X = if(no, Expr1, Expr2, Expr3)}
