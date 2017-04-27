@@ -6,4 +6,10 @@ def test(_) = A,B
 [100, 101, 102, 032, 116, 101, 115, 116, 040, 095, 041, 032, 061, 032, 065, 044, 066]
 [tokDef,tokVar(test),tokLParen,tokUnderline,tokRParen,tokAssgn,tokVar(A),tokComma,tokVar(B)]
 
-def test(_) = 
+def test(_) = test(1)
+[100, 101, 102 ,032 ,116 ,101 ,115,116, 040, 095, 041 ,032 ,061, 032 ,116 ,101 ,115 ,116, 040 ,049 ,041]
+[tokDef,tokVar(test),tokLParen,tokUnderline,tokRParen,tokAssgn,tokVar(test),tokLParen,tokNumber(1),tokRParen]
+
+def test(A) = A[1]
+[100, 101, 102, 032, 116, 101, 115, 116, 040, 065, 044, 066, 041, 032, 061,032, 065, 091, 049, 093]
+tokDef,tokVar(test),tokLParen,tokVar(A),tokComma,tokVar(B),tokRParen,tokAssgn,tokVar(A),tokLSParen,tokNumber(1),tokRSParen]

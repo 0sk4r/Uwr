@@ -1,2 +1,0 @@
-def test(A,B) =
-	if A > 0 then B else [] 

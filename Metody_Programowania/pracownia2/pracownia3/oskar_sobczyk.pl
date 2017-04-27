@@ -102,8 +102,13 @@ identifier(L, Id) -->
 
 
 %%%%%%%%%%%% PARSER %%%%%%%%%%%%%%%%%%
+%dzialaja
+%wzorzec
+%wywolania funcji
 
 
+%nie dziala
+%wybor bitu
 
 program(X) --> definicje(X).
 
@@ -144,7 +149,7 @@ wyrazenie(X) -->
     ).
 
 wyrazenie_op(X) -->
-    (wyrazenie_proste(W),!, {X = W}
+    (wyrazenie_proste(W),! , {X = W}
     
     ; wyrazenie_op(W1), op_bin(Op),!, wyrazenie_op(W2), {X = op(no, Op, W1, W2)}
     
@@ -154,26 +159,29 @@ wyrazenie_op(X) -->
     ).
 
 wyrazenie_proste(X) -->
-    ( wyrazenie_atomowe(X),!
+    ( wyrazenie_atomowe(W),!,([tokLSParen],!, wyrazenie(W1), ([tokDDot],! wyrazenie(W2),[tokRSParen], {X = bitsel(no, W, W1, W2)}
+                                                        ; wyrazenie(W),! [tokRSParen], {X = bitsel(no, W, W) })
+                              ;[],{X = W})
+      
+      %;wybor_bitow(X),!
     
     %; wybor_bitu(X),!
     
-    ; wybor_bitow(X),!
 
     ; [tokLParen],!,  wyrazenie(W), [tokRParen], { X = W}
     
     ).
 
 wybor_bitow(X) --> 
-    wyrazenie_proste(Wp), [tokLSParen], wyrazenie(W1),( [tokDDot], wyrazenie(W2), {X = bitsel(no, Wp, W1, W2)}
-                                                        ; wyrazenie(W), [tokRSParen], {X = bitsel(no, Wp, W) }).
+    wyrazenie_proste(Wp), [tokLSParen],! wyrazenie(W1),( [tokDDot],! wyrazenie(W2), {X = bitsel(no, Wp, W1, W2)}
+                                                        ; wyrazenie(W),! [tokRSParen], {X = bitsel(no, Wp, W) }).
 
 
 
 
 wyrazenie_atomowe(X) -->
     ([tokVar(Var)],([tokLParen],!, wyrazenie(W), [tokRParen], {X = call(no, Var, W)}
-                    ;[],!, {X = var(no, Var)}
+                    ;[],!, {X = var(no, Var)})
     
     ; [tokNumber(Num)],!, {X = num(no, Num)}
     

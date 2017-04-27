@@ -1,7 +1,7 @@
-% Definiujemy modu³ zawieraj¹cy rozwi¹zanie.
-% Nale¿y zmieniæ nazwê modu³u na {imie}_{nazwisko} gdzie za
-% {imie} i {nazwisko} nale¿y podstawiæ odpowiednio swoje imiê
-% i nazwisko bez wielkich liter oraz znaków diakrytycznych
+% Definiujemy moduï¿½ zawierajï¿½cy rozwiï¿½zanie.
+% Naleï¿½y zmieniï¿½ nazwï¿½ moduï¿½u na {imie}_{nazwisko} gdzie za
+% {imie} i {nazwisko} naleï¿½y podstawiï¿½ odpowiednio swoje imiï¿½
+% i nazwisko bez wielkich liter oraz znakï¿½w diakrytycznych
 %:- module(oskar_sobczyk, [resolve/4, prove/2]).
 
 % definiujemy operatory ~/1 oraz v/2
@@ -9,13 +9,13 @@
 :- op(500, xfy, v).
 
 % Szukanie rezolwenty.
-% UWAGA: to nie jest jeszcze rozwi¹zanie; nale¿y zmieniæ definicjê
+% UWAGA: to nie jest jeszcze rozwiï¿½zanie; naleï¿½y zmieniï¿½ definicjï¿½
 % tego predykatu
 %resolve(q, p v q, ~q v r, r v p).
 
-% G³ówny predykat rozwi¹zuj¹cy zadanie.
-% UWAGA: to nie jest jeszcze rozwi¹zanie; nale¿y zmieniæ jego
-% definicjê.
+% Gï¿½ï¿½wny predykat rozwiï¿½zujï¿½cy zadanie.
+% UWAGA: to nie jest jeszcze rozwiï¿½zanie; naleï¿½y zmieniï¿½ jego
+% definicjï¿½.
 
 
 
@@ -82,11 +82,9 @@ resolve(Var, PosClause, NegClause, Resolvent):-
 % list
 resolve2(Var, Clause1, Clause2, Resolvent) :-
 	delete(Clause1, Var, Res1),
-    %delete(Clause2, Var, Res2),
 	neg(Var, NegVar),
-    %delete(Res1, NegVar, Res3),
-	delete(Clause2, NegVar, Res4),
-	append(Res1, Res4, List),
+	delete(Clause2, NegVar, Res2),
+	append(Res1, Res2, List),
 	sort(List, Resolvent),
     check_negation(Resolvent). %jezeli klauzula zaweiera sprzeczne literaly to ja odrzucamy
     % \+ delNeg(ListSorted, Resolvent).%lub usuwamy sprzeczne literaly
@@ -95,52 +93,31 @@ resolve2(Var, Clause1, Clause2, Resolvent) :-
 return_pos_var(~H, H) :- !.
 return_pos_var(H,H) :- !.
 
+
+%sprawdza czy w klauzuli sa sprzeczne literaly np p v ~p
 check_negation([]) :- !.
-check_negation([H | T]) :-
-	neg(H,NegH),
-	\+ member(NegH, T),
-	check_negation(T).
+check_negation([Var | Vars]) :-
+	neg(Var,NegVar),
+	\+ member(NegVar, Vars),
+	check_negation(Vars).
 
 % inicjuje liste w ktorej bedzie trzymane nasze rozwiazanie, wrzuca do
 % niej axionimy. Dodatkowo numeruje klauzule
-initList(Clauses, ListOfAxionim) :-
-		initList(Clauses, ListOfAxionim, [],1).
-
-initList([], ListOfAxionim, ListOfAxionim,_) :- !.
-initList([H|T], ListOfAxionim, Acc,Num) :-
+initList(Clauses, AxiomList) :- initList(Clauses, AxiomList,1).
+initList([],[],_).
+initList([H|T],[(Clause, (axiom),Num) | Z],Num) :- 
 	NewNum is Num + 1,
-    kl2list(H,ClList),
+	kl2list(H,ClList),
     sort(ClList, ListSorted),
-    list2kl(ListSorted, Clause),
-	initList(T, ListOfAxionim, [(Clause, (axiom), Num) | Acc],NewNum).
+    list2kl(ListSorted, Clause), 
+	initList(T, Z, NewNum).
 
-prove(Clauses, Out) :-
-	initList(Clauses, ListOfAxionim),
-	tolist(Clauses, ClausesList), %zamiana listy klauzul na liste list
-	length(ListOfAxionim,Num), %obliczenie indexu ostatniej klauzuli
-	Index is Num + 1, %nr. od ktorego zaczynamy indeksowanie naszych klauzul
-	prove(ClausesList, ListOfAxionim,Index,Proof),
-	reverse(Proof, Proof1), %rozwiazanie bedzie w odwrotnej kolejnosci wiec je odwracamy
-	writeProof(Proof1,Out), %usuniecie indeksow klauzul z listy
-	!.
+%szuka par rezolwent i zmiennej po ktorej jest rezolewnta
+findResolvent([Clause | Clauses], Clause, Resolvent, Var) :-
+	resolventForVar(Clause, Clauses, Resolvent,Var).
 
-prove([[] | _], X,_,X).
-
-prove([H | T], ListOfAxionim,Num,Proof) :-
-	findResolvent([H | T], Res1, Res2, Var), %szukamy 2 klauzul w ktorych mozna zastosowac rezolucje
-	resolve2(Var, Res1, Res2, Resolvent), %konstrukcja rezolwenty
-	\+ member(Resolvent, [H|T]), %sprawdzenie czy rezolwenta juz nie zostala obliczona
-    %check_negation(Resolvent),
-	list2kl(Res1, Res1Cl),
-	list2kl(Res2, Res2Cl),
-	list2kl(Resolvent, ResolventCl), %zamiana list na klauzule
-	findNum(ListOfAxionim,Res1Cl, Num1), %obliczenie indeksow klauzul z ktorych pochodzi rezolwenta
-	findNum(ListOfAxionim,Res2Cl, Num2),
-    return_pos_var(Var,PosVar),
-	NewAx = [(ResolventCl, (PosVar,Num1,Num2),Num) | ListOfAxionim ], %dodanie rezolwenty do dowodu
-	IncNum is Num + 1,
-	prove([Resolvent , H | T], NewAx, IncNum,Proof).
-
+findResolvent([ _ | Clauses], Res1, Res2, Var) :-
+	findResolvent(Clauses, Res1, Res2, Var).
 
 %szuka resolwenty dla kazdej zmiennej z klauzuli
 resolventForVar([Var | _],[Clause |_],Clause, Var) :-
@@ -153,29 +130,39 @@ resolventForVar( [_ | Vars], Clauses, FirstClause, Var) :-
 resolventForVar([Var | Vars], [_ | Clauses ], Res,Var) :-
 	resolventForVar([Var | Vars], Clauses, Res, Var).
 
-%findResolvent([Clause], _, _, _) :- !.
-
-%szuka par rezolwent i zmiennej po ktorej jest rezolewnta
-findResolvent([Clause | Clauses], Clause, Resolvent, Var) :-
-	resolventForVar(Clause, Clauses, Resolvent,Var).
-
-findResolvent([ _ | Clauses], Res1, Res2, Var) :-
-	findResolvent(Clauses, Res1, Res2, Var).
-
-%findResolvent([],_,_,_) :- !.
-
+%usuwa numery indeksow z dowodu
+delIndex([],[]).
+delIndex([(Clause, Poch, _) | T],[(Clause, Poch)| Steps]) :-
+	delIndex(T,Steps).
 
 %znajduje indeks klauzuli
 findNum([(Clause,_,Nmbr) | _] ,Clause, Nmbr) :- !.
 findNum([(_,_,_) | T] ,Clause, Nmbr) :- findNum(T, Clause, Nmbr).
 
-%usuwa numery indeksow z dowodu
-writeProof([],[]).
-writeProof([(Clause, Poch, _) | T],[Clause, (Poch)| Steps]) :-
-	writeProof(T,Steps).
+prove(Clauses, Out) :-
+	initList(Clauses, ListOfAxionim),
+	tolist(Clauses, ClausesList), %zamiana listy klauzul na liste list
+	length(ListOfAxionim,Num), %obliczenie indexu ostatniej klauzuli
+	Index is Num + 1, %nr. od ktorego zaczynamy indeksowanie naszych klauzul
+	prove(ClausesList, ListOfAxionim,Index,Proof),
+	reverse(Proof, Proof1), %rozwiazanie bedzie w odwrotnej kolejnosci wiec je odwracamy
+	delIndex(Proof1,Out), %usuniecie indeksow klauzul z listy
+	!.
 
+prove([[] | _], X,_,X).
 
-
-
+prove([H | T], ListOfAxionim,Num,Proof) :-
+	findResolvent([H | T], Res1, Res2, Var), %szukamy 2 klauzul w ktorych mozna zastosowac rezolucje
+	resolve2(Var, Res1, Res2, Resolvent), %konstrukcja rezolwenty
+	\+ member(Resolvent, [H|T]), %sprawdzenie czy rezolwenta juz nie zostala obliczona
+	list2kl(Res1, Res1Cl),
+	list2kl(Res2, Res2Cl),
+	list2kl(Resolvent, ResolventCl), %zamiana list na klauzule
+	findNum(ListOfAxionim,Res1Cl, Num1), %obliczenie indeksow klauzul z ktorych pochodzi rezolwenta
+	findNum(ListOfAxionim,Res2Cl, Num2),
+    return_pos_var(Var,PosVar),
+	NewAx = [(ResolventCl, (PosVar,Num1,Num2),Num) | ListOfAxionim ], %dodanie rezolwenty do dowodu
+	IncNum is Num + 1,
+	prove([Resolvent, H | T], NewAx, IncNum,Proof).
 
 

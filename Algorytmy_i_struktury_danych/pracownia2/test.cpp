@@ -1,98 +1,66 @@
-#include <cstdio>
-#include <cstring>
-
+#include<bits/stdc++.h>
+#define fr(x) scanf("%d",&x)
 using namespace std;
 
-const int MAXN = 33;
-const int MAXV = MAXN * MAXN;
-const int MAXE = MAXV * 8;
+char s[35][35];
+int IDX=0;
+vector<int> g[1000];
+int match[1000],vis[1000],tym=0;
+int index1[35][35];
 
-const int 
-    xi[8] = {-2, -1, 1, 2,  2,  1, -1, -2},
-    yi[8] = { 1,  2, 2, 1, -1, -2, -2, -1};
-
-int n, kolumny, e, v;
-char a[MAXN][MAXN];
-int d[MAXN][MAXN];
-int last[MAXV], prev[MAXV], curr[MAXV];
-int next[MAXE], yy[MAXE];
-int id, flag[MAXV];
-
-bool run(int x)
-{
-    if (flag[x] == id) return false;
-    flag[x] = id;
-    
-    int i = last[x];
-    while (i)
-    {
-        if (!prev[yy[i]] || run(prev[yy[i]]))
-        {
-            prev[yy[i]] = x;
-            curr[x] = yy[i];
-            return true;
+int aug(int l){
+    if(vis[l]==tym)return 0;
+    vis[l]=tym;
+    for(auto&r:g[l]){
+        if(match[r]==-1||aug(match[r])){
+            match[r]=l;
+            return 1;
         }
-        i = next[i];
     }
-    return false;
+    return 0;
 }
 
-int main()
-{
-/*
-    freopen("in", "r", stdin);
-    freopen("out", "w", stdout);
-//*/
-        scanf("%d %d\n", &n, &kolumny);
-        for (int i = 0; i < n; i++)
-            gets(a[i]);
-            
-        memset(last, 0, sizeof(last));
-        memset(prev, 0, sizeof(prev));
-        memset(curr, 0, sizeof(curr));
-        memset(flag, 0, sizeof(flag));
-        e = v = 0;
-        
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < kolumny; j++)
-            {
-                v += a[i][j] != '#';
-                d[i][j] = (i * kolumny + j) / 2 + 1;
+int main(){
+    int t,m,n,mcbm,sub;
+    fr(t);
+    while(t--){
+        fr(m);fr(n);
+        mcbm=0;
+        sub=0;
+        for(int i=0;i<1000;++i)g[i].clear();
+        IDX=0;
+        for(int i=0;i<m;++i)scanf("%s",&s[i]);
+        //traverse all blak cells 0,0 is black all cells(i,j) such that i+j=even are black
+        for(int i=0;i<m;++i){
+            for(int j=0;j<n;++j){
+                if(s[i][j]=='.')index1[i][j]=++IDX;
+                else index1[i][j]=-1,++sub;
             }
-            
-            
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < kolumny; j++)
-                if (a[i][j] != '#' && ((i + j) & 1))
-                {
-                    for (int l = 0; l < 8; l++)
-                    {
-                        int
-                            x = i + xi[l],
-                            y = j + yi[l];
-                            
-                        if (x < 0 || y < 0 || n <= x || kolumny <= y || a[x][y] == '#') continue;
-                        
-                        
-                        e++;
-                        yy[e] = d[x][y];
-                        next[e] = last[d[i][j]];
-                        last[d[i][j]] = e;
-                        
-                        if (!curr[d[i][j]] && !prev[d[x][y]])
-                        {
-                            curr[d[i][j]] = d[x][y];
-                            prev[d[x][y]] = d[i][j];
-                        }
-                    }
-                }
+        }
+        for(int i=0;i<m;++i){
+            for(int j=(i&1);j<n;j+=2){
+                if(index1[i][j]==-1)continue;
                 
-        for (id = 1; id <= (n * kolumny - 1) / 2 + 1; id++)
-            if (!curr[id]) run(kolumny);
-            
-        for (int i = 1; i <= (n * kolumny - 1) / 2 + 1; i++)
-            if (curr[i]) v--;
-            
-        printf("%d\n", v);
+                if(i>1&&j>0&&index1[i-2][j-1]!=-1)g[index1[i][j]].emplace_back(index1[i-2][j-1]);
+                if(i>1&&j<n-1&&index1[i-2][j+1]!=-1)g[index1[i][j]].emplace_back(index1[i-2][j+1]);
+                if(i<m-2&&j>0&&index1[i+2][j-1]!=-1)g[index1[i][j]].emplace_back(index1[i+2][j-1]);
+                if(i<m-2&&j<n-1&&index1[i+2][j+1]!=-1)g[index1[i][j]].emplace_back(index1[i+2][j+1]);
+                
+                if(i>0&&j>1&&index1[i-1][j-2]!=-1)g[index1[i][j]].emplace_back(index1[i-1][j-2]);
+                if(j>1&&i<m-1&&index1[i+1][j-2]!=-1)g[index1[i][j]].emplace_back(index1[i+1][j-2]);
+                if(j<n-2&&i>0&&index1[i-1][j+2]!=-1)g[index1[i][j]].emplace_back(index1[i-1][j+2]);
+                if(j<n-2&&i<m-1&&index1[i+1][j+2]!=-1)g[index1[i][j]].emplace_back(index1[i+1][j+2]);
+            }
+        }
+        memset(match,-1,sizeof(match));
+        for(int i=0;i<m;++i){
+            for(int j=(i&1);j<n;j+=2){
+                if(index1[i][j]==-1)continue;
+                ++tym;
+                mcbm+=aug(index1[i][j]);
+            }
+        }
+        printf("%d\n",m*n-mcbm-sub);
+    }
     return 0;
 }

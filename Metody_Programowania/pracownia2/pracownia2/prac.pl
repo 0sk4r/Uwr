@@ -166,7 +166,7 @@ has_literals([L|LS], C) :-
 
 equiv_clauses(C1, C2) :-
   subclause(C1, C2),
-  subclause(C2, C2).
+  subclause(C2, C1).
 
 subclause(C1, C2) :-
   findall(L, has_literal(L, C1), LS),
@@ -223,7 +223,7 @@ validate_proofs([Proof], Input) :-
   check_proof(Proof, 1, Input, Prev).
 
 check_proof([([], Orig)], _, Input, Prev) :-
-  check_origin(Orig, Input, Prev), !.
+  check_origin(Orig, [], Input, Prev), !.
 check_proof([(C, Orig)|Proof], N, Input, Prev) :-
   check_origin(Orig, C, Input, Prev),
   M is N + 1,

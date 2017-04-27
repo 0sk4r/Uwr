@@ -1,17 +1,19 @@
 #include "stdio.h"
-#include <list>
-#include <string>
+#include "cstring"
 
 using namespace std;
-int main() {
 
-    int instancje, terminale, nieterminale;
-    char litery[26];
-    char produkcje[8][8];
+int  terminale, nieterminale;
+int litery[26][8];
+char produkcje[8][8];
 
-    char buffer[1002];
-    char tablica[1002][1002];
-    char a,b,c;
+char buffer[1002];
+char tablica[1002][1002][8];
+char a,b,c;
+
+void check() {
+
+
 
     for (int i = 0; i < 8;i++){
         for(int j = 0; j < 8; j++){
@@ -19,48 +21,80 @@ int main() {
         }
     }
 
-    scanf("%d\n",&instancje);
-
+    for (int i = 0; i < 26;i++){
+        for(int j = 0; j < 8; j++){
+            litery[i][j]=0;
+        }
+    }
     scanf("%d %d\n",&nieterminale, &terminale);
 
     for(int i = 0; i < nieterminale; i++){
-        
+
         scanf(" %c %c %c",&a,&b,&c);
         produkcje[b-65][c-65] = a;
     }
 
     for(int i = 0; i<terminale; i++){
         scanf(" %c %c",&a,&b);
-        litery[b-97] = a;
+        litery[b-97][a - 65] = 1;
     }
     scanf("%s", buffer);
-    int len = strlen(buffer);
-
-    strncpy(tablica[0], buffer, len);
-
+    int len = (int) strlen(buffer);
 
     for(int l = 0; l < len; l++)
     {
-        tablica[1][l] = litery[tablica[0][l]-97];
-        printf("%c\n",tablica[1][l]);
-    }
-
-    for (unsigned row = 2; row < len; ++row){ // for each length
-
-        for (unsigned column = 0; column < len - row; ++column) { // for each start
-            // the string we're considering
-
-            for (unsigned t = 0; t < row; ++t) { // for each split-point
-                // what generates the two halves of this split?
-
-                char lhs = tablica[column][column + t];
-                char rhs = tablica[column + t + 1][column + row];
-                printf("lhs = %c rhs = %c\n", lhs, rhs);
-                char znak = produkcje[lhs - 65][rhs - 65];
-                if(znak != 'X') {tablica[row][column] = znak;}
+        char litera = buffer[l];
+        //printf("%c: ",litera);
+        for(int x = 0; x<8; x++) {
+            if (litery[litera - 97][x] == 1) {
+               // printf("%c", x + 65);
+                tablica[1][l][x] = 1;
             }
         }
+       // printf("\n");
     }
 
-    printf("%c", tablica[len][0]);
+
+    for (unsigned row = 2; row <= len; ++row){
+
+        for (unsigned column = 0; column < len - row + 1; ++column) {
+            printf("row = %d column = %d\n",row,column);
+
+            for (unsigned t = 0; t < row - 1; ++t) {
+
+                for(int x = 0; x < 8; x++) {
+                    for(int y = 0; y<8; y++) {
+                        char lhs = tablica[t + 1][column][x];
+                        char rhs = tablica[row - 1 - t][column + 1 + t][y];
+                        if (lhs == 1 && rhs == 1) {
+                            //printf("lhs = %c rhs = %c\n", lhs+65, rhs+65);
+                            char znak = produkcje[x][y];
+                            //printf("%c\n", znak);
+                            if (znak != 'X') tablica[row][column][znak-65] = 1;
+                        }
+                    }
+                }
+                }
+
+            }
+        }
+    //printf("test %d", tablica[len][0][0]);
+    if(tablica[len][0][0] == 1)
+    {
+        printf("TAK\n");
+    }
+    else
+        printf("NIE\n");
+   // printf("==============================================");
+}
+
+int main() {
+
+    int instancje;
+
+    scanf("%d\n", &instancje);
+
+    for(int i=0;i< instancje; i++){
+        check();
+    }
 }
