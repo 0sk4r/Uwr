@@ -3,12 +3,13 @@
 % {imie} i {nazwisko} należy podstawić odpowiednio swoje imię
 % i nazwisko bez wielkich liter oraz znaków diakrytycznych
 :- module(oskar_sobczyk, [parse/3]).
- 
+
+
+%Za poprawne komentarze uznajemy (* wewnatrz moze byc wszystko poza "*)" *)
 
 lexer(Tokens) -->
    white_space,
    (  (  "=",      !, { Token = tokAssgn }
-      ;  "_",       !, {Token = tokUnderline}
       ;  "(",       !, { Token = tokLParen }
       ;  ")",       !, { Token = tokRParen }
       ;  "+",       !, { Token = tokPlus }
@@ -31,13 +32,14 @@ lexer(Tokens) -->
       ;  "@",        !, { Token = tokMa}
       ;  "#",        !, { Token = tokHash}
       ;  "~",        !, { Token = tokNot}
-      
+
       ;  digit(D),  !,
             number(D, N),
             { Token = tokNumber(N) }
-      
+
       ;  letter(L), !, identifier(L, Id),
             {  member((Id, Token), [ (def, tokDef),
+				     ('_', tokUnderline),
                                      (else, tokElse),
                                      (if, tokIf),
                                      (in, tokIn),
@@ -47,8 +49,9 @@ lexer(Tokens) -->
                !
             ;  Token = tokVar(Id)
             }
-      
-    ;  [_],
+
+
+      ;  [_],
             { Token = tokUnknown }
       ),
       !,
@@ -58,7 +61,7 @@ lexer(Tokens) -->
          { Tokens = [] }
    ).
 
-  
+
 white_space-->
    [Char], { code_type(Char, space) }, !, white_space.
 white_space -->
@@ -87,7 +90,7 @@ number(D, N) -->
       { number_chars(N, [D|Ds]) }.
 
 letter(L) -->
-   [L], { code_type(L, alpha) }.
+   [L], { code_type(L, alpha);  L = 95 }.
 
 alphanum([A|T]) -->
     [A], { code_type(A, alnum) ; A = 39 ; A = 95 }, !, alphanum(T).
@@ -102,14 +105,6 @@ identifier(L, Id) -->
 
 
 %%%%%%%%%%%% PARSER %%%%%%%%%%%%%%%%%%
-%dzialaja
-%wzorzec
-%wywolania funcji
-
-
-%nie dziala
-%wybor bitu
-
 program(X) --> definicje(X).
 
 definicje(X) --> definicja(Res1),!,  definicje(Res2), { X = [Res1 | Res2]}.
@@ -127,87 +122,146 @@ definicja(X) -->
     { X = def(Name,P,E)}.
 
 
-%dziala
-wzorzec(X) -->
-    ([tokVar(Var)],( [tokComma],!,  wzorzec(Res2), {X = pair(no, var(no,Var), Res2)}
-                   ; [], {X = var(no, Var)})
+wzorzec(X) --> wzorzec2(W1), [tokComma], !, wzorzec(W2),{X = pair(no,W1,W2)}.
+wzorzec(X) --> wzorzec2(X).
 
-    ;[tokUnderline], !, {X = empty(no)}
-
-    ;[tokLParen], !, wzorzec(Res), [tokRParen], {X = Res}
-
-    ).
-
-
+wzorzec2(X) --> ( [tokVar(W)],{X = var(no,W)}
+		   ;[tokUnderline],!, {X = wildcard(no)}
+		   ;[tokLParen], !, wzorzec(Res), [tokRParen], {X = Res}).
 wyrazenie(X) -->
     ([tokIf],!, wyrazenie(Expr1), [tokThen], wyrazenie(Expr2), [tokElse], wyrazenie(Expr3), {X = if(no, Expr1, Expr2, Expr3)}
 
     ; [tokLet],!, wzorzec(W), [tokAssgn], wyrazenie(Expr1), [tokIn], wyrazenie(Expr2), {X = let(no, W, Expr1, Expr2)}
 
-    ; wyrazenie_op(W),!, {X = W}
-    
-    ).
+    ; wyrazenie_op1(W),!, {X = W}
 
-wyrazenie_op(X) -->
-    (wyrazenie_proste(W),! , {X = W}
-    
-    ; wyrazenie_op(W1), op_bin(Op),!, wyrazenie_op(W2), {X = op(no, Op, W1, W2)}
-    
-    ; op_un(Op), !, wyrazenie_op(W1), {X = op(no,Op,W1)}
-
-    ;wyrazenie_op(W1), [tokComma],!, wyrazenie_op(W2), {X = pair(no, W1, W2)}
     ).
+wyrazenie_op1(X) --> wyrazenie_op2(W1),op_bin1(_),wyrazenie_op1(W2),{X = pair(no,W1,W2)}.
+
+wyrazenie_op1(X) -->
+  op_un(Op), wyrazenie_op1(W),{X = op(no,Op,W)}.
+
+wyrazenie_op1(X) --> wyrazenie_op2(X).
+
+
+wyrazenie_op2(X) --> wyrazenie_op3(W1), op_bin2(Op), wyrazenie_op3(W2), {X = op(no, Op, W1, W2)}.
+
+wyrazenie_op2(X) -->
+  op_un(Op), wyrazenie_op2(W),{X = op(no,Op,W)}.
+
+
+wyrazenie_op2(X) --> wyrazenie_op3(X).
+
+
+wyrazenie_op3(X) --> wyrazenie_op4(W1), op_bin3(Op), wyrazenie_op3(W2), {X = op(no, Op,W1,W2)}.
+
+wyrazenie_op3(X) -->
+  op_un(Op), wyrazenie_op3(W),{X = op(no,Op,W)}.
+
+
+wyrazenie_op3(X) --> wyrazenie_op4(X).
+
+
+wyrazenie_op4(X) --> wyrazenie_op5(A), wyrazenie_op4(A, X).
+
+wyrazenie_op4(X) -->
+  op_un(Op), wyrazenie_op4(W),{X = op(no,Op,W)}.
+
+wyrazenie_op4(X) --> wyrazenie_op5(X).
+
+wyrazenie_op4(A, X) --> op_bin4(Op), wyrazenie_op5(W), {Acc1 = op(no,Op, A, W)}, wyrazenie_op4(Acc1, X).
+
+wyrazenie_op4(X,X) --> [].
+
+
+
+wyrazenie_op5(X) --> wyrazenie_op6(A), wyrazenie_op5(A, X).
+
+wyrazenie_op5(X) -->
+  op_un(Op), wyrazenie_op5(W),{X = op(no,Op,W)}.
+
+wyrazenie_op5(X) --> wyrazenie_op6(X).
+
+wyrazenie_op5(A, X) --> op_bin5(Op), wyrazenie_op6(W), {Acc1 = op(no,Op, A, W)}, wyrazenie_op5(Acc1, X).
+
+wyrazenie_op5(X,X) --> [].
+
+
+wyrazenie_op6(X) --> wyrazenie_proste(X).
+
+
+op_un('-') --> [tokMinus].
+op_un('#') --> [tokHash].
+op_un('~') --> [tokNot].
+
+op_bin1(',') --> [tokComma].
+
+op_bin2('=') --> [tokAssgn].
+op_bin2('<>') --> [tokNeq].
+op_bin2('<') --> [tokLt].
+op_bin2('>') --> [tokGt].
+op_bin2('<=') --> [tokLeq].
+op_bin2('>=') --> [tokGeq].
+
+op_bin3('@') --> [tokMa].
+
+op_bin4('|') --> [tokOr].
+op_bin4('^') --> [tokPower].
+op_bin4('+') --> [tokPlus].
+op_bin4('-') --> [tokMinus].
+
+op_bin5('&') --> [tokAnd].
+op_bin5('*') --> [tokTimes].
+op_bin5('/') --> [tokDiv].
+op_bin5('%') --> [tokMod].
+
 
 wyrazenie_proste(X) -->
-    ( wyrazenie_atomowe(W),!,([tokLSParen],!, wyrazenie(W1), ([tokDDot],! wyrazenie(W2),[tokRSParen], {X = bitsel(no, W, W1, W2)}
-                                                        ; wyrazenie(W),! [tokRSParen], {X = bitsel(no, W, W) })
-                              ;[],{X = W})
-      
-      %;wybor_bitow(X),!
-    
-    %; wybor_bitu(X),!
-    
+    (wybor_bitow(X),!
 
-    ; [tokLParen],!,  wyrazenie(W), [tokRParen], { X = W}
-    
+    ;wyrazenie_atomowe(W), {X = W}
+
+    ;[tokLParen],!,  wyrazenie(W), [tokRParen], { X = W}
+
     ).
 
-wybor_bitow(X) --> 
-    wyrazenie_proste(Wp), [tokLSParen],! wyrazenie(W1),( [tokDDot],! wyrazenie(W2), {X = bitsel(no, Wp, W1, W2)}
-                                                        ; wyrazenie(W),! [tokRSParen], {X = bitsel(no, Wp, W) }).
+wybor_bitow(X) -->
+   wyrazenie_proste2(Wp), [tokLSParen], wyrazenie(W1),( [tokDDot], wyrazenie(W2),[tokRSParen], {Y = bitsel(no, Wp, W1, W2)}
+                                                        ; [tokRSParen], {Y = bitsel(no, Wp, W1) }),wybor_bitow(Y),{X = Y}.
+
+
+wybor_bitow(X) -->  wyrazenie_proste2(Wp), [tokLSParen],!, wyrazenie(W1),( [tokDDot], wyrazenie(W2),[tokRSParen], {X = bitsel(no, Wp, W1, W2)}
+                                                        ; [tokRSParen], {X = bitsel(no, Wp, W1) }).
+
+
+wyrazenie_proste2(X) -->
+    ( wyrazenie_atomowe(W), {X = W}
+    ; [tokLParen],!,  wyrazenie(W), [tokRParen], { X = W}
+    ).
 
 
 
+wyrazenie_atomowe(X) --> [tokVar(Var)],[tokLParen],!, wyrazenie(W), [tokRParen], {X = call(no, Var, W)}.
 
 wyrazenie_atomowe(X) -->
-    ([tokVar(Var)],([tokLParen],!, wyrazenie(W), [tokRParen], {X = call(no, Var, W)}
-                    ;[],!, {X = var(no, Var)})
-    
+    ([tokVar(Var)], {X = var(no, Var)}
+
     ; [tokNumber(Num)],!, {X = num(no, Num)}
-    
-    %; wywolanie_funkcji(W),!, {X = W}
 
     ; pusty_wektor(W),!, {X = W}
 
     ; pojedynczy_bit(B),!, {X = B}
     ).
 
-wywolanie_funkcji(Call) -->
-    [tokVar(Id)], [tokLParen], wyrazenie(W), [tokRParen], {Call = call(no, Id, W)}.
+pusty_wektor(X) --> [tokLSParen], [tokRSParen],!, {X = empty(no)}.
 
-pusty_wektor(X) --> [tokLParen], [tokRParen],!, {X = empty(no)}.
-
-pojedynczy_bit(X) --> [tokLSParen], wyrazenie(W), [tokRSParen], {X = bit(no, W)}.
+pojedynczy_bit(X) --> [tokLSParen], wyrazenie(W),!, [tokRSParen], {X = bit(no, W)}.
 
 
 
 % Główny predykat rozwiązujący zadanie.
 % UWAGA: to nie jest jeszcze rozwiązanie; należy zmienić jego
 % definicję.
-parse( Codes, Absynt) :-
+parse(_Path,Codes, Absynt) :-
   phrase(lexer(Program), Codes),
   phrase(program(Absynt),Program).
-
-parsuj(Kod, Wynik) :- phrase(program(Wynik),Kod).
-
-lexuj(Kod,Wynik) :- phrase(lexer(Wynik),Kod).

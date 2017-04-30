@@ -1,12 +1,11 @@
- /*
- 
-  lexer:
+/*
+    lexer:
     operators: + - * < <= > >= = <> := ;
     key words: and begin call div do done else end fi if local mod not or procedure program read return then value while write
     comments: char sing sequences started with (* and ended with *)
     identificators: sequences of ASCII letters, digits 0-9, signs _ and '
 */
-/Users/oskar/Uwr/Metody_Programowania/pracownia2/pracownia3/algol1.pl
+
 lexer(Tokens) -->
    blank_sign,
    (  (  ":=",      !, { Token = tokAssgn }
@@ -37,7 +36,7 @@ lexer(Tokens) -->
                                      (end, tokEnd),
                                      (fi, tokFi),
                                      (if, tokIf),
-                                     (local, tokLocal),
+                                     (tokLocal, tokLocal),
                                      (mod, tokMod),
                                      (not, tokNot),
                                      (or, tokOr),
