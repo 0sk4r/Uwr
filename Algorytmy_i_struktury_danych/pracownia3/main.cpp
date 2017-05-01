@@ -1,132 +1,89 @@
-#include "stdio.h"
-#include "cstring"
-
-using namespace std;
+#include <stdio.h>
+#include "string.h"
 
 
-void check() {
+void cyk() {
 
-    int  terminale, nieterminale;
+    int terminale, nieterminale;
     int litery[26][8];
-    char produkcje[8][8][8];
+    int produkcje[8][8];
 
-    char buffer[1002];
-    char tablica[1002][1002][8];
-    char a,b,c;
+    char buffer[1005];
+    int kombinacje[256][256]; //tablica wszystkich mozliwych kombinacji 8 bitow
+    int tablica[1005][1005];
+    char a, b, c;
 
 
-    for (int i = 0; i < 1002;i++){
-        for(int j = 0; j < 1002; j++){
-            for(int x = 0; x<8 ;x++){
-                tablica[i][j][x] = 0;
+    //zerowanie tablic
+    memset(produkcje, 0, sizeof(produkcje));
+    memset(litery, 0, sizeof(litery));
+    memset(tablica, 0, sizeof(tablica));
+    memset(kombinacje,0,sizeof(kombinacje));
+
+    scanf("%d %d\n", &nieterminale, &terminale);
+
+    //wczytanie gramatyki
+    for (int i = 0; i < nieterminale; i++) {
+
+        scanf(" %c %c %c", &a, &b, &c);
+        produkcje[b - 65][c - 65] = produkcje[b - 65][c - 65] | 1 << (a - 65);
+    }
+
+    //tworzenie kombinacji wszystkich bitow
+    for(int x = 0; x<256; x++){
+        for(int y = 0; y < 256; y++){
+            for(int lewa = 0; lewa < 8; lewa++){
+                for(int prawa = 0; prawa < 8; prawa++){
+                    if(((1 << lewa) & x) && ((1 << prawa) & y)){
+                        kombinacje[x][y] = kombinacje[x][y] | produkcje[lewa][prawa];
+                    }
+                }
+
             }
         }
     }
-    //A TU SIE TABLICA ZERUJE
-    for (int i = 0; i < 8;i++){
-        for(int j = 0; j < 8; j++) {
-            for (int x = 8; x < 8; x++) {
-                produkcje[i][j][x] = 0;
-            }
-        }
-    }
 
-    for (int i = 0; i < 26;i++){
-        for(int j = 0; j < 8; j++){
-            litery[i][j]=0;
-        }
-    }
-    scanf("%d %d\n",&nieterminale, &terminale);
-
-
-    //TU SIE WCZYTUJA!!!!!!!!!!!
-    for(int i = 0; i < nieterminale; i++){
-
-        scanf(" %c %c %c",&a,&b,&c);
-        //printf("%c %c %c",a,b,c);
-        produkcje[b-65][c-65][a-65] = 1;
-    }
 
     for(int i = 0; i<terminale; i++){
         scanf(" %c %c",&a,&b);
-        //printf(" %c %c",a,b);
         litery[b-97][a - 65] = 1;
     }
+
     scanf("%s", buffer);
     int len = (int) strlen(buffer);
 
     for(int l = 0; l < len; l++)
     {
         char litera = buffer[l];
-        //printf("%c: ",litera);
         for(int x = 0; x<8; x++) {
             if (litery[litera - 97][x] == 1) {
-                // printf("%c", x + 65);
-                tablica[1][l][x] = 1;
-            }
-        }
-        // printf("\n");
-    }
-
-    //A TU WYPISUJA
-    for(int x = 0; x <8; x++){
-        for(int y = 0; y<8; y++){
-            for(int z = 0; z<8;z++){
-            if(produkcje[y][z][x] == 1) printf("%c --> %c %c\n",x+65,y+65,z+65);
+                tablica[1][l] |= 1 << x;
             }
         }
     }
-//GDZIES WCZESNIEJ SIE PSUJE ============================================================================================
-    for (unsigned row = 2; row <= 2; ++row) {
 
-        for (unsigned column = 0; column < len - row + 1; ++column) {
-            printf("row = %d column = %d ",row,column);
+    for (int row = 2; row <= len; ++row) {
 
-            for (unsigned t = 0; t < row - 1; ++t) {
+        for (int column = 0; column < len - row + 1; ++column) {
 
-                for(int x = 0; x < 8; x++) {
-                        for(int y = 0; y<8; y++) {
-                        char lhs = tablica[t + 1][column][x];
-                        char rhs = tablica[row - 1 - t][column + 1 + t][y];
-                        if (lhs == 1 && rhs == 1) {
-                            for(int z=0; z<8; z++) {
-                                printf("lhs = %c rhs = %c\n", x+65, y+65);
-                                //produkcje X Y <-- Z
-                                int znak = produkcje[x][y][z];
-                                //printf("%c\n", znak);
-                                if (znak == 1){
-                                    tablica[row][column][z] = 1;
-                                    printf("%c",z+65);
-                                }
 
-                            }
-                        }
-                    }
-                }
+            for (int t = 0; t < row - 1; ++t) {
+                int lewaLitera = tablica[t + 1][column];
+                int prawaLitera = tablica[row - 1 - t][column + 1 + t];
+
+                tablica[row][column] = tablica[row][column] | kombinacje[lewaLitera][prawaLitera];
+
 
             }
-
-            for(int z = 0; z<8; z++){
-                if(tablica[row][column][z] ==1){
-                    printf("%c",z+65);
-                }
-            }
-
-            printf("\n");
-                //printf("%d %d , %d %d \n", t + 1, column, row - 1 - t, column + 1 + t);
-
         }
 
     }
-    //printf("test %d", tablica[len][0][0]);
-    if(tablica[len][0][0] == 1)
-    {
-        printf("TAK\n");
-    }
-    else
-        printf("NIE\n");
-    // printf("==============================================");
+
+    if(tablica[len][0] & 1) printf("TAK\n");
+    else printf("NIE\n");
+
 }
+
 
 int main() {
 
@@ -134,7 +91,7 @@ int main() {
 
     scanf("%d\n", &instancje);
 
-    for(int i=0;i< instancje; i++){
-        check();
+    for (int i = 0; i < instancje; i++) {
+        cyk();
     }
 }
