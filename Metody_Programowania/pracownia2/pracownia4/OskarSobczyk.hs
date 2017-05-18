@@ -17,24 +17,52 @@ import Data.List
 -- miało typ int
 -- UWAGA: to nie jest jeszcze rozwiązanie; należy zmienić jej definicję.
 
-type TypeEnv = (Type,Name)
 
-data Type = TBool Bt | TInt Bt deriving Show
+--sprawdza czy element jest w liscie
+inList ::  Eq(a) => a -> [a] -> Bool 
+inList x xs = x `elem` xs 
 
-data Error = String
+type TypeEnv = (String,MType)
+
+data MType = TBool | TInt deriving(Show,Eq)
+
+data Error p = TypeError String	
 
 typecheck :: [Var] -> Expr p -> TypeCheckResult p
 typecheck vars expr = Ok
 
-checker :: [TypeEnv] -> Expr p -> Either (Error p) Type
+checker :: [TypeEnv] -> Expr p -> Either (Error p) MType
 
-checker types (ENum p var) = TInt
+checker types (ENum p var) = Right TInt
 
-checker types (EVar p var) = 
+checker types (EVar p var) = Right (getVariable var types)
 
-checker types (EIf p ebool expr1 expr2) = checker types ebool == bool && (checker types expr1 == checker types expr2)
+checker types (EBool p var) = Right TBool
 
-checker types (ELet p expr1 expr2) = checker types expr1
+checker types (EUnary p op expr) =
+	case op of
+		UNeg -> if (checker types expr) == Right TInt then Right TInt else Right TBool
+		UNot -> if checker types expr == Right TBool then Right TBool else Left Error "kupa kamieni"
+
+checker types (EBinary p op expr1 expr2) =
+	case op of
+		--zapis e1 == e2 == tint nie poprawny
+		BAdd -> if (checker types expr1 == checker types expr2) == Right TInt then Right TInt else Left Error "kupa kamieni"
+		BSub -> if (checker types expr1 == checker types expr2) == Right TInt then Right TInt else Left Error "kupa kamieni"
+		BDiv -> if (checker types expr1 == checker types expr2) == Right TInt then Right TInt else Left Error "kupa kamieni"
+		BMod -> if (checker types expr1 == checker types expr2) == Right TInt then Right TInt else Left Error "kupa kamieni"
+		BMul -> if (checker types expr1 == checker types expr2) == Right TInt then Right TInt else Left Error "kupa kamieni"
+		BGt -> if (checker types expr1 == checker types expr2) == Right TInt then Right TBool else Left Error "kupa kamieni"
+		BGe -> if (checker types expr1 == checker types expr2) == Right TInt then Right TBool else Left Error "kupa kamieni"
+		BLe -> if (checker types expr1 == checker types expr2) == Right TInt then Right TBool else Left Error "kupa kamieni"
+		BLt -> if (checker types expr1 == checker types expr2) == Right TInt then Right TBool else Left Error "kupa kamieni"
+		BEq -> if (checker types expr1 == checker types expr2) == Right TInt then Right TBool else Left Error "kupa kamieni"
+		BAnd -> if (checker types expr1 == checker types expr2) == Right TBool then Right TBool else Left Error "kupa kamieni"
+		BOr -> if (checker types expr1 == checker types expr2) == Right TBool then Right TBool else Left Error "kupa kamieni"
+
+--checker types (EIf p ebool expr1 expr2) = checker types ebool == TBool && (checker types expr1 == checker types expr2)
+
+
 
 -- Funkcja obliczająca wyrażenia
 -- Dla wywołania eval input e przyjmujemy, że dla każdej pary (x, v)
@@ -51,11 +79,11 @@ checker types (ELet p expr1 expr2) = checker types expr1
 --
 
 
-getVariable :: Foldable t => (a -> Bool) -> t a -> Maybe a 
-getVariable zmienne var = snd $ fromJust $ find (matchFirst var) zmienne
+getVariable :: (Eq a) => a -> [(a,b)] -> b 
+getVariable var zmienne = lookup var zmienne
 
 eval :: [(Var,Integer)] -> Expr p -> EvalResult
-eval kupa kupad = RuntimeError
+eval kupa kupad = RuntimeError	
 
 --eval zmienne (EIf p bexpr expr1 expr2) =
 --	if evalBExpr zmienne bexpr
