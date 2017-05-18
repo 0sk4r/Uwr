@@ -1,4 +1,4 @@
--- Parser języka PP4
+¬-- Parser języka PP4
 module Parser (parseExpr, parseProgram) where
 
 import Text.Parsec
@@ -164,7 +164,7 @@ opNoAssoc op exp =
       [ buildBinary <$> op <*> exp
       , return (const id)
       ]
-    buildBinary o e2 pos e1 = EBinary pos o e1 e2
+  x§  buildBinary o e2 pos e1 = EBinary pos o e1 e2
 
 buildExpr pos e1 f = f pos e1
 

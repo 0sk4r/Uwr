@@ -9,15 +9,32 @@ module OskarSobczyk (typecheck, eval) where
 -- Importujemy moduły z definicją języka oraz typami potrzebnymi w zadaniu
 import AST
 import DataTypes
-import qualified Data.Map as M
+import Data.List
 
 -- Funkcja sprawdzająca typy
 -- Dla wywołania typecheck vars e zakładamy, że zmienne występujące
 -- w vars są już zdefiniowane i mają typ int, i oczekujemy by wyrażenia e
 -- miało typ int
 -- UWAGA: to nie jest jeszcze rozwiązanie; należy zmienić jej definicję.
+
+type TypeEnv = (Type,Name)
+
+data Type = TBool Bt | TInt Bt deriving Show
+
+data Error = String
+
 typecheck :: [Var] -> Expr p -> TypeCheckResult p
 typecheck vars expr = Ok
+
+checker :: [TypeEnv] -> Expr p -> Either (Error p) Type
+
+checker types (ENum p var) = TInt
+
+checker types (EVar p var) = 
+
+checker types (EIf p ebool expr1 expr2) = checker types ebool == bool && (checker types expr1 == checker types expr2)
+
+checker types (ELet p expr1 expr2) = checker types expr1
 
 -- Funkcja obliczająca wyrażenia
 -- Dla wywołania eval input e przyjmujemy, że dla każdej pary (x, v)
@@ -26,8 +43,16 @@ typecheck vars expr = Ok
 -- typecheck (map fst input) e = Ok
 -- UWAGA: to nie jest jeszcze rozwiązanie; należy zmienić jej definicję.
 
---getVariable :: [(Var,Integer)] -> String -> Integer
---getVariable zmienne var = M.lookup var M.fromList(zmienne)
+
+--operacje na srodowisku:
+--lookup zwraca typ albo ze nie ma typu
+--extend srodowisko typ zwraca nowe srodowisko
+--empty puste srodowisko
+--
+
+
+getVariable :: Foldable t => (a -> Bool) -> t a -> Maybe a 
+getVariable zmienne var = snd $ fromJust $ find (matchFirst var) zmienne
 
 eval :: [(Var,Integer)] -> Expr p -> EvalResult
 eval kupa kupad = RuntimeError
@@ -51,8 +76,8 @@ evalExpr zmienne (EBinary p op expr1 expr2) =
 		BAdd -> evalExpr zmienne expr1 + evalExpr zmienne expr2
 		BMul -> evalExpr zmienne expr1 * evalExpr zmienne expr2
 		BSub -> evalExpr zmienne expr1 - evalExpr zmienne expr2
-		BDiv -> evalExpr zmienne expr1 `div` evalExpr zmienne expr2
-		BMod -> evalExpr zmienne expr1 `mod` evalExpr zmienne expr2
+		BDiv -> evalExpr zmienne expr1 `div` (let x = evalExpr zmienne expr2 in if x == 0 then error $ "div by 0" else x)
+		BMod -> evalExpr zmienne expr1 `mod` (let x = evalExpr zmienne expr2 in if x == 0 then error $ "mod by 0" else x)
 
 evalExpr zmienne (EIf p bexpr expr1 expr2) =
 	if evalBExpr zmienne bexpr
