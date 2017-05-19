@@ -22,11 +22,16 @@ import Data.List
 inList ::  Eq(a) => a -> [a] -> Bool 
 inList x xs = x `elem` xs 
 
+initList :: [Var] -> [TypeEnv]
+initList lst = [ (x,TInt) | x <- lst ]
+
 type TypeEnv = (String,MType)
 
 data MType = TBool | TInt deriving(Show,Eq)
 
-data Error p = TypeError String	
+data Error p = ErrorType p String deriving Show
+
+
 
 typecheck :: [Var] -> Expr p -> TypeCheckResult p
 typecheck vars expr = Ok
@@ -35,19 +40,175 @@ checker :: [TypeEnv] -> Expr p -> Either (Error p) MType
 
 checker types (ENum p var) = Right TInt
 
-checker types (EVar p var) = Right (getVariable var types)
+checker types (EVar p var) = case getVariable var types of
+	Just x -> Right x
+	otherwise -> Left (ErrorType p "Zmienna nie zainicializowana")
 
 checker types (EBool p var) = Right TBool
 
 checker types (EUnary p op expr) =
 	case op of
-		UNeg -> if (checker types expr) == Right TInt then Right TInt else Right TBool
-		UNot -> if checker types expr == Right TBool then Right TBool else Left Error "kupa kamieni"
+		UNeg -> case checker types expr of 
+			Right TInt -> Right TInt
+			otherwise -> Left (ErrorType p "-bool")
+		UNot -> case checker types expr of 
+			Right TBool -> Right TBool 
+			otherwise -> Left (ErrorType p "~ int")
 
+checker types (EBinary p BAdd expr1 expr2) = 
+	case checker types expr1 of
+		Right TInt -> case checker types expr2 of
+			Right TInt -> Right TInt
+			Left blad -> Left blad
+			otherwise -> Left (ErrorType p "bool + ...")
+		Left blad -> Left blad
+		otherwise -> Left (ErrorType p "... + bool")
+
+checker types (EBinary p BSub expr1 expr2) = 
+	case checker types expr1 of
+		Right TInt -> case checker types expr2 of
+			Right TInt -> Right TInt
+			Left blad -> Left blad
+			otherwise -> Left (ErrorType p "bool - ...")
+		Left blad -> Left blad
+		otherwise -> Left (ErrorType p "... - bool")
+
+
+checker types (EBinary p BMod expr1 expr2) = 
+	case checker types expr1 of
+		Right TInt -> case checker types expr2 of
+			Right TInt -> Right TInt
+			Left blad -> Left blad
+			otherwise -> Left (ErrorType p "bool mod ...")
+		Left blad -> Left blad
+		otherwise -> Left (ErrorType p "... mod bool")
+
+
+checker types (EBinary p BMul expr1 expr2) = 
+	case checker types expr1 of
+		Right TInt -> case checker types expr2 of
+			Right TInt -> Right TInt
+			Left blad -> Left blad
+			otherwise -> Left (ErrorType p "bool * ...")
+		Left blad -> Left blad
+		otherwise -> Left (ErrorType p ".. * bool")
+
+
+
+checker types (EBinary p BDiv expr1 expr2) = 
+	case checker types expr1 of
+		Right TInt -> case checker types expr2 of
+			Right TInt -> Right TInt
+			Left blad -> Left blad
+			otherwise -> Left (ErrorType p "blad")
+		Left blad -> Left blad
+		otherwise -> Left (ErrorType p "blad")
+
+
+
+checker types (EBinary p BGt expr1 expr2) = 
+	case checker types expr1 of
+		Right TInt -> case checker types expr2 of
+			Right TInt -> Right TBool
+			Left blad -> Left blad
+			otherwise -> Left (ErrorType p "blad")
+		Left blad -> Left blad
+		otherwise -> Left (ErrorType p "blad")
+
+
+checker types (EBinary p BGe expr1 expr2) = 
+	case checker types expr1 of
+		Right TInt -> case checker types expr2 of
+			Right TInt -> Right TBool
+			Left blad -> Left blad
+			otherwise -> Left (ErrorType p "blad")
+		Left blad -> Left blad
+		otherwise -> Left (ErrorType p "blad")
+
+
+checker types (EBinary p BLt expr1 expr2) = 
+	case checker types expr1 of
+		Right TInt -> case checker types expr2 of
+			Right TInt -> Right TBool
+			Left blad -> Left blad
+			otherwise -> Left (ErrorType p "blad")
+		Left blad -> Left blad
+		otherwise -> Left (ErrorType p "blad")
+
+
+checker types (EBinary p BLe expr1 expr2) = 
+	case checker types expr1 of
+		Right TInt -> case checker types expr2 of
+			Right TInt -> Right TBool
+			Left blad -> Left blad
+			otherwise -> Left (ErrorType p "blad")
+		Left blad -> Left blad
+		otherwise -> Left (ErrorType p "blad")
+
+
+checker types (EBinary p BEq expr1 expr2) = 
+	case checker types expr1 of
+		Right TInt -> case checker types expr2 of
+			Right TInt -> Right TBool
+			Left blad -> Left blad
+			otherwise -> Left (ErrorType p "blad")
+		Left blad -> Left blad
+		otherwise -> Left (ErrorType p "blad")
+
+
+
+checker types (EBinary p BAnd expr1 expr2) = 
+	case checker types expr1 of
+		Right TBool -> case checker types expr2 of
+			Right TBool -> Right TBool
+			Left blad -> Left blad
+			otherwise -> Left (ErrorType p "blad")
+		Left blad -> Left blad
+		otherwise -> Left (ErrorType p "blad")
+
+checker types (EBinary p BOr expr1 expr2) = 
+	case checker types expr1 of
+		Right TBool -> case checker types expr2 of
+			Right TBool -> Right TBool
+			Left blad -> Left blad
+			otherwise -> Left (ErrorType p "blad")
+		Left blad -> Left blad
+		otherwise -> Left (ErrorType p "blad")
+
+checker types (EIf p exbool expr1 expr2) =
+	case checker types exbool of
+		Right TBool -> case checker types expr1 of
+			Right TInt -> case checker types expr2 of
+				Right TInt -> Right TInt
+				Left blad -> Left blad
+				otherwise -> Left (ErrorType p "not the same type in if")
+			Left blad -> Left blad
+			Right TBool -> case checker types expr2 of
+				Right TBool -> Right TBool
+				Left blad -> Left blad
+				otherwise -> Left (ErrorType p "not the same type in if")
+		Left blad -> Left blad
+		otherwise -> Left (ErrorType p "no bool expr")
+
+
+checker types (ELet p var expr1 expr2) = 
+	case checker types expr1 of
+		Right TBool -> case checker (types ++ [(var,TBool)]) expr2 of
+			Right TBool -> Right TBool
+			Right TInt -> Right TBool
+			Left blad -> Left blad
+		Right TInt -> case checker (types ++ [(var,TInt)]) expr2 of
+			Right TBool -> Right TBool
+			Right TInt -> Right TInt
+			Left blad -> Left blad
+			
+
+
+{-|
 checker types (EBinary p op expr1 expr2) =
 	case op of
 		--zapis e1 == e2 == tint nie poprawny
-		BAdd -> if (checker types expr1 == checker types expr2) == Right TInt then Right TInt else Left Error "kupa kamieni"
+		BAdd -> case (checker types expr1 == checker types expr2) == Right TInt then Right TInt else Left Error "kupa kamieni"
 		BSub -> if (checker types expr1 == checker types expr2) == Right TInt then Right TInt else Left Error "kupa kamieni"
 		BDiv -> if (checker types expr1 == checker types expr2) == Right TInt then Right TInt else Left Error "kupa kamieni"
 		BMod -> if (checker types expr1 == checker types expr2) == Right TInt then Right TInt else Left Error "kupa kamieni"
@@ -59,7 +220,7 @@ checker types (EBinary p op expr1 expr2) =
 		BEq -> if (checker types expr1 == checker types expr2) == Right TInt then Right TBool else Left Error "kupa kamieni"
 		BAnd -> if (checker types expr1 == checker types expr2) == Right TBool then Right TBool else Left Error "kupa kamieni"
 		BOr -> if (checker types expr1 == checker types expr2) == Right TBool then Right TBool else Left Error "kupa kamieni"
-
+-}
 --checker types (EIf p ebool expr1 expr2) = checker types ebool == TBool && (checker types expr1 == checker types expr2)
 
 
@@ -79,8 +240,8 @@ checker types (EBinary p op expr1 expr2) =
 --
 
 
-getVariable :: (Eq a) => a -> [(a,b)] -> b 
-getVariable var zmienne = lookup var zmienne
+getVariable :: (Eq a) => a -> [(a,b)] -> Maybe b 
+getVariable var zmienne = lookup var (reverse zmienne)
 
 eval :: [(Var,Integer)] -> Expr p -> EvalResult
 eval kupa kupad = RuntimeError	

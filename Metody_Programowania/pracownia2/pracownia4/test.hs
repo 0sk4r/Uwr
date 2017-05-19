@@ -1,7 +1,3 @@
 {-# LANGUAGE Safe #-}
-
-getVariable :: (Eq a) => a -> [(a,b)] -> Maybe b 
-getVariable var zmienne = lookup var zmienne
-
-inList :: Eq(a) => a -> [a] -> Bool
-inList x xs = x `elem` xs
+positives :: [a] -> [(a,String)]
+positives lst = [ (x,"test") | x <- lst ]
