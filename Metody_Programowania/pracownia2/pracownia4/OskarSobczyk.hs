@@ -208,12 +208,13 @@ checker types (ELet p var expr1 expr2) =
 	case checker types expr1 of
 		Right TBool -> case checker (types ++ [(var,TBool)]) expr2 of
 			Right TBool -> Right TBool
-			Right TInt -> Right TBool
+			Right TInt -> Right TInt
 			Left blad -> Left blad
 		Right TInt -> case checker (types ++ [(var,TInt)]) expr2 of
 			Right TBool -> Right TBool
 			Right TInt -> Right TInt
 			Left blad -> Left blad
+		Left blad -> Left blad
 			
 
 -- Funkcja obliczająca wyrażenia
@@ -238,7 +239,9 @@ getVariable :: (Eq a) => a -> [(a,b)] -> Maybe b
 getVariable var zmienne = lookup var (reverse zmienne)
 
 eval :: [(Var,Integer)] -> Expr p -> EvalResult
-eval kupa kupad = RuntimeError	
+eval var expr = case evalExpr var [] expr of
+	Right val -> Value val
+	Left blad -> RuntimeError
 
 --eval zmienne (EIf p bexpr expr1 expr2) =
 --	if evalBExpr zmienne bexpr
@@ -253,99 +256,178 @@ type Mbool = Bool
 
 evalExpr :: [(Var,Integer)] -> [(Var,String)] -> Expr p -> Either String Integer
 
-evalExpr zmienneint zmiennebool (ENum p var) = Right var
+evalExpr varint zmiennebool (ENum p var) = Right var
 
-evalExpr zmienneint zmiennebool (EBool p var) =
+evalExpr varint zmiennebool (EBool p var) =
 	case var of
 		True -> Left "true"
 		False -> Left "false"
 
-evalExpr zmienneint zmiennebool (EVar p var) = case getVariable var zmiennebool of
+evalExpr varint zmiennebool (EVar p var) = case getVariable var zmiennebool of
 	Just x -> Left x
-	otherwise -> case getVariable var zmienneint of
+	otherwise -> case getVariable var varint of
 		Just x -> Right x
 		otherwise -> Left "var undefined"
 
-evalExpr zmienneint zmiennebool (EUnary p UNeg expr) =
-	case evalExpr zmienneint zmiennebool expr of
+-----------------------
+--Operatory unarne
+-----------------------
+
+
+evalExpr varint zmiennebool (EUnary p UNeg expr) =
+	case evalExpr varint zmiennebool expr of
 		Right val -> Right (-val)
 		Left blad -> Left blad
 
-evalExpr zmienneint zmiennebool (EUnary p UNot expr) =
-	case evalExpr zmienneint zmiennebool expr of
+evalExpr varint zmiennebool (EUnary p UNot expr) =
+	case evalExpr varint zmiennebool expr of
 		Left "true" -> Left "false"
 		Left "false" -> Left "true"
 		Left blad -> Left blad
 
-evalExpr zmienneint zmiennebool (EBinary p BAdd expr1 expr2) =
-	case evalExpr zmienneint zmiennebool expr1 of
-		Right val1 -> case evalExpr zmienneint zmiennebool expr2 of
+
+-----------------------
+--Operatory arytmetyczne
+-----------------------
+
+evalExpr varint zmiennebool (EBinary p BAdd expr1 expr2) =
+	case evalExpr varint zmiennebool expr1 of
+		Right val1 -> case evalExpr varint zmiennebool expr2 of
 			Right val2 -> Right (val1 + val2)
 			Left blad -> Left blad
 		Left blad -> Left blad
 
-evalExpr zmienneint zmiennebool (EBinary p BSub expr1 expr2) =
-	case evalExpr zmienneint zmiennebool expr1 of
-		Right val1 -> case evalExpr zmienneint zmiennebool expr2 of
+evalExpr varint zmiennebool (EBinary p BSub expr1 expr2) =
+	case evalExpr varint zmiennebool expr1 of
+		Right val1 -> case evalExpr varint zmiennebool expr2 of
 			Right val2 -> Right (val1 - val2)
 			Left blad -> Left blad
 		Left blad -> Left blad
 
-evalExpr zmienneint zmiennebool (EBinary p BMul expr1 expr2) =
-	case evalExpr zmienneint zmiennebool expr1 of
-		Right val1 -> case evalExpr zmienneint zmiennebool expr2 of
+evalExpr varint zmiennebool (EBinary p BMul expr1 expr2) =
+	case evalExpr varint zmiennebool expr1 of
+		Right val1 -> case evalExpr varint zmiennebool expr2 of
 			Right val2 -> Right (val1 * val2)
 			Left blad -> Left blad
 		Left blad -> Left blad
 
-evalExpr zmienneint zmiennebool (EBinary p BDiv expr1 expr2) =
-	case evalExpr zmienneint zmiennebool expr1 of
-		Right val1 -> case evalExpr zmienneint zmiennebool expr2 of
-			Right val2 -> Right (val1 + val2)
+evalExpr varint zmiennebool (EBinary p BDiv expr1 expr2) =
+	case evalExpr varint zmiennebool expr1 of
+		Right val1 -> case evalExpr varint zmiennebool expr2 of
+			Right 0 -> Left "div by 0"
+			Right val2 -> Right (val1 `div` val2)
 			Left blad -> Left blad
 		Left blad -> Left blad
 
-{-|
-
-evalExpr zmienne (EUnary p UNeg expr) = 
-	case evalExpr zmienne expr of
-		Right val -> Right val
+evalExpr varint zmiennebool (EBinary p BMod expr1 expr2) =
+	case evalExpr varint zmiennebool expr1 of
+		Right val1 -> case evalExpr varint zmiennebool expr2 of
+			Right 0 -> Left "div by 0"
+			Right val2 -> Right (val1 `mod` val2)
+			Left blad -> Left blad
 		Left blad -> Left blad
 
 
-evalExpr zmienne (EUnary p  UNeg expr) = (- evalExpr zmienne expr)
+-----------------------
+--Operatory logiczne
+-----------------------
+evalExpr varint zmiennebool (EBinary p BAnd expr1 expr2) =
+	case evalExpr varint zmiennebool expr1 of
+		Left "true" -> case evalExpr varint zmiennebool expr2 of
+			Left "true" -> Left "true"
+			Left "false" -> Left "false"
+			Left blad -> Left blad
+		Left "false" -> case evalExpr varint zmiennebool expr2 of
+			Left "true" -> Left "false"
+			Left "false" -> Left "false"
+			Left blad -> Left blad
 
-evalExpr zmienne (EBinary p op expr1 expr2) =
-	case op of
-		BAdd -> evalExpr zmienne expr1 + evalExpr zmienne expr2
-		BMul -> evalExpr zmienne expr1 * evalExpr zmienne expr2
-		BSub -> evalExpr zmienne expr1 - evalExpr zmienne expr2
-		BDiv -> evalExpr zmienne expr1 `div` (let x = evalExpr zmienne expr2 in if x == 0 then error $ "div by 0" else x)
-		BMod -> evalExpr zmienne expr1 `mod` (let x = evalExpr zmienne expr2 in if x == 0 then error $ "mod by 0" else x)
-
-evalExpr zmienne (EIf p bexpr expr1 expr2) =
-	if evalBExpr zmienne bexpr
-		then evalExpr zmienne expr1
-		else evalExpr zmienne expr2
+evalExpr varint zmiennebool (EBinary p BOr expr1 expr2) =
+	case evalExpr varint zmiennebool expr1 of
+		Left "true" -> case evalExpr varint zmiennebool expr2 of
+			Left "true" -> Left "true"
+			Left "false" -> Left "true"
+			Left blad -> Left blad
+		Left "false" -> case evalExpr varint zmiennebool expr2 of
+			Left "true" -> Left "true"
+			Left "false" -> Left "false"
+			Left blad -> Left blad
 
 
---evalExpr zmienne (ELet p var expr1 expr2) =
---	evalExpr (zmienne ++ [(var,evalExpr zmienne expr1)]) expr2
+-----------------------
+--Operatory porownania
+-----------------------
 
-evalBExpr :: [(Var,Integer)] -> Expr p -> Bool
+evalExpr varint zmiennebool (EBinary p BLt expr1 expr2) =
+	case evalExpr varint zmiennebool expr1 of
+		Right val1 -> case evalExpr varint zmiennebool expr2 of
+			Right val2 -> if val1 < val2 then Left "true" else Left "false"
+			Left blad -> Left blad
+		Left blad -> Left blad
 
-evalBExpr zmienne (EBool p var) = var
+evalExpr varint zmiennebool (EBinary p BLe expr1 expr2) =
+	case evalExpr varint zmiennebool expr1 of
+		Right val1 -> case evalExpr varint zmiennebool expr2 of
+			Right val2 -> if val1 <= val2 then Left "true" else Left "false"
+			Left blad -> Left blad
+		Left blad -> Left blad
 
-evalBExpr zmienne (EUnary p UNot expr) = not (evalBExpr zmienne expr)
+evalExpr varint zmiennebool (EBinary p BGt expr1 expr2) =
+	case evalExpr varint zmiennebool expr1 of
+		Right val1 -> case evalExpr varint zmiennebool expr2 of
+			Right val2 -> if val1 > val2 then Left "true" else Left "false"
+			Left blad -> Left blad
+		Left blad -> Left blad
 
-evalBExpr zmienne (EBinary p op expr1 expr2) =
-	case op of
-		BEq -> evalExpr zmienne expr1 == evalExpr zmienne expr2
-		BNeq -> evalExpr zmienne expr1 /= evalExpr zmienne expr2
-		BGe -> evalExpr zmienne expr1 >= evalExpr zmienne expr2
-		BGt -> evalExpr zmienne expr1 > evalExpr zmienne expr2
-		BLe -> evalExpr zmienne expr1 <= evalExpr zmienne expr2
-		BLt -> evalExpr zmienne expr1 < evalExpr zmienne expr2
-		BOr -> evalBExpr zmienne expr1 || evalBExpr zmienne expr2
-		BAnd -> evalBExpr zmienne expr1 && evalBExpr zmienne expr2
-		-}
+evalExpr varint zmiennebool (EBinary p BGe expr1 expr2) =
+	case evalExpr varint zmiennebool expr1 of
+		Right val1 -> case evalExpr varint zmiennebool expr2 of
+			Right val2 -> if val1 >= val2 then Left "true" else Left "false"
+			Left blad -> Left blad
+		Left blad -> Left blad
+
+
+evalExpr varint zmiennebool (EBinary p BEq expr1 expr2) =
+	case evalExpr varint zmiennebool expr1 of
+		Right val1 -> case evalExpr varint zmiennebool expr2 of
+			Right val2 -> if val1 == val2 then Left "true" else Left "false"
+			Left blad -> Left blad
+		Left blad -> Left blad
+
+evalExpr varint zmiennebool (EBinary p BNeq expr1 expr2) =
+	case evalExpr varint zmiennebool expr1 of
+		Right val1 -> case evalExpr varint zmiennebool expr2 of
+			Right val2 -> if val1 /= val2 then Left "true" else Left "false"
+			Left blad -> Left blad
+		Left blad -> Left blad
+
+-----------------------
+--If
+-----------------------
+
+evalExpr varint zmiennebool (EIf p exprbool expr1 expr2) =
+	case evalExpr varint zmiennebool exprbool of
+		Left "true" -> case evalExpr varint zmiennebool expr1 of
+			Right val -> Right val
+			Left blad -> Left blad
+		Left "false" -> case evalExpr varint zmiennebool expr2 of
+			Right val -> Right val
+			Left blad -> Left blad
+		Left blad -> Left blad
+
+-----------------------
+--Let
+-----------------------
+
+evalExpr varint zmiennebool (ELet p var expr1 expr2) =
+	case evalExpr varint zmiennebool expr1 of
+		Left "true" -> case evalExpr varint (zmiennebool ++ [(var,"true")]) expr2 of
+			Right val -> Right val
+			Left blad -> Left blad
+		Left "false" -> case evalExpr varint (zmiennebool ++ [(var,"false")]) expr2 of
+			Right val -> Right val
+			Left blad -> Left blad
+		Right val -> case evalExpr (varint ++ [(var,val)]) zmiennebool expr2 of
+			Right val -> Right val
+			Left blad -> Left blad
+		Left blad -> Left blad
