@@ -8,7 +8,7 @@ type ErrorMessage = String
 -- Wynik spradzania typów
 data TypeCheckResult p
   = Ok                   -- Program jest poprawny
-  | Error p ErrorMessage -- Błąd na pozycji p o treści ErrorMessage
+  | Error p  ErrorMessage -- Błąd na pozycji p o treści ErrorMessage
   deriving (Eq, Show)
 
 -- Wynik obliczania programu
