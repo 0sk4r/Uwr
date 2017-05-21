@@ -1568,5 +1568,6 @@ tests = [ Test "undefVar" (SrcString "x") TypeError
   , Test "dzielnik2lub3"(SrcFile "dzielnik2lub3.pp4") (Eval[15] (Value 3))
   , Test "dzielnik2lub3 2"(SrcFile "dzielnik2lub3.pp4") (Eval[18] (Value 6))
   , Test "err"(SrcFile "err.pp4") TypeError
+  , Test "trololool" (SrcString "let x = 5 in let x = true in if x then 0 else 1") (Eval[] (Value 0))
 
   ]

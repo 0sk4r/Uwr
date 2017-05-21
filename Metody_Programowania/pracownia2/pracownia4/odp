@@ -92,7 +92,7 @@ nested_let      : ok
 prac1           : ok
 lazyIf_dependent_from_var: ok
 bool_variable   : ok
-changing_type   : wrong answer
+changing_type   : ok
 changing_type2  : ok
 singleVar       : ok
 not             : ok
@@ -906,7 +906,7 @@ nested_let      : ok
 prac1           : ok
 lazyIf_dependent_from_var: ok
 bool_variable   : ok
-changing_type   : wrong answer
+changing_type   : ok
 changing_type2  : ok
 singleVar       : ok
 not             : ok

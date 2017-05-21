@@ -1,3 +1,7 @@
+----------------------------
+-- Oskar Sobczyk
+----------------------------
+
 -- Wymagamy, by moduł zawierał tylko bezpieczne funkcje
 {-# LANGUAGE Safe #-}
 -- Definiujemy moduł zawierający rozwiązanie.
@@ -22,6 +26,8 @@ import Data.List
 inList ::  Eq(a) => a -> [a] -> Bool 
 inList x xs = x `elem` xs 
 
+
+--Inicjuje środowisko
 initList :: [Var] -> [TypeEnv]
 initList lst = [ (x,TInt) | x <- lst ]
 
@@ -34,9 +40,10 @@ data Error p = ErrorType p String deriving Show
 typecheck :: [Var] -> Expr p -> TypeCheckResult p
 
 typecheck vars expr = 
+	--initlist inicjuje liste [(var,TInt)]
 	case checker (initList vars) expr of
 		Right TInt -> Ok
-		Left (ErrorType p blad) -> Error p blad
+		Left (ErrorType p err) -> Error p err
 		otherwise -> Error  (getData expr) "program not return int"
 
 
@@ -44,58 +51,58 @@ checker :: [TypeEnv] -> Expr p -> Either (Error p) MType
 
 checker types (ENum p var) = Right TInt
 
+checker types (EBool p var) = Right TBool
+
 checker types (EVar p var) = case getVariable var types of
 	Just x -> Right x
 	otherwise -> Left (ErrorType p ("undefined var: " ++ var))
-
-checker types (EBool p var) = Right TBool
 
 checker types (EUnary p op expr) =
 	case op of
 		UNeg -> case checker types expr of 
 			Right TInt -> Right TInt
-			otherwise -> Left (ErrorType p "-bool")
+			otherwise -> Left (ErrorType p "-bool (expected int)")
 		UNot -> case checker types expr of 
 			Right TBool -> Right TBool 
-			otherwise -> Left (ErrorType p "~int")
+			otherwise -> Left (ErrorType p "~int (expected bool)")
 
 checker types (EBinary p BAdd expr1 expr2) = 
 	case checker types expr1 of
 		Right TInt -> case checker types expr2 of
 			Right TInt -> Right TInt
-			Left blad -> Left blad
-			otherwise -> Left (ErrorType p "bool + ...")
-		Left blad -> Left blad
-		otherwise -> Left (ErrorType p "... + bool")
+			Left err -> Left err
+			otherwise -> Left (ErrorType p "bool (expected int) + ...")
+		Left err -> Left err
+		otherwise -> Left (ErrorType p "... + bool (expected int)")
 
 checker types (EBinary p BSub expr1 expr2) = 
 	case checker types expr1 of
 		Right TInt -> case checker types expr2 of
 			Right TInt -> Right TInt
-			Left blad -> Left blad
-			otherwise -> Left (ErrorType p "bool - ...")
-		Left blad -> Left blad
-		otherwise -> Left (ErrorType p "... - bool")
+			Left err -> Left err
+			otherwise -> Left (ErrorType p "bool (expected int) - ...")
+		Left err -> Left err
+		otherwise -> Left (ErrorType p "... - bool (expected int)")
 
 
 checker types (EBinary p BMod expr1 expr2) = 
 	case checker types expr1 of
 		Right TInt -> case checker types expr2 of
 			Right TInt -> Right TInt
-			Left blad -> Left blad
-			otherwise -> Left (ErrorType p "bool mod ...")
-		Left blad -> Left blad
-		otherwise -> Left (ErrorType p "... mod bool")
+			Left err -> Left err
+			otherwise -> Left (ErrorType p "bool (expected int) mod ...")
+		Left err -> Left err
+		otherwise -> Left (ErrorType p "... mod bool (expected int)")
 
 
 checker types (EBinary p BMul expr1 expr2) = 
 	case checker types expr1 of
 		Right TInt -> case checker types expr2 of
 			Right TInt -> Right TInt
-			Left blad -> Left blad
-			otherwise -> Left (ErrorType p "bool * ...")
-		Left blad -> Left blad
-		otherwise -> Left (ErrorType p ".. * bool")
+			Left err -> Left err
+			otherwise -> Left (ErrorType p "bool (expected int) * ...")
+		Left err -> Left err
+		otherwise -> Left (ErrorType p ".. * bool (expected int)")
 
 
 
@@ -103,10 +110,10 @@ checker types (EBinary p BDiv expr1 expr2) =
 	case checker types expr1 of
 		Right TInt -> case checker types expr2 of
 			Right TInt -> Right TInt
-			Left blad -> Left blad
-			otherwise -> Left (ErrorType p "bool div ...")
-		Left blad -> Left blad
-		otherwise -> Left (ErrorType p "... div bool")
+			Left err -> Left err
+			otherwise -> Left (ErrorType p "bool (expected int) div ...")
+		Left err -> Left err
+		otherwise -> Left (ErrorType p "... div bool (expected int)")
 
 
 
@@ -114,59 +121,59 @@ checker types (EBinary p BGt expr1 expr2) =
 	case checker types expr1 of
 		Right TInt -> case checker types expr2 of
 			Right TInt -> Right TBool
-			Left blad -> Left blad
-			otherwise -> Left (ErrorType p "int > bool")
-		Left blad -> Left blad
-		otherwise -> Left (ErrorType p "bool < ...")
+			Left err -> Left err
+			otherwise -> Left (ErrorType p "... > bool (expected int)")
+		Left err -> Left err
+		otherwise -> Left (ErrorType p "bool (expected int) < ...")
 
 
 checker types (EBinary p BGe expr1 expr2) = 
 	case checker types expr1 of
 		Right TInt -> case checker types expr2 of
 			Right TInt -> Right TBool
-			Left blad -> Left blad
-			otherwise -> Left (ErrorType p "... => bool")
-		Left blad -> Left blad
-		otherwise -> Left (ErrorType p "bool <= ...")
+			Left err -> Left err
+			otherwise -> Left (ErrorType p "... => bool (expected int)")
+		Left err -> Left err
+		otherwise -> Left (ErrorType p "bool (expected int) <= ...")
 
 
 checker types (EBinary p BLt expr1 expr2) = 
 	case checker types expr1 of
 		Right TInt -> case checker types expr2 of
 			Right TInt -> Right TBool
-			Left blad -> Left blad
-			otherwise -> Left (ErrorType p "... < bool")
-		Left blad -> Left blad
-		otherwise -> Left (ErrorType p "bool < ...")
+			Left err -> Left err
+			otherwise -> Left (ErrorType p "... < bool (expected int)")
+		Left err -> Left err
+		otherwise -> Left (ErrorType p "bool (expected int) < ...")
 
 
 checker types (EBinary p BLe expr1 expr2) = 
 	case checker types expr1 of
 		Right TInt -> case checker types expr2 of
 			Right TInt -> Right TBool
-			Left blad -> Left blad
-			otherwise -> Left (ErrorType p "... <= bool")
-		Left blad -> Left blad
-		otherwise -> Left (ErrorType p "bool <= ...")
+			Left err -> Left err
+			otherwise -> Left (ErrorType p "... <= bool (expected int)")
+		Left err -> Left err
+		otherwise -> Left (ErrorType p "bool (expected int) <= ...")
 
 
 checker types (EBinary p BEq expr1 expr2) = 
 	case checker types expr1 of
 		Right TInt -> case checker types expr2 of
 			Right TInt -> Right TBool
-			Left blad -> Left blad
-			otherwise -> Left (ErrorType p "... = bool")
-		Left blad -> Left blad
-		otherwise -> Left (ErrorType p "bool = ...")
+			Left err -> Left err
+			otherwise -> Left (ErrorType p "... = bool (expected int)")
+		Left err -> Left err
+		otherwise -> Left (ErrorType p "bool (expected int) = ...")
 
 checker types (EBinary p BNeq expr1 expr2) = 
 	case checker types expr1 of
 		Right TInt -> case checker types expr2 of
 			Right TInt -> Right TBool
-			Left blad -> Left blad
-			otherwise -> Left (ErrorType p "... <> bool")
-		Left blad -> Left blad
-		otherwise -> Left (ErrorType p "bool <> ...")
+			Left err -> Left err
+			otherwise -> Left (ErrorType p "... <> bool (expected int)")
+		Left err -> Left err
+		otherwise -> Left (ErrorType p "bool (expected int) <> ...")
 
 
 
@@ -174,33 +181,33 @@ checker types (EBinary p BAnd expr1 expr2) =
 	case checker types expr1 of
 		Right TBool -> case checker types expr2 of
 			Right TBool -> Right TBool
-			Left blad -> Left blad
-			otherwise -> Left (ErrorType p "... and int")
-		Left blad -> Left blad
-		otherwise -> Left (ErrorType p "int and ...")
+			Left err -> Left err
+			otherwise -> Left (ErrorType p "... and int (expected bool)")
+		Left err -> Left err
+		otherwise -> Left (ErrorType p "int (expected bool) and ...")
 
 checker types (EBinary p BOr expr1 expr2) = 
 	case checker types expr1 of
 		Right TBool -> case checker types expr2 of
 			Right TBool -> Right TBool
-			Left blad -> Left blad
-			otherwise -> Left (ErrorType p "... or int")
-		Left blad -> Left blad
-		otherwise -> Left (ErrorType p "int or ...")
+			Left err -> Left err
+			otherwise -> Left (ErrorType p "... or int (expected bool)")
+		Left err -> Left err
+		otherwise -> Left (ErrorType p "int (expected bool) or ...")
 
 checker types (EIf p exbool expr1 expr2) =
 	case checker types exbool of
 		Right TBool -> case checker types expr1 of
 			Right TInt -> case checker types expr2 of
 				Right TInt -> Right TInt
-				Left blad -> Left blad
-				otherwise -> Left (ErrorType p "int and bool in if")
-			Left blad -> Left blad
+				Left err -> Left err
+				otherwise -> Left (ErrorType p "int and bool (expected int) in if")
+			Left err -> Left err
 			Right TBool -> case checker types expr2 of
 				Right TBool -> Right TBool
-				Left blad -> Left blad
-				otherwise -> Left (ErrorType p "bool and int in if")
-		Left blad -> Left blad
+				Left err -> Left err
+				otherwise -> Left (ErrorType p "bool and int (expected bool) in if")
+		Left err -> Left err
 		otherwise -> Left (ErrorType p "no bool expr in bool expr")
 
 
@@ -209,12 +216,16 @@ checker types (ELet p var expr1 expr2) =
 		Right TBool -> case checker (types ++ [(var,TBool)]) expr2 of
 			Right TBool -> Right TBool
 			Right TInt -> Right TInt
-			Left blad -> Left blad
+			Left err -> Left err
 		Right TInt -> case checker (types ++ [(var,TInt)]) expr2 of
 			Right TBool -> Right TBool
 			Right TInt -> Right TInt
-			Left blad -> Left blad
-		Left blad -> Left blad
+			Left err -> Left err
+		Left err -> Left err
+
+
+
+
 			
 
 -- Funkcja obliczająca wyrażenia
@@ -231,9 +242,7 @@ checker types (ELet p var expr1 expr2) =
 --empty puste srodowisko
 --
 
-data RError p = ErrorRun p String deriving Show
-
-
+--zwraca dla x zwraca z tablicy par [(x,y)] y, zwraca najswiezsza zmienna (od tylu)
 getVariable :: (Eq a) => a -> [(a,b)] -> Maybe b 
 
 getVariable var zmienne = lookup var (reverse zmienne)
@@ -241,19 +250,9 @@ getVariable var zmienne = lookup var (reverse zmienne)
 eval :: [(Var,Integer)] -> Expr p -> EvalResult
 eval var expr = case evalExpr var [] expr of
 	Right val -> Value val
-	Left blad -> RuntimeError
-
---eval zmienne (EIf p bexpr expr1 expr2) =
---	if evalBExpr zmienne bexpr
---		then evalExpr zmienne expr1
---		else evalExpr zmienne expr2
-
-data EType = Integer | Bool deriving(Show,Eq)
-
-type Mint = Integer
-type Mbool = Bool
-
-
+	Left err -> RuntimeError
+	
+--evalExpr zwraca Integer lub string. Strign bedzie reprezentowac wartosci boolowskie "true"/"false" lub err
 evalExpr :: [(Var,Integer)] -> [(Var,String)] -> Expr p -> Either String Integer
 
 evalExpr varint varbool (ENum p var) = Right var
@@ -277,13 +276,13 @@ evalExpr varint varbool (EVar p var) = case getVariable var varbool of
 evalExpr varint varbool (EUnary p UNeg expr) =
 	case evalExpr varint varbool expr of
 		Right val -> Right (-val)
-		Left blad -> Left blad
+		Left err -> Left err
 
 evalExpr varint varbool (EUnary p UNot expr) =
 	case evalExpr varint varbool expr of
 		Left "true" -> Left "false"
 		Left "false" -> Left "true"
-		Left blad -> Left blad
+		Left err -> Left err
 
 
 -----------------------
@@ -294,38 +293,38 @@ evalExpr varint varbool (EBinary p BAdd expr1 expr2) =
 	case evalExpr varint varbool expr1 of
 		Right val1 -> case evalExpr varint varbool expr2 of
 			Right val2 -> Right (val1 + val2)
-			Left blad -> Left blad
-		Left blad -> Left blad
+			Left err -> Left err
+		Left err -> Left err
 
 evalExpr varint varbool (EBinary p BSub expr1 expr2) =
 	case evalExpr varint varbool expr1 of
 		Right val1 -> case evalExpr varint varbool expr2 of
 			Right val2 -> Right (val1 - val2)
-			Left blad -> Left blad
-		Left blad -> Left blad
+			Left err -> Left err
+		Left err -> Left err
 
 evalExpr varint varbool (EBinary p BMul expr1 expr2) =
 	case evalExpr varint varbool expr1 of
 		Right val1 -> case evalExpr varint varbool expr2 of
 			Right val2 -> Right (val1 * val2)
-			Left blad -> Left blad
-		Left blad -> Left blad
+			Left err -> Left err
+		Left err -> Left err
 
 evalExpr varint varbool (EBinary p BDiv expr1 expr2) =
 	case evalExpr varint varbool expr1 of
 		Right val1 -> case evalExpr varint varbool expr2 of
 			Right 0 -> Left "div by 0"
 			Right val2 -> Right (val1 `div` val2)
-			Left blad -> Left blad
-		Left blad -> Left blad
+			Left err -> Left err
+		Left err -> Left err
 
 evalExpr varint varbool (EBinary p BMod expr1 expr2) =
 	case evalExpr varint varbool expr1 of
 		Right val1 -> case evalExpr varint varbool expr2 of
-			Right 0 -> Left "div by 0"
+			Right 0 -> Left "mod by 0"
 			Right val2 -> Right (val1 `mod` val2)
-			Left blad -> Left blad
-		Left blad -> Left blad
+			Left err -> Left err
+		Left err -> Left err
 
 
 -----------------------
@@ -336,22 +335,22 @@ evalExpr varint varbool (EBinary p BAnd expr1 expr2) =
 		Left "true" -> case evalExpr varint varbool expr2 of
 			Left "true" -> Left "true"
 			Left "false" -> Left "false"
-			Left blad -> Left blad
+			Left err -> Left err
 		Left "false" -> case evalExpr varint varbool expr2 of
 			Left "true" -> Left "false"
 			Left "false" -> Left "false"
-			Left blad -> Left blad
+			Left err -> Left err
 
 evalExpr varint varbool (EBinary p BOr expr1 expr2) =
 	case evalExpr varint varbool expr1 of
 		Left "true" -> case evalExpr varint varbool expr2 of
 			Left "true" -> Left "true"
 			Left "false" -> Left "true"
-			Left blad -> Left blad
+			Left err -> Left err
 		Left "false" -> case evalExpr varint varbool expr2 of
 			Left "true" -> Left "true"
 			Left "false" -> Left "false"
-			Left blad -> Left blad
+			Left err -> Left err
 
 
 -----------------------
@@ -362,44 +361,44 @@ evalExpr varint varbool (EBinary p BLt expr1 expr2) =
 	case evalExpr varint varbool expr1 of
 		Right val1 -> case evalExpr varint varbool expr2 of
 			Right val2 -> if val1 < val2 then Left "true" else Left "false"
-			Left blad -> Left blad
-		Left blad -> Left blad
+			Left err -> Left err
+		Left err -> Left err
 
 evalExpr varint varbool (EBinary p BLe expr1 expr2) =
 	case evalExpr varint varbool expr1 of
 		Right val1 -> case evalExpr varint varbool expr2 of
 			Right val2 -> if val1 <= val2 then Left "true" else Left "false"
-			Left blad -> Left blad
-		Left blad -> Left blad
+			Left err -> Left err
+		Left err -> Left err
 
 evalExpr varint varbool (EBinary p BGt expr1 expr2) =
 	case evalExpr varint varbool expr1 of
 		Right val1 -> case evalExpr varint varbool expr2 of
 			Right val2 -> if val1 > val2 then Left "true" else Left "false"
-			Left blad -> Left blad
-		Left blad -> Left blad
+			Left err -> Left err
+		Left err -> Left err
 
 evalExpr varint varbool (EBinary p BGe expr1 expr2) =
 	case evalExpr varint varbool expr1 of
 		Right val1 -> case evalExpr varint varbool expr2 of
 			Right val2 -> if val1 >= val2 then Left "true" else Left "false"
-			Left blad -> Left blad
-		Left blad -> Left blad
+			Left err -> Left err
+		Left err -> Left err
 
 
 evalExpr varint varbool (EBinary p BEq expr1 expr2) =
 	case evalExpr varint varbool expr1 of
 		Right val1 -> case evalExpr varint varbool expr2 of
 			Right val2 -> if val1 == val2 then Left "true" else Left "false"
-			Left blad -> Left blad
-		Left blad -> Left blad
+			Left err -> Left err
+		Left err -> Left err
 
 evalExpr varint varbool (EBinary p BNeq expr1 expr2) =
 	case evalExpr varint varbool expr1 of
 		Right val1 -> case evalExpr varint varbool expr2 of
 			Right val2 -> if val1 /= val2 then Left "true" else Left "false"
-			Left blad -> Left blad
-		Left blad -> Left blad
+			Left err -> Left err
+		Left err -> Left err
 
 -----------------------
 --If
@@ -409,11 +408,11 @@ evalExpr varint varbool (EIf p exprbool expr1 expr2) =
 	case evalExpr varint varbool exprbool of
 		Left "true" -> case evalExpr varint varbool expr1 of
 			Right val -> Right val
-			Left blad -> Left blad
+			Left err -> Left err
 		Left "false" -> case evalExpr varint varbool expr2 of
 			Right val -> Right val
-			Left blad -> Left blad
-		Left blad -> Left blad
+			Left err -> Left err
+		Left err -> Left err
 
 -----------------------
 --Let
@@ -423,11 +422,13 @@ evalExpr varint varbool (ELet p var expr1 expr2) =
 	case evalExpr varint varbool expr1 of
 		Left "true" -> case evalExpr varint (varbool ++ [(var,"true")]) expr2 of
 			Right val -> Right val
-			Left blad -> Left blad
+			Left err -> Left err
 		Left "false" -> case evalExpr varint (varbool ++ [(var,"false")]) expr2 of
 			Right val -> Right val
-			Left blad -> Left blad
-		Right val -> case evalExpr (varint ++ [(var,val)]) varbool expr2 of
+			Left err -> Left err
+		--taki sposob dziala poniewaz kiedy szukamy zmiennej najpierw przeszukujemu tablice z boolami a dopiero potem z intami
+		--wiec usuwamy z tablicy booli wczesniejsze wystapienia var. Przy boolach nie trzeba tego robic poniewaz zawsze bierzemy ostatnia wartosc w tablicy (najswiezsza)
+		Right val -> case evalExpr (varint ++ [(var,val)]) (delete (var,"true") (delete (var,"false") varbool)) expr2 of
 			Right val -> Right val
-			Left blad -> Left blad
-		Left blad -> Left blad
+			Left err -> Left err
+		Left err -> Left err
