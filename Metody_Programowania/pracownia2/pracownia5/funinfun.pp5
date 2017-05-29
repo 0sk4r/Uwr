@@ -1,0 +1,4 @@
+fun foo(u:unit):int = 1
+fun bar(u:unit):int = foo()
+in
+bar()

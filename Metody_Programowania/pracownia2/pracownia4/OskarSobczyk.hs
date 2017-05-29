@@ -47,6 +47,10 @@ typecheck vars expr =
 		otherwise -> Error  (getData expr) "program not return int"
 
 
+
+--Funkcja sprawdzajaca typy przyjmuje SRODOWISKO oraz WYRAZENIE zwraca typ wyrzaenia lub blad
+--Istnieje mozliwosc zwiniecia tych funkcji ale dla mnie wydaja sie one mniej czytelne 
+
 checker :: [TypeEnv] -> Expr p -> Either (Error p) MType
 
 checker types (ENum p var) = Right TInt
@@ -71,18 +75,18 @@ checker types (EBinary p BAdd expr1 expr2) =
 		Right TInt -> case checker types expr2 of
 			Right TInt -> Right TInt
 			Left err -> Left err
-			otherwise -> Left (ErrorType p "bool (expected int) + ...")
+			otherwise -> Left (ErrorType p "... + bool (expected int)")
 		Left err -> Left err
-		otherwise -> Left (ErrorType p "... + bool (expected int)")
+		otherwise -> Left (ErrorType p "bool (expected int) + ...")
 
 checker types (EBinary p BSub expr1 expr2) = 
 	case checker types expr1 of
 		Right TInt -> case checker types expr2 of
 			Right TInt -> Right TInt
 			Left err -> Left err
-			otherwise -> Left (ErrorType p "bool (expected int) - ...")
+			otherwise -> Left (ErrorType p "... - bool (expected int)")
 		Left err -> Left err
-		otherwise -> Left (ErrorType p "... - bool (expected int)")
+		otherwise -> Left (ErrorType p "bool (expected int) - ...")
 
 
 checker types (EBinary p BMod expr1 expr2) = 
@@ -90,9 +94,9 @@ checker types (EBinary p BMod expr1 expr2) =
 		Right TInt -> case checker types expr2 of
 			Right TInt -> Right TInt
 			Left err -> Left err
-			otherwise -> Left (ErrorType p "bool (expected int) mod ...")
+			otherwise -> Left (ErrorType p "... mod bool (expected int)")
 		Left err -> Left err
-		otherwise -> Left (ErrorType p "... mod bool (expected int)")
+		otherwise -> Left (ErrorType p "bool (expected int) mod ...")
 
 
 checker types (EBinary p BMul expr1 expr2) = 
@@ -100,9 +104,9 @@ checker types (EBinary p BMul expr1 expr2) =
 		Right TInt -> case checker types expr2 of
 			Right TInt -> Right TInt
 			Left err -> Left err
-			otherwise -> Left (ErrorType p "bool (expected int) * ...")
+			otherwise -> Left (ErrorType p "... * bool (expected int)")
 		Left err -> Left err
-		otherwise -> Left (ErrorType p ".. * bool (expected int)")
+		otherwise -> Left (ErrorType p "bool (expected int) * ...")
 
 
 
@@ -111,9 +115,9 @@ checker types (EBinary p BDiv expr1 expr2) =
 		Right TInt -> case checker types expr2 of
 			Right TInt -> Right TInt
 			Left err -> Left err
-			otherwise -> Left (ErrorType p "bool (expected int) div ...")
+			otherwise -> Left (ErrorType p "... div bool (expected int)")
 		Left err -> Left err
-		otherwise -> Left (ErrorType p "... div bool (expected int)")
+		otherwise -> Left (ErrorType p "bool (expected int) div ...")
 
 
 
@@ -208,9 +212,12 @@ checker types (EIf p exbool expr1 expr2) =
 				Left err -> Left err
 				otherwise -> Left (ErrorType p "bool and int (expected bool) in if")
 		Left err -> Left err
-		otherwise -> Left (ErrorType p "no bool expr in bool expr")
+		otherwise -> Left (ErrorType p "if (no bool expr) then ...")
 
 
+
+--kiedy let nadpisuje jakas zmienna dodajemy ja na koniec listy a kiedy bedziemy chcieli z niej skorzystac to zawsze bierzemy 
+--najswiezsza zmienna (z konca listy)
 checker types (ELet p var expr1 expr2) = 
 	case checker types expr1 of
 		Right TBool -> case checker (types ++ [(var,TBool)]) expr2 of
@@ -242,7 +249,7 @@ checker types (ELet p var expr1 expr2) =
 --empty puste srodowisko
 --
 
---zwraca dla x zwraca z tablicy par [(x,y)] y, zwraca najswiezsza zmienna (od tylu)
+--zwraca dla x zwraca z tablicy par [(x,y)] y, zwraca najswiezsza zmienna (bierze pierwsza zmienna od konca tablicy)
 getVariable :: (Eq a) => a -> [(a,b)] -> Maybe b 
 
 getVariable var zmienne = lookup var (reverse zmienne)
@@ -252,7 +259,8 @@ eval var expr = case evalExpr var [] expr of
 	Right val -> Value val
 	Left err -> RuntimeError
 	
---evalExpr zwraca Integer lub string. Strign bedzie reprezentowac wartosci boolowskie "true"/"false" lub err
+--evalExpr przyjmuje tablice wartosci int [(Var, wartosc int)] oraz tablice wartosci boolowskich [(Var, wartosc bool)] 
+--zwraca Integer lub string. Strign bedzie reprezentowac wartosci boolowskie "true"/"false" lub error 
 evalExpr :: [(Var,Integer)] -> [(Var,String)] -> Expr p -> Either String Integer
 
 evalExpr varint varbool (ENum p var) = Right var
@@ -420,14 +428,17 @@ evalExpr varint varbool (EIf p exprbool expr1 expr2) =
 
 evalExpr varint varbool (ELet p var expr1 expr2) =
 	case evalExpr varint varbool expr1 of
+		--Let w ktorym nadpisywana jest jakas wczesza zmienna bedzie dzialac poniewaz kiedy program dochodzi do EVar 
+		--najpierw przesukuje od konca tablicee wartosci boolowskich a dopieto potem int
 		Left "true" -> case evalExpr varint (varbool ++ [(var,"true")]) expr2 of
 			Right val -> Right val
 			Left err -> Left err
 		Left "false" -> case evalExpr varint (varbool ++ [(var,"false")]) expr2 of
 			Right val -> Right val
 			Left err -> Left err
-		--taki sposob dziala poniewaz kiedy szukamy zmiennej najpierw przeszukujemu tablice z boolami a dopiero potem z intami
-		--wiec usuwamy z tablicy booli wczesniejsze wystapienia var. Przy boolach nie trzeba tego robic poniewaz zawsze bierzemy ostatnia wartosc w tablicy (najswiezsza)
+		--Jezeli zmienna ktora nadpisujemy ma miec wartosc int to mozemy usunac wystapienia tej zmiennej z tablicy bool poniewaz w przyslosci
+		--i tak nie wykorzystamy tych wartosci. Delete dziala w taki sposob ze jesli usuwanego elementu nie ma w tablicy to zwroci nie zmieniona tablice.
+		--Czyli mozemy bezpiecznie usuwac "nie istniejace" wpisy w tablicy bool
 		Right val -> case evalExpr (varint ++ [(var,val)]) (delete (var,"true") (delete (var,"false") varbool)) expr2 of
 			Right val -> Right val
 			Left err -> Left err

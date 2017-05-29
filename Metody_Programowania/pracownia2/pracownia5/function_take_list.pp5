@@ -1,0 +1,6 @@
+fun test(x: int list): int  =
+  match x with
+    | [] -> 0
+    | x::xs -> 2
+in
+test(1::2::[]:int list)

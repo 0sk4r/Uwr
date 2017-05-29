@@ -1,0 +1,4 @@
+fun sumpair(a:(int*int)*(int*int)):int =
+fst((fst (fst a) + snd (fst a), fst (snd a) + snd (snd a)))
+input a b c d in 
+sumpair((a,b),(c,d))

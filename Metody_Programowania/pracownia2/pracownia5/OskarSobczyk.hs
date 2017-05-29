@@ -16,7 +16,38 @@ import DataTypes
 -- miało typ int
 -- UWAGA: to nie jest jeszcze rozwiązanie; należy zmienić jej definicję.
 typecheck :: [FunctionDef p] -> [Var] -> Expr p -> TypeCheckResult p
-typecheck = undefined
+typecheck _ _ _ = Ok
+
+
+checker functions types (EUnit p) = Right TUnit
+
+checker functions types (EPair p expr1 expr2) = 
+	case checker functions types expr1 of
+		Right type1 -> case checker types expr2 of
+			Right type2 -> Right (TPair type1 type2)
+			Left err -> Left err
+		Left err -> Left err
+
+checker functions types (EFst p expr) = 
+	case checker functions types expr of
+		Right (TPair type1 type2) -> Right type1
+		Left err -> Left err
+
+checker functions types (ESnd p expr) = 
+	case checker functions types expr of
+		Right (TPair type1 type2) -> Right type2
+		Left err -> Left err
+
+checker functions types (ENil p type) = Right (TList type)
+
+checker functions types (ECons p expr1 expr2) = 
+	case checker functions types expr1 of
+		Right type1 -> case checker functions types expr2 of
+			Right (TList type1) -> Right (TList type1)
+			Left err -> Left err
+			otherwise -> Left (ErrorType p "rozne typy w liscie")
+		Left err -> Left err
+
 
 -- Funkcja obliczająca wyrażenia
 -- Dla wywołania eval fs input e przyjmujemy, że dla każdej pary (x, v)
@@ -25,4 +56,4 @@ typecheck = undefined
 -- typowane, tzn. typecheck fs (map fst input) e = Ok
 -- UWAGA: to nie jest jeszcze rozwiązanie; należy zmienić jej definicję.
 eval :: [FunctionDef p] -> [(Var,Integer)] -> Expr p -> EvalResult
-eval = undefined
+eval _ _ _ = RuntimeError

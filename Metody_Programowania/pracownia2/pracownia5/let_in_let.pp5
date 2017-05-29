@@ -1,0 +1,5 @@
+fun foo(u:unit):int = 2
+
+fun bar(u:unit):bool = true
+in
+let x = bar() in let x = foo in x+1
