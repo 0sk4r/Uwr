@@ -1,0 +1,9 @@
+fun f1(a :int ):int =
+	if a < 0 then -1 else f2(a)
+
+fun f2(a :int ):int =
+	if a = 0 then 0 else f3(a)
+
+fun f3(a :int ):int = 1
+
+in f1(-2) + f1(2) + f1(3) + f1(5 + (- 3*3)) + f1(2*2*2*2*2*2)

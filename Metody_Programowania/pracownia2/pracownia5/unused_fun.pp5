@@ -1,0 +1,7 @@
+fun wrong(a:int) :int = 
+	a + true
+
+fun right(a: int) : int = 
+	a + 1
+
+in right(1)

@@ -1,0 +1,10 @@
+fun length(l : int list) : int = 
+	match l with [] -> 0 | x :: xs -> 1 + length(xs)
+
+fun map_sq(l : int list) : int list = 
+	match l with [] -> [] : int list | x :: xs -> (x*x) :: map_sq(xs)
+
+fun loop(i : unit) : int = 
+	loop()
+
+in let x = map_sq([10,4,6] : int list) in match x with [] -> 0 | y :: ys -> y 

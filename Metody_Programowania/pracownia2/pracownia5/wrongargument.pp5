@@ -1,0 +1,4 @@
+fun list_function(a : int list) : int = 
+	22
+
+input x in list_function(x)

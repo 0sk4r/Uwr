@@ -284,7 +284,9 @@ checker functions types (ESnd p expr) =
         Right t -> Left (p, EPairMismatch t)
         Left err -> Left err
 
-checker functions types (ENil p typ) = Right (typ)
+checker functions types (ENil p t) = case t of
+    TList t2 -> Right (TList t2)
+    _ -> Left (p, ETypeMismatch TInt TInt)
 
 checker functions types (ECons p expr1 expr2) = 
     case checker functions types expr1 of

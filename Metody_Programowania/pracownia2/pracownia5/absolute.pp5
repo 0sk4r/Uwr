@@ -1,0 +1,7 @@
+fun wrongfun(a : int) : int = 
+	if a > 0 then a div 0 else (-a) div 0
+
+fun absolute_value(a : int ) : int = 
+	if a > 0 then a else (-a)
+
+input x y z in absolute_value(x) + absolute_value(y) + absolute_value(z)

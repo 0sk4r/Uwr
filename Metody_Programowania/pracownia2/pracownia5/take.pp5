@@ -1,0 +1,7 @@
+fun take(arg : int list * int):int = 
+	if snd arg > 0 then
+		match fst arg with [] -> 1 div 0 | x :: xs -> take((snd arg) - 1, xs)
+	else 
+		match fst arg with [] -> 1 div 0 | x :: xs -> x
+
+input x in take([1,2,3,4,5,6,7] : int list, x)

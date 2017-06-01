@@ -1,1 +1,1 @@
-let x = (5,(2,3)) in snd (fst x)
+let x = [1,2] : int in let y = [3,4] : int in let a = x :: y in match a with [] -> 1 | b :: bs -> b
