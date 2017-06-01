@@ -28,6 +28,7 @@ data ErrKind
     | EIfMismatch Type Type 
     | ETypeMismatchL Type Type 
     | EMatchNoList Type
+    | EPairMismatch Type
 
 
 instance Show ErrKind where
@@ -41,6 +42,8 @@ instance Show ErrKind where
     "Type mismatch in list: head: " ++ show t1 ++ " tail: " ++ show t2 ++ "."
   show (EMatchNoList t1)  =
     "Expected list in match get" ++ show t1 ++ "."
+  show (EPairMismatch t1)  =
+    "Type mismatch: expected Pair but received " ++ show t1 ++ "."
 
 data EValue 
     = Empty 
@@ -272,11 +275,13 @@ checker functions types (EPair p expr1 expr2) =
 checker functions types (EFst p expr) = 
     case checker functions types expr of
         Right (TPair type1 type2) -> Right type1
+        Right t -> Left (p, EPairMismatch t)
         Left err -> Left err
 
 checker functions types (ESnd p expr) = 
     case checker functions types expr of
         Right (TPair type1 type2) -> Right type2
+        Right t -> Left (p, EPairMismatch t)
         Left err -> Left err
 
 checker functions types (ENil p typ) = Right (typ)
