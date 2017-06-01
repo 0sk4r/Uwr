@@ -1,3 +1,1 @@
-fun lol(n:bool):int = 1+n
-in
-lol()
+fun f(n:int):int = true in 1
