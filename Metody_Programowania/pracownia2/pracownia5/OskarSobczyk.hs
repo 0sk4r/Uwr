@@ -63,19 +63,26 @@ typecheck :: [FunctionDef p] -> [Var] -> Expr p -> TypeCheckResult p
 
 typecheck functions vars expr = 
     --initlist inicjuje liste [(var,TInt)]
-    case checker fenv (initList vars) expr of
-        Right TInt -> Ok
-        Left (p, err) -> Error p $ show err
-        otherwise -> Error  (getData expr) "program not return int"
-        where fenv = (Map.fromList $ zip (map funcName functions) functions)
+    case checkfunctions functions fenv of
+        Nothing -> case checker fenv (initList vars) expr of
+            Right TInt -> Ok
+            Left (p, err) -> Error p $ show err
+            otherwise -> Error  (getData expr) "program not return int"
+        Just (p,err) -> Error p $ show err
+    where fenv = (Map.fromList $ zip (map funcName functions) functions)
 
---checkfunctions :: [FunctionDef p] -> FunctionEnv p -> Just (Errro p)
 
---checkfunctions fdefs fenv =
---    case checker fenv ([(funcArg def, funcArgType)]) (funcBody def) of
---        Left err -> Just err
---        Nothing -> Nothing
---       where def = head fdefs
+checkfunctions :: [FunctionDef p] -> FunctionEnv p -> Maybe (Error p)
+
+checkfunctions [] fenv = Nothing
+
+checkfunctions fdefs fenv =
+    case checker fenv ([(funcArg def, funcArgType def)]) (funcBody def) of
+        Right t1 -> if t1 == (funcResType def) 
+            then checkfunctions (tail fdefs) fenv
+            else Just ((funcPos def), ETypeMismatch t1 (funcResType def))
+        Left err -> Just err
+    where def = head fdefs
 
 
 checker :: FunctionEnv p -> [TypeEnv] -> Expr p -> Either (Error p) Type
@@ -284,21 +291,24 @@ checker functions types (ECons p expr1 expr2) =
 
 checker functions types (EMatchL p expr1 nilclause (var1, var2, expr2)) = 
     case checker functions types expr1 of
-        Right (TList type1) -> case checker functions types expr2 of
-            Right type2 -> case checker functions (types ++ [(var1, type1),(var2,(TList type2))]) expr2 of
-                Right type2 -> Right type2
+        Right (TList type1) -> case checker functions types nilclause of
+            Right type2 -> case checker functions (types ++ [(var1, type1),(var2,(TList type1))]) expr2 of
+                Right type3 -> if type2 == type3 
+                    then Right type2
+                    else Left (p, ETypeMismatch type2 type3)
                 Left err -> Left err
-                Right t -> Left (p, ETypeMismatch type2 t)
             Left err -> Left err
         Right t -> Left (p, EMatchNoList t)
+        Left err -> Left err
 
 checker functions types (EApp p fsym expr) = 
     case findFnc functions fsym of
         Just definition -> case checker functions types expr of 
-            Right x -> Right (funcResType definition) 
+            Right t -> if t == tf 
+                then Right (funcResType definition) 
+                else Left (p, ETypeMismatch tf t)
             Left err -> Left err
-            Right t -> Left (p, ETypeMismatch  x t)
-            where x = funcArgType definition
+            where tf = funcArgType definition
         Nothing -> Left (p, ETypeMismatch TInt TInt)
         
 

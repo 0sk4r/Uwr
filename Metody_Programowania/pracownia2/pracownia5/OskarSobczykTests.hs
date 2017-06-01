@@ -22,13 +22,13 @@ tests =
   , Test "simple_function_int" (SrcFile "simple_function_int.pp5") (Eval [1] (Value 2))
   , Test "simple_function_bool" (SrcFile "simple_function_bool.pp5") (Eval [] (Value 1))
   , Test "wrong_freturn" (SrcFile "wrong_freturn.pp5") TypeError
-  , Test "function_take_list" (SrcFile "function_take_list.pp5") (Eval [] (Value 2))
+  , Test "function_take_list" (SrcFile "function_take_list.pp5") (Eval [] (Value 3))
   --, Test "function_return_pair" (SrcFile "ret_pair.pp5") (Eval [1] (Value 2))
   , Test "plus_function" (SrcFile "plus_function.pp5") (Eval [] (Value 3))
   , Test "fib" (SrcFile "fib.pp5") (Eval [3] (Value 2))
   , Test "fun_in_fun" (SrcFile "funinfun.pp5") (Eval [] (Value 1))
-  , Test "let" (SrcFile "funinfun.pp5") (Eval [] (Value 3))
+  , Test "let" (SrcFile "funinfun.pp5") (Eval [] (Value 1))
   , Test "let_in_let" (SrcFile "let_in_let.pp5") (Eval [] (Value 3))
   , Test "div_by_zero" (SrcFile "div_by_zero.pp5") (Eval [] RuntimeError)
-  , Test "sum" (SrcFile "sum.pp5") (Eval [1,2,3,4] (Value 4))
+  , Test "sum" (SrcFile "sum.pp5") (Eval [1,2,3,4] (Value 3))
   ]
