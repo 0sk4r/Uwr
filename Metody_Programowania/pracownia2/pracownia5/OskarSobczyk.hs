@@ -54,6 +54,7 @@ data EValue
 initList :: [Var] -> [TypeEnv]
 initList lst = [ (x,TInt) | x <- lst ]
 
+
 getVariable :: (Eq a) => a -> [(a,b)] -> Maybe b 
 
 getVariable var zmienne = lookup var (reverse zmienne)
@@ -271,7 +272,7 @@ checker functions types (ESnd p expr) =
         Right (TPair type1 type2) -> Right type2
         Left err -> Left err
 
-checker functions types (ENil p typ) = Right (TList typ)
+checker functions types (ENil p typ) = Right (typ)
 
 checker functions types (ECons p expr1 expr2) = 
     case checker functions types expr1 of
@@ -304,18 +305,39 @@ checker functions types (EApp p fsym expr) =
 findFnc :: FunctionEnv p -> FSym -> Maybe (FunctionDef p)
 findFnc functionEnv identifier = Map.lookup identifier functionEnv
 
+
+
+
+
+
+
+
+
+
+
 -- Funkcja obliczająca wyrażenia
 -- Dla wywołania eval fs input e przyjmujemy, że dla każdej pary (x, v)
 -- znajdującej się w input, wartość zmiennej x wynosi v.
 -- Możemy założyć, że definicje funckcji fs oraz wyrażenie e są dobrze
 -- typowane, tzn. typecheck fs (map fst input) e = Ok
 -- UWAGA: to nie jest jeszcze rozwiązanie; należy zmienić jej definicję.
+
+initList2 :: [(Var,Integer)] -> [(Var,EValue)]
+initList2 lst = [ (x,MInt int) | (x, int) <- lst]
+
+
+
+
 eval :: [FunctionDef p] -> [(Var,Integer)] -> Expr p -> EvalResult
-eval _ _ _ = RuntimeError
+eval fdefs varenv expr =
+    case evalExpr fenv (initList2 varenv) expr of
+        Right (MInt val) -> Value val
+        Left err -> RuntimeError
+    where fenv = (Map.fromList $ zip (map funcName fdefs) fdefs)
 
 
 
-evalExpr :: [FunctionEnv p] -> [(Var,EValue)] -> Expr p -> Either String EValue
+evalExpr :: FunctionEnv p -> [(Var,EValue)] -> Expr p -> Either String EValue
 
 evalExpr fenv varenv (ENum p var) = Right (MInt var)
 
@@ -483,6 +505,18 @@ evalExpr fenv varenv (ELet p var expr1 expr2) =
         --Czyli mozemy bezpiecznie usuwac "nie istniejace" wpisy w tablicy bool
         Left err -> Left err
 
+
+
+---------------------------------------------------------------------------------
+--PRACOWNIA 5
+---------------------------------------------------------------------------------
+
+evalExpr fenv varenv (EUnit p) = Right MUnit
+
+
+-----------------------
+--Pair
+-----------------------
 evalExpr fenv varenv (EPair p expr1 expr2) =
     case evalExpr fenv varenv expr1 of
         Right val1 -> case evalExpr fenv varenv expr2 of
@@ -490,15 +524,56 @@ evalExpr fenv varenv (EPair p expr1 expr2) =
             Left err -> Left err
         Left err -> Left err
 
+
+-----------------------
+--Fst
+-----------------------
 evalExpr fenv varenv (EFst p expr) =
     case evalExpr fenv varenv expr of
         Right (MPair (val1,val2)) -> Right val1
         Left err -> Left err
 
 
+-----------------------
+--Snd
+-----------------------
 evalExpr fenv varenv (ESnd p expr) =
     case evalExpr fenv varenv expr of
         Right (MPair (val1,val2)) -> Right val2
         Left err -> Left err
 
+-----------------------
+--EApp
+-----------------------
 
+evalExpr fenv varenv (EApp p identifier expr) =
+    case findFnc fenv identifier of
+        Just def -> evalExpr fenv varenv (ELet p (funcArg def) expr (funcBody def))
+        Nothing -> Left "lol"
+
+-----------------------
+--ENil
+-----------------------
+
+evalExpr fenv varenv (ENil _ _) = Right Empty
+
+-----------------------
+--ECons
+-----------------------
+
+evalExpr fenv varenv (ECons _ expr1 expr2) = 
+    case evalExpr fenv varenv expr1 of
+        Right val1 -> case evalExpr fenv varenv expr2 of
+            Right val2 -> Right (MList (val1 : [val2]))
+            Left err -> Left err
+        Left err -> Left err
+
+-----------------------
+--EMatch
+-----------------------
+
+evalExpr fenv varenv (EMatchL _ elist nilclause (h,t,conslause)) =
+    case list of
+        Right Empty -> evalExpr fenv varenv nilclause
+        Right (MList (x:[xs])) -> evalExpr fenv (varenv ++ [(h,x),(t,xs)]) conslause
+        where list = evalExpr fenv varenv elist
