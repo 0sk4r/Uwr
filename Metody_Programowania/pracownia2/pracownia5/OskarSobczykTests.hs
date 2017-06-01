@@ -26,7 +26,7 @@ tests =
   --, Test "function_return_pair" (SrcFile "ret_pair.pp5") (Eval [1] (Value 2))
   , Test "plus_function" (SrcFile "plus_function.pp5") (Eval [] (Value 3))
   , Test "fib" (SrcFile "fib.pp5") (Eval [3] (Value 2))
-  , Test "fun_in_fun" (SrcFile "funinfun.pp5") TypeError
+  , Test "fun_in_fun" (SrcFile "funinfun.pp5") (Eval [] (Value 1))
   , Test "let" (SrcFile "funinfun.pp5") (Eval [] (Value 3))
   , Test "let_in_let" (SrcFile "let_in_let.pp5") (Eval [] (Value 3))
   , Test "div_by_zero" (SrcFile "div_by_zero.pp5") (Eval [] RuntimeError)

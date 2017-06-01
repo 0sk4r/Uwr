@@ -21,6 +21,9 @@ type TypeEnv = (String,Type)
 data Error p = ErrorType p String deriving Show
 type FunctionEnv p = Map.Map FSym (FunctionDef p)
 
+initList :: [Var] -> [TypeEnv]
+initList lst = [ (x,TInt) | x <- lst ]
+
 getVariable :: (Eq a) => a -> [(a,b)] -> Maybe b 
 
 getVariable var zmienne = lookup var (reverse zmienne)
@@ -29,13 +32,22 @@ typecheck :: [FunctionDef p] -> [Var] -> Expr p -> TypeCheckResult p
 
 typecheck functions vars expr = 
     --initlist inicjuje liste [(var,TInt)]
-    case checker (Map.fromList $ zip (map funcName funcs) funcs) (initList vars) expr of
+    case checker fenv (initList vars) expr of
         Right TInt -> Ok
         Left (ErrorType p err) -> Error p err
         otherwise -> Error  (getData expr) "program not return int"
+        where fenv = (Map.fromList $ zip (map funcName functions) functions)
+
+checkfunctions :: [FunctionDef p] -> FunctionEnv p -> Just (Errro p)
+
+checkfunctions fdefs fenv =
+    case checker fenv ([(funcArg def, funcArgType)]) (funcBody def) of
+        Left err -> Just err
+        Nothing -> Nothing
+        where def = head fdefs
 
 
-checker :: [FunctionEnv p] -> [TypeEnv] -> Expr p -> Either (Error p) Type
+checker :: FunctionEnv p -> [TypeEnv] -> Expr p -> Either (Error p) Type
 
 checker functions types (ENum p var) = Right TInt
 
@@ -204,13 +216,8 @@ checker functions types (EIf p exbool expr1 expr2) =
 --najswiezsza zmienna (z konca listy)
 checker functions types (ELet p var expr1 expr2) = 
     case checker functions types expr1 of
-        Right TBool -> case checker functions (types ++ [(var,TBool)]) expr2 of
-            Right TBool -> Right TBool
-            Right TInt -> Right TInt
-            Left err -> Left err
-        Right TInt -> case checker functions (types ++ [(var,TInt)]) expr2 of
-            Right TBool -> Right TBool
-            Right TInt -> Right TInt
+        Right etype -> case checker functions (types ++ [(var,etype)]) expr2 of
+            Right t1 -> Right t1
             Left err -> Left err
         Left err -> Left err
 
@@ -255,17 +262,18 @@ checker functions types (EMatchL p expr1 nilclause (var1, var2, expr2)) =
             Right type2 -> case checker functions (types ++ [(var1, type1),(var2,(TList type2))]) expr2 of
                 Right type2 -> Right type2
                 Left err -> Left err
-                otherwise -> Left (ErrorType p "diff type in match")
+                oftherwise -> Left (ErrorType p ("diff type in match" ++ show type2))
             Left err -> Left err
         otherwise -> Left (ErrorType p "no list in match")
 
 checker functions types (EApp p fsym expr) = 
-  case findFnc functions fsym of
-      Just definition -> case checker functions types expr of
-          Right (funcArgType definition) -> Right (funcResType definition)
-          Left err -> Left err
-          otherwise -> Left (ErrorType p "argumenty nie zgadzaja sie")
-      Nothing -> Left (ErrorType p "nie ma takiej funkcji")
+    case findFnc functions fsym of
+        Just definition -> case checker functions types expr of 
+            Right x -> Right (funcResType definition) 
+            Left err -> Left err
+            otherwise -> Left (ErrorType p ("arg dont match"))
+            where x = funcArgType definition
+        Nothing -> Left (ErrorType p "function undefined")
         
 
 findFnc :: FunctionEnv p -> FSym -> Maybe (FunctionDef p)
