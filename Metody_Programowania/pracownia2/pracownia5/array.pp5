@@ -1,0 +1,7 @@
+fun makeArray(n : int) : int list =
+if n = 0 then [] : int list
+else n :: makeArray (n-1)
+
+input n in match makeArray n with
+	| [] -> 0
+	| x::xs -> x 

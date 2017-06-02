@@ -53,35 +53,35 @@ typecheck vars expr =
 
 checker :: [TypeEnv] -> Expr p -> Either (Error p) MType
 
-checker types (ENum p var) = Right TInt
+checker functions types (ENum p var) = Right TInt
 
-checker types (EBool p var) = Right TBool
+checker functions types (EBool p var) = Right TBool
 
-checker types (EVar p var) = case getVariable var types of
+checker functions types (EVar p var) = case getVariable var functions types of
 	Just x -> Right x
 	otherwise -> Left (ErrorType p ("undefined var: " ++ var))
 
-checker types (EUnary p op expr) =
+checker functions types (EUnary p op expr) =
 	case op of
-		UNeg -> case checker types expr of 
+		UNeg -> case checker functions types expr of 
 			Right TInt -> Right TInt
 			otherwise -> Left (ErrorType p "-bool (expected int)")
-		UNot -> case checker types expr of 
+		UNot -> case checker functions types expr of 
 			Right TBool -> Right TBool 
 			otherwise -> Left (ErrorType p "~int (expected bool)")
 
-checker types (EBinary p BAdd expr1 expr2) = 
-	case checker types expr1 of
-		Right TInt -> case checker types expr2 of
+checker functions types (EBinary p BAdd expr1 expr2) = 
+	case checker functions types expr1 of
+		Right TInt -> case checker functions types expr2 of
 			Right TInt -> Right TInt
 			Left err -> Left err
 			otherwise -> Left (ErrorType p "... + bool (expected int)")
 		Left err -> Left err
 		otherwise -> Left (ErrorType p "bool (expected int) + ...")
 
-checker types (EBinary p BSub expr1 expr2) = 
-	case checker types expr1 of
-		Right TInt -> case checker types expr2 of
+checker functions types (EBinary p BSub expr1 expr2) = 
+	case checker functions types expr1 of
+		Right TInt -> case checker functions types expr2 of
 			Right TInt -> Right TInt
 			Left err -> Left err
 			otherwise -> Left (ErrorType p "... - bool (expected int)")
@@ -89,9 +89,9 @@ checker types (EBinary p BSub expr1 expr2) =
 		otherwise -> Left (ErrorType p "bool (expected int) - ...")
 
 
-checker types (EBinary p BMod expr1 expr2) = 
-	case checker types expr1 of
-		Right TInt -> case checker types expr2 of
+checker functions types (EBinary p BMod expr1 expr2) = 
+	case checker functions types expr1 of
+		Right TInt -> case checker functions types expr2 of
 			Right TInt -> Right TInt
 			Left err -> Left err
 			otherwise -> Left (ErrorType p "... mod bool (expected int)")
@@ -99,9 +99,9 @@ checker types (EBinary p BMod expr1 expr2) =
 		otherwise -> Left (ErrorType p "bool (expected int) mod ...")
 
 
-checker types (EBinary p BMul expr1 expr2) = 
-	case checker types expr1 of
-		Right TInt -> case checker types expr2 of
+checker functions types (EBinary p BMul expr1 expr2) = 
+	case checker functions types expr1 of
+		Right TInt -> case checker functions types expr2 of
 			Right TInt -> Right TInt
 			Left err -> Left err
 			otherwise -> Left (ErrorType p "... * bool (expected int)")
@@ -110,9 +110,9 @@ checker types (EBinary p BMul expr1 expr2) =
 
 
 
-checker types (EBinary p BDiv expr1 expr2) = 
-	case checker types expr1 of
-		Right TInt -> case checker types expr2 of
+checker functions types (EBinary p BDiv expr1 expr2) = 
+	case checker functions types expr1 of
+		Right TInt -> case checker functions types expr2 of
 			Right TInt -> Right TInt
 			Left err -> Left err
 			otherwise -> Left (ErrorType p "... div bool (expected int)")
@@ -121,9 +121,9 @@ checker types (EBinary p BDiv expr1 expr2) =
 
 
 
-checker types (EBinary p BGt expr1 expr2) = 
-	case checker types expr1 of
-		Right TInt -> case checker types expr2 of
+checker functions types (EBinary p BGt expr1 expr2) = 
+	case checker functions types expr1 of
+		Right TInt -> case checker functions types expr2 of
 			Right TInt -> Right TBool
 			Left err -> Left err
 			otherwise -> Left (ErrorType p "... > bool (expected int)")
@@ -131,9 +131,9 @@ checker types (EBinary p BGt expr1 expr2) =
 		otherwise -> Left (ErrorType p "bool (expected int) < ...")
 
 
-checker types (EBinary p BGe expr1 expr2) = 
-	case checker types expr1 of
-		Right TInt -> case checker types expr2 of
+checker functions types (EBinary p BGe expr1 expr2) = 
+	case checker functions types expr1 of
+		Right TInt -> case checker functions types expr2 of
 			Right TInt -> Right TBool
 			Left err -> Left err
 			otherwise -> Left (ErrorType p "... => bool (expected int)")
@@ -141,9 +141,9 @@ checker types (EBinary p BGe expr1 expr2) =
 		otherwise -> Left (ErrorType p "bool (expected int) <= ...")
 
 
-checker types (EBinary p BLt expr1 expr2) = 
-	case checker types expr1 of
-		Right TInt -> case checker types expr2 of
+checker functions types (EBinary p BLt expr1 expr2) = 
+	case checker functions types expr1 of
+		Right TInt -> case checker functions types expr2 of
 			Right TInt -> Right TBool
 			Left err -> Left err
 			otherwise -> Left (ErrorType p "... < bool (expected int)")
@@ -151,9 +151,9 @@ checker types (EBinary p BLt expr1 expr2) =
 		otherwise -> Left (ErrorType p "bool (expected int) < ...")
 
 
-checker types (EBinary p BLe expr1 expr2) = 
-	case checker types expr1 of
-		Right TInt -> case checker types expr2 of
+checker functions types (EBinary p BLe expr1 expr2) = 
+	case checker functions types expr1 of
+		Right TInt -> case checker functions types expr2 of
 			Right TInt -> Right TBool
 			Left err -> Left err
 			otherwise -> Left (ErrorType p "... <= bool (expected int)")
@@ -161,18 +161,18 @@ checker types (EBinary p BLe expr1 expr2) =
 		otherwise -> Left (ErrorType p "bool (expected int) <= ...")
 
 
-checker types (EBinary p BEq expr1 expr2) = 
-	case checker types expr1 of
-		Right TInt -> case checker types expr2 of
+checker functions types (EBinary p BEq expr1 expr2) = 
+	case checker functions types expr1 of
+		Right TInt -> case checker functions types expr2 of
 			Right TInt -> Right TBool
 			Left err -> Left err
 			otherwise -> Left (ErrorType p "... = bool (expected int)")
 		Left err -> Left err
 		otherwise -> Left (ErrorType p "bool (expected int) = ...")
 
-checker types (EBinary p BNeq expr1 expr2) = 
-	case checker types expr1 of
-		Right TInt -> case checker types expr2 of
+checker functions types (EBinary p BNeq expr1 expr2) = 
+	case checker functions types expr1 of
+		Right TInt -> case checker functions types expr2 of
 			Right TInt -> Right TBool
 			Left err -> Left err
 			otherwise -> Left (ErrorType p "... <> bool (expected int)")
@@ -181,33 +181,33 @@ checker types (EBinary p BNeq expr1 expr2) =
 
 
 
-checker types (EBinary p BAnd expr1 expr2) = 
-	case checker types expr1 of
-		Right TBool -> case checker types expr2 of
+checker functions types (EBinary p BAnd expr1 expr2) = 
+	case checker functions types expr1 of
+		Right TBool -> case checker functions types expr2 of
 			Right TBool -> Right TBool
 			Left err -> Left err
 			otherwise -> Left (ErrorType p "... and int (expected bool)")
 		Left err -> Left err
 		otherwise -> Left (ErrorType p "int (expected bool) and ...")
 
-checker types (EBinary p BOr expr1 expr2) = 
-	case checker types expr1 of
-		Right TBool -> case checker types expr2 of
+checker functions types (EBinary p BOr expr1 expr2) = 
+	case checker functions types expr1 of
+		Right TBool -> case checker functions types expr2 of
 			Right TBool -> Right TBool
 			Left err -> Left err
 			otherwise -> Left (ErrorType p "... or int (expected bool)")
 		Left err -> Left err
 		otherwise -> Left (ErrorType p "int (expected bool) or ...")
 
-checker types (EIf p exbool expr1 expr2) =
-	case checker types exbool of
-		Right TBool -> case checker types expr1 of
-			Right TInt -> case checker types expr2 of
+checker functions types (EIf p exbool expr1 expr2) =
+	case checker functions types exbool of
+		Right TBool -> case checker functions types expr1 of
+			Right TInt -> case checker functions types expr2 of
 				Right TInt -> Right TInt
 				Left err -> Left err
 				otherwise -> Left (ErrorType p "int and bool (expected int) in if")
 			Left err -> Left err
-			Right TBool -> case checker types expr2 of
+			Right TBool -> case checker functions types expr2 of
 				Right TBool -> Right TBool
 				Left err -> Left err
 				otherwise -> Left (ErrorType p "bool and int (expected bool) in if")
@@ -218,13 +218,13 @@ checker types (EIf p exbool expr1 expr2) =
 
 --kiedy let nadpisuje jakas zmienna dodajemy ja na koniec listy a kiedy bedziemy chcieli z niej skorzystac to zawsze bierzemy 
 --najswiezsza zmienna (z konca listy)
-checker types (ELet p var expr1 expr2) = 
-	case checker types expr1 of
-		Right TBool -> case checker (types ++ [(var,TBool)]) expr2 of
+checker functions types (ELet p var expr1 expr2) = 
+	case checker functions types expr1 of
+		Right TBool -> case checker (functions types ++ [(var,TBool)]) expr2 of
 			Right TBool -> Right TBool
 			Right TInt -> Right TInt
 			Left err -> Left err
-		Right TInt -> case checker (types ++ [(var,TInt)]) expr2 of
+		Right TInt -> case checker (functions types ++ [(var,TInt)]) expr2 of
 			Right TBool -> Right TBool
 			Right TInt -> Right TInt
 			Left err -> Left err

@@ -1,0 +1,8 @@
+fun fib(n : int * bool) : int =
+    let x = [fst n, fst n]:int list in
+        match x with
+        | []   -> 0
+        | x :: xs -> x
+
+in
+fib(2, true)

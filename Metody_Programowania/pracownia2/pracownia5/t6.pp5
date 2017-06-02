@@ -1,0 +1,6 @@
+fun addToList (x:int*int list): int list =
+    fst x :: snd x
+in
+let z = addToList(42, [1,2,3]:int list) in match z with
+    | []    -> 0
+    | x::xs -> x

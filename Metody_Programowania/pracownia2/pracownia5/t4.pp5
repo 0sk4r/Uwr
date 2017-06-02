@@ -1,0 +1,4 @@
+fun fib(n : int * bool) : int =
+    fst n
+in
+fib(2, true)

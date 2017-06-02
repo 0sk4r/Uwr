@@ -1,0 +1,5 @@
+let x = [1,2,4]: int list in match x with
+  | [] -> 0
+  | x::t -> match t with
+          | [] -> 0
+          | x::t -> x

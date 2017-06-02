@@ -1,0 +1,4 @@
+
+fun xd(u:unit):int = 2
+fun f(u: unit):int = 40 + xd()
+in f()

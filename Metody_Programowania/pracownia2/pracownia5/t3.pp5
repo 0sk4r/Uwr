@@ -1,0 +1,6 @@
+fun fib(n : unit) : int =
+  match [] : int list with
+  | [] -> 0
+  |x :: xs -> x + fib()
+
+in fib()

@@ -1,0 +1,6 @@
+fun sum(n : int list) : int =
+  match n with
+  | [] -> true
+  |x :: xs -> x + sum(xs)
+
+input n in let x = [2,3,4]:int list in sum(x)

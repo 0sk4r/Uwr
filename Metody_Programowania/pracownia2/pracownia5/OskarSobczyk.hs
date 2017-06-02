@@ -1,3 +1,7 @@
+
+--xDDDDDDD
+
+
 -- Wymagamy, by moduł zawierał tylko bezpieczne funkcje
 {-# LANGUAGE Safe #-}
 -- Definiujemy moduł zawierający rozwiązanie.
@@ -29,6 +33,7 @@ data ErrKind
     | ETypeMismatchL Type Type 
     | EMatchNoList Type
     | EPairMismatch Type
+    | EFunNotDefined FSym
 
 
 instance Show ErrKind where
@@ -43,10 +48,12 @@ instance Show ErrKind where
   show (EMatchNoList t1)  =
     "Expected list in match get" ++ show t1 ++ "."
   show (EPairMismatch t1)  =
-    "Type mismatch: expected Pair but received " ++ show t1 ++ "."
+    "Type mismatch: Expected Pair but received " ++ show t1 ++ "."
+  show (EFunNotDefined x) =
+    "Function " ++ show x ++ " not defined" 
 
 data EValue 
-    = Empty 
+    = Null 
     | MInt Integer 
     | MBool Bool 
     | MUnit 
@@ -263,8 +270,16 @@ checker functions types (ELet p var expr1 expr2) =
 ---------------------------------------------------------------------------------
 --PRACOWNIA 5
 ---------------------------------------------------------------------------------
+
+-----------------------
+--EUnit
+-----------------------
 checker functions types (EUnit p) = Right TUnit
 
+
+-----------------------
+--Pair
+-----------------------
 checker functions types (EPair p expr1 expr2) = 
     case checker functions types expr1 of
         Right type1 -> case checker functions types expr2 of
@@ -272,42 +287,68 @@ checker functions types (EPair p expr1 expr2) =
             Left err -> Left err
         Left err -> Left err
 
+
+-----------------------
+--EFst
+-----------------------
 checker functions types (EFst p expr) = 
     case checker functions types expr of
         Right (TPair type1 type2) -> Right type1
         Right t -> Left (p, EPairMismatch t)
         Left err -> Left err
 
+
+-----------------------
+--ESnd
+-----------------------
 checker functions types (ESnd p expr) = 
     case checker functions types expr of
         Right (TPair type1 type2) -> Right type2
         Right t -> Left (p, EPairMismatch t)
         Left err -> Left err
 
+
+-----------------------
+--ENil
+-----------------------
 checker functions types (ENil p t) = case t of
     TList t2 -> Right (TList t2)
-    _ -> Left (p, ETypeMismatch TInt TInt)
+    t2 -> Left (p, ETypeMismatch (TList t2) t2)
 
+
+-----------------------
+--ECons
+-----------------------
 checker functions types (ECons p expr1 expr2) = 
     case checker functions types expr1 of
         Right t1 -> case checker functions types expr2 of
             Right (TList t2) -> 
                 if t1 == t2 then Right (TList t1) else Left (p, ETypeMismatchL t1 t2)
+            Right t -> Left (p, ETypeMismatch (TList t1) t)
             Left err -> Left err
         Left err -> Left err
 
+
+-----------------------
+--EMatchL
+-----------------------
 checker functions types (EMatchL p expr1 nilclause (var1, var2, expr2)) = 
     case checker functions types expr1 of
         Right (TList type1) -> case checker functions types nilclause of
-            Right type2 -> case checker functions (types ++ [(var1, type1),(var2,(TList type1))]) expr2 of
+            Right type2 -> case checker functions eenv expr2 of
                 Right type3 -> if type2 == type3 
                     then Right type2
                     else Left (p, ETypeMismatch type2 type3)
                 Left err -> Left err
             Left err -> Left err
+            where eenv =types ++ [(var1, type1),(var2,(TList type1))] --rozszerzone srodowisko
         Right t -> Left (p, EMatchNoList t)
         Left err -> Left err
 
+
+-----------------------
+--EApp
+-----------------------
 checker functions types (EApp p fsym expr) = 
     case findFnc functions fsym of
         Just definition -> case checker functions types expr of 
@@ -315,20 +356,13 @@ checker functions types (EApp p fsym expr) =
                 then Right (funcResType definition) 
                 else Left (p, ETypeMismatch tf t)
             Left err -> Left err
-            where tf = funcArgType definition
-        Nothing -> Left (p, ETypeMismatch TInt TInt)
+            where tf = funcArgType definition --typ argumentu funkcji
+        Nothing -> Left (p, EFunNotDefined fsym)
         
 
+--funkcja szukajaca funkcji w środowisku, zwraca definicje funkcji
 findFnc :: FunctionEnv p -> FSym -> Maybe (FunctionDef p)
 findFnc functionEnv identifier = Map.lookup identifier functionEnv
-
-
-
-
-
-
-
-
 
 
 
@@ -364,7 +398,6 @@ evalExpr fenv varenv (EBool p var) =
         False -> Right (MBool False)
 
 
--- ???????????
 evalExpr fenv varenv (EVar p var) = case getVariable var varenv of
     Just x -> Right x
     otherwise -> Left "var undefined"
@@ -512,14 +545,9 @@ evalExpr fenv varenv (EIf p exprbool expr1 expr2) =
 
 evalExpr fenv varenv (ELet p var expr1 expr2) =
     case evalExpr fenv varenv expr1 of
-        --Let w ktorym nadpisywana jest jakas wczesza zmienna bedzie dzialac poniewaz kiedy program dochodzi do EVar 
-        --najpierw przesukuje od konca tablicee wartosci boolowskich a dopieto potem int
         Right val -> case evalExpr fenv (varenv ++ [(var,val)]) expr2 of
             Right val2 -> Right val2
             Left err -> Left err
-        --Jezeli zmienna ktora nadpisujemy ma miec wartosc int to mozemy usunac wystapienia tej zmiennej z tablicy bool poniewaz w przyslosci
-        --i tak nie wykorzystamy tych wartosci. Delete dziala w taki sposob ze jesli usuwanego elementu nie ma w tablicy to zwroci nie zmieniona tablice.
-        --Czyli mozemy bezpiecznie usuwac "nie istniejace" wpisy w tablicy bool
         Left err -> Left err
 
 
@@ -566,13 +594,14 @@ evalExpr fenv varenv (ESnd p expr) =
 evalExpr fenv varenv (EApp p identifier expr) =
     case findFnc fenv identifier of
         Just def -> evalExpr fenv varenv (ELet p (funcArg def) expr (funcBody def))
-        Nothing -> Left "lol"
+        Nothing -> Left "Cos poszlo nie tak"
+    where 
 
 -----------------------
 --ENil
 -----------------------
 
-evalExpr fenv varenv (ENil _ _) = Right Empty
+evalExpr fenv varenv (ENil _ _) = Right Null
 
 -----------------------
 --ECons
@@ -591,7 +620,7 @@ evalExpr fenv varenv (ECons _ expr1 expr2) =
 
 evalExpr fenv varenv (EMatchL _ elist nilclause (h,t,conslause)) =
     case list of
-        Right Empty -> evalExpr fenv varenv nilclause
+        Right Null -> evalExpr fenv varenv nilclause
         Right (MList (x:[xs])) -> evalExpr fenv (varenv ++ [(h,x),(t,xs)]) conslause
         Left err -> Left err
         where list = evalExpr fenv varenv elist

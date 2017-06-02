@@ -1,0 +1,206 @@
+inc             : ok
+undefVar        : ok
+simple_pair     : ok
+wrong_pair      : ok
+program_return_int_pair: ok
+wrong_var_dec_function: ok
+simple_function_int: ok
+simple_function_bool: ok
+wrong_freturn   : ok
+function_take_list: ok
+plus_function   : ok
+fib             : ok
+fun_in_fun      : ok
+let             : ok
+let_in_let      : ok
+div_by_zero     : ok
+sum             : ok
+IncompleteNil   : ok
+pairArg         : ok
+pairArg2        : ok
+listOfPairs     : ok
+fooList         : wrong type-checker answer
+retBool         : ok
+wrongArg        : ok
+wrongType       : ok
+wrongType2      : ok
+wrongType3      : ok
+wrongType4      : ok
+wrongType5      : ok
+wrongType6      : ok
+wrongType7      : ok
+modulo1         : ok
+modulo2         : ok
+modulo3         : ok
+modulo4         : ok
+errorCheck1     : ok
+errorCheck2     : ok
+functionVariableCollision: ok
+returnTypeError : ok
+listTypeError   : ok
+matchTypeError1 : ok
+matchTypeError2 : ok
+undefVar        : ok
+old_ghost       : ok
+simple_typeError: ok
+old_laziness    : ok
+new_laziness_of_list_matching: ok
+empty_list_laziness: ok
+list_matching   : ok
+empty_list_matching: ok
+function_application: ok
+list_constructor: ok
+bool_list_constructor: ok
+wrong_types_in_list_constructor: ok
+trickier_list_construction: ok
+wrong_types_again: ok
+projection_test : ok
+snd_projection_test: ok
+non_trivial_projection: ok
+projection_in_if: ok
+projection_wrong_type: ok
+int_list-int_mistake: ok
+int_list_int_mistake2: ok
+factorial_with_accumulator: ok
+sum_of_ackermanns: ok
+map_and_list    : ok
+length_test     : ok
+zero_division_in_unused_function: ok
+sometimes_zero_div: ok
+and_sometimes_not: ok
+wrong_type_of_argument: ok
+some_exponents  : ok
+nested_list     : ok
+double_variable_bool_list: ok
+a_lot_of_nesting: ok
+not_enough_nested: ok
+function_passing: ok
+typecheck_of_unused_function: ok
+wrong_return_type: ok
+well_typed_but_without_sense: ok
+global_variables: ok
+local_variables : ok
+I'm Still Standing: ok
+Nikita          : ok
+Your Song       : ok
+Rocket Man      : ok
+Crocodile Rock  : ok
+Daniel          : ok
+Goodbye Yellow Brick Road: ok
+Don't Let The Sun Go Down On Me: ok
+Sorry Seems To Be The Hardest Word: ok
+The Last Song   : ok
+Sacrifice       : ok
+Circle Of Life  : ok
+Candle In the Wind: ok
+Can You Feel The Love Tonight?: ok
+Tubular Bells   : ok
+Tubular Bells II: ok
+Tubular Bells III: ok
+Voyager         : ok
+QE2             : ok
+Five Miles Out  : ok
+Crises          : ok
+Ommadawn        : ok
+Return to Ommadawn: ok
+The Songs Of Distant Earth: ok
+Guitars         : ok
+Man On The Rocks: ok
+Tubular Bells 2003: ok
+Heaven's Open   : ok
+Another Brick In The Wall: ok
+Hey You         : ok
+Mother          : ok
+Young Lust      : ok
+Comfortably Numb: ok
+In The Flesh    : ok
+One Slip        : ok
+Terminal Frost  : ok
+High Hopes      : ok
+Marooned        : ok
+Wearing The Inside Out: ok
+Echoes          : ok
+Wish You Were Here: ok
+Shine On You Crazy Diamond: ok
+Time            : ok
+Money           : ok
+Us And Them     : ok
+Lost For Words  : ok
+Breathe (In The Air): ok
+Cluster One     : ok
+One Of These Days: ok
+Dogs            : ok
+Sheep           : ok
+undefVar        : ok
+smplTest1       : ok
+smplTest2       : ok
+smplTest3       : ok
+smplTest4       : ok
+smplTest5       : ok
+smplTest6       : ok
+smplTest7       : ok
+smplTypeTest8   : ok
+smplTypeTest9   : ok
+smplTypeTest10  : ok
+smplLet11       : ok
+smplTypeLet11   : ok
+smplTypeIf12    : ok
+smplIf13        : ok
+smplIf14        : ok
+smplIf15        : ok
+smplTest16      : ok
+override        : ok
+smplTest18      : ok
+smplTest19      : ok
+smplTest20      : ok
+prioBool21      : ok
+smplTypeTest22  : ok
+smplFun         : ok
+smplfst         : ok
+smplsndTE       : ok
+smplFunWUnit    : ok
+smplFunWUnit1   : ok
+weirdList       : ok
+smplFun2        : ok
+notfuninenv     : ok
+notfuninenv1    : ok
+returnTyEr1     : ok
+returnTyEr      : ok
+summatch        : ok
+filunit         : ok
+funfst          : ok
+fstlist         : ok
+consTest        : ok
+argTyEr         : ok
+consTyEr        : ok
+matchinmatch    : ok
+typeErrinMatch  : ok
+leftEvaluation  : ok
+testsFunEnv     : ok
+consTest        : ok
+tyErrMatch      : ok
+match33         : ok
+listwithpairs   : ok
+rerrOnIf        : ok
+paitsinif       : ok
+0undefVar       : ok
+easy0div        : ok
+pairTest1       : ok
+pairTest2       : ok
+pairTestRTEfst  : ok
+pairTestRTEsnd  : ok
+pairTestTypeErr : ok
+aloneUnit       : ok
+unitInPair      : ok
+emptyList       : ok
+matchBranchEmpty: ok
+matchBranchNotEmpty: ok
+variadicArray   : ok
+fibNormal       : ok
+fibZero         : ok
+fib2X           : ok
+fib2XAgain      : ok
+array1          : ok
+array2          : ok
+arraySum1       : ok
+arraySum2       : ok

@@ -1,0 +1,2 @@
+fun f(x:(int*int)*int):int = fst (fst x)
+in f((42, 33), 66)

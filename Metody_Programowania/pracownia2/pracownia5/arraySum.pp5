@@ -1,0 +1,10 @@
+fun makeArray(n : int) : int list =
+if n = 0 then [] : int list
+else n :: makeArray (n-1)
+
+fun sum(xs : int list) : int =
+match xs with
+| [] -> 0
+| x::xs -> x + sum xs
+
+input n in sum (makeArray n) 

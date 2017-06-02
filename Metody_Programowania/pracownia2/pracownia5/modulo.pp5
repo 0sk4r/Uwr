@@ -1,0 +1,10 @@
+fun f (x:int*int) : int list =
+    let a = fst x in
+    let b = snd x in
+    if a < b then [] : int list
+    else 100 mod a :: f (a - 1, b)
+
+input x y in
+    match f (x, y) with
+        [] -> 0 div 0
+      | h::t -> h

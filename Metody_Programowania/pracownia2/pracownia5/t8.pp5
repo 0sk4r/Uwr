@@ -1,0 +1,7 @@
+
+fun addToList (x:bool*int list): int list =
+    fst x :: snd x
+in
+let z = addToList(true, [1,2,3]:int list) in match z with
+    | []    -> 0
+    | x::xs -> x

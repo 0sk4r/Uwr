@@ -1,0 +1,2 @@
+let x = [4,2]:int list in
+  match x with [] -> true | x::xs -> x

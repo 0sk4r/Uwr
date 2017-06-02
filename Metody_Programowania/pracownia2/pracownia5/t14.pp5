@@ -1,0 +1,4 @@
+let l = [(34,223), (41,1)] : (int*int) list in
+	match l with
+	| [] -> -1
+	| h :: hs -> snd h
