@@ -1,0 +1,5 @@
+fun foo(x : int) : int = bar(x)
+
+fun bar(y : int) : int = y
+
+input z in foo(z)

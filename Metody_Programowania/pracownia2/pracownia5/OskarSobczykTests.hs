@@ -75,4 +75,12 @@ tests =
   , Test "well_typed_but_without_sense" (SrcString "42 + []:int") TypeError
   , Test "global_variables" (SrcString "fun wrong(a:int):int = b input b in wrong(b)") TypeError
   , Test "local_variables" (SrcString "fun wrong(a:int):int = 1 input x in a") TypeError
+
+
+   , Test "errorCheck2" (SrcString "fun f (x:int):int = 0 input x in f (x div 0)") (Eval [1] RuntimeError)
+  , Test "functionVariableCollision" (SrcString "fun f (x:int) : int = x + 1 input f in f f") (Eval [5] (Value 6))
+  , Test "returnTypeError" (SrcString "fun f (x:int) : bool = x + 1 input x in x") TypeError
+  , Test "listTypeError" (SrcString "let l = (2 + 2 = 4) :: [] : int list in 5") TypeError
+  , Test "matchTypeError1" (SrcString "match 10 with [] -> 1 | h::t -> 2") TypeError
+  , Test "matchTypeError2" (SrcString "match [10] : int list with [] -> 5 | h::t -> t") TypeError
   ]

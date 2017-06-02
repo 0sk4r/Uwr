@@ -1,0 +1,5 @@
+fun fajnaLiczba(n : int) : bool =
+if n = 42 or n = 666 then true
+else false
+
+input x in if fajnaLiczba x then x else 1 div 0 

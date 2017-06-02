@@ -1,0 +1,5 @@
+fun foo(pair : (int * int)) : int list = fst pair :: snd pair
+
+in match foo(51, 52) with
+	| [] -> 53
+	| x::xs -> x

@@ -593,4 +593,5 @@ evalExpr fenv varenv (EMatchL _ elist nilclause (h,t,conslause)) =
     case list of
         Right Empty -> evalExpr fenv varenv nilclause
         Right (MList (x:[xs])) -> evalExpr fenv (varenv ++ [(h,x),(t,xs)]) conslause
+        Left err -> Left err
         where list = evalExpr fenv varenv elist

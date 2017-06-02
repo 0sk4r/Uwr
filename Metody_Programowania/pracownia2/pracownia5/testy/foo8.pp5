@@ -1,0 +1,5 @@
+fun foo(xs : int list) : int = match xs with
+	| [] -> 0
+	| x::xs -> x
+	
+in foo([39, 40, 41] : int list)

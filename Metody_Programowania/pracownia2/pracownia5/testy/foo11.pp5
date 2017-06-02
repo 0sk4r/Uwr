@@ -1,0 +1,5 @@
+fun foo(pair : (int list * int list)) : int = match snd pair with
+	| [] -> 0
+	| x::xs -> x
+	
+in foo([46, 47] : int list, [48, 49, 50] : int list)

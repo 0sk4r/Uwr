@@ -1,0 +1,3 @@
+fun foo(p : bool) : bool = not p
+
+in if (foo true) then 15 else 16

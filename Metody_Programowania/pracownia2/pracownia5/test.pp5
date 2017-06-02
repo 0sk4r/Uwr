@@ -1,1 +1,10 @@
-let x = [1,2] : int in let y = [3,4] : int in let a = x :: y in match a with [] -> 1 | b :: bs -> b
+fun f (x:int*int) : int list =
+    let a = fst x in
+    let b = snd x in
+    if a < b then [] : int list
+    else 100 mod a :: f (a - 1, b)
+
+input x y in
+    match f (x, y) with
+       [] -> 0 div 0
+      | h::t -> h
