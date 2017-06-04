@@ -1,1 +1,4 @@
-foo()
+let x = 3 in
+match [1,2]:int list with
+| [] -> 0
+|x::xs -> x

@@ -1,5 +1,10 @@
+-------------------------------------------------------------------------------
+--Pracownia nr. 5
+-------------------------------------------------------------------------------
 
---xDDDDDDD
+--W stosunku do pracowni 4 zostało zmienione:
+--w typecheck błędy są teraz generowane dopiero przy wyswietlaniu - na wzor wzorcowego rozwiazania
+--eval posiada rozszerzone typy 
 
 
 -- Wymagamy, by moduł zawierał tylko bezpieczne funkcje
@@ -25,6 +30,7 @@ type TypeEnv = (String,Type)
 --data Error p = ErrorType p String deriving Show
 type FunctionEnv p = Map.Map FSym (FunctionDef p)
 
+--Definicje bledow
 type Error p = (p, ErrKind)
 data ErrKind 
     = EUndefinedVariable Var 
@@ -52,6 +58,8 @@ instance Show ErrKind where
   show (EFunNotDefined x) =
     "Function " ++ show x ++ " not defined" 
 
+
+--Definicja typow zwracanych przez eval
 data EValue 
     = Null 
     | MInt Integer 
@@ -61,9 +69,9 @@ data EValue
     | MList [EValue]
       deriving (Show, Eq, Ord)
 
+--funkcja tworzaca pary var,Tint
 initList :: [Var] -> [TypeEnv]
 initList lst = [ (x,TInt) | x <- lst ]
-
 
 getVariable :: (Eq a) => a -> [(a,b)] -> Maybe b 
 
@@ -87,12 +95,15 @@ checkfunctions :: [FunctionDef p] -> FunctionEnv p -> Maybe (Error p)
 checkfunctions [] fenv = Nothing
 
 checkfunctions fdefs fenv =
-    case checker fenv ([(funcArg def, funcArgType def)]) (funcBody def) of
-        Right t1 -> if t1 == (funcResType def) 
+    case checker fenv ([(arg, argType)]) (funcBody def) of
+        Right t1 -> if t1 == retType
             then checkfunctions (tail fdefs) fenv
             else Just ((funcPos def), ETypeMismatch t1 (funcResType def))
         Left err -> Just err
     where def = head fdefs
+          retType = funcResType def
+          arg = funcArg def
+          argType = funcArgType def
 
 
 checker :: FunctionEnv p -> [TypeEnv] -> Expr p -> Either (Error p) Type
