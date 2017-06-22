@@ -1,3 +1,7 @@
-fun f(x : int): int = x
-input x in
-let f = x in x
+fun wieksza(p : int*int):int = if fst p > snd p then fst p else snd p 
+
+fun mniejsza(r : int*int):int = if fst r < snd r then fst r else snd r
+
+fun zwracam(s : int*int): int*int->int = if fst s + snd s >10 then wieksza else mniejsza
+
+input a b in zwracam((a,b)) (a,b)

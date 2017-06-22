@@ -24,16 +24,17 @@ data ErrKind
     | EMatchNoList Type
     | EPairMismatch Type
     | EFunNotDefined Var
+    | EFunction Type
 
-data EValue 
+data EValue p
     = Null 
-    | MInt Integer 
-    | MFun (Expr)
+    | MInt Integer
     | MBool Bool 
     | MUnit 
-    | MPair (EValue, EValue) 
-    | MList [EValue]
-      deriving (Show, Eq, Ord)
+    | MPair (EValue p , EValue p) 
+    | MList [EValue p]
+    | MFun (Var,Expr p)
+      deriving (Show)
 
 
 instance Show ErrKind where
@@ -51,7 +52,8 @@ instance Show ErrKind where
     "Type mismatch: Expected Pair but received " ++ show t1 ++ "."
   show (EFunNotDefined x) =
     "Function " ++ show x ++ " not defined" 
-
+  show (EFunction x) =
+    "Expected function but recived " ++ show x ++ "." 
 
 
 type TypeEnv = (Var,Type)
@@ -365,6 +367,7 @@ checker types (EApp p expr1 expr2) =
             Right t3 -> if t1 == t3 then Right t2 else Left (p, ETypeMismatch t1 t3)
             Left err -> Left err
         Left err -> Left err
+        Right t -> Left (p, EFunction t)
 
 
 -----------------------
@@ -372,7 +375,7 @@ checker types (EApp p expr1 expr2) =
 -----------------------        
 checker types (EFn p var t1 expr) =
     case checker (types ++ [(var,t1)]) expr of
-        Right t2 -> Right t2
+        Right t2 -> Right (TArrow t1 t2)
         Left err -> Left err
 
 --funkcja szukajaca funkcji w środowisku, zwraca definicje funkcji
@@ -387,8 +390,278 @@ findFnc functionEnv identifier = Map.lookup identifier functionEnv
 -- Możemy założyć, że definicje funckcji fs oraz wyrażenie e są dobrze
 -- typowane, tzn. typecheck fs (map fst input) e = Ok
 -- UWAGA: to nie jest jeszcze rozwiązanie; należy zmienić jej definicję.
+
+initList2 :: [(Var,Integer)] -> [(Var,EValue p)]
+initList2 lst = [ (x,MInt int) | (x, int) <- lst]
+
+initFenv :: [FunctionDef p] -> [(Var,EValue p)]
+initFenv f = [(funcName x, MFun (funcArg x, funcBody x)) | x <- f]
+
+
+
 eval :: [FunctionDef p] -> [(Var,Integer)] -> Expr p -> EvalResult
-eval = undefined
+eval fdefs varenv expr =
+    case evalExpr ((initList2 varenv)++fenv) expr of
+        Right (MInt val) -> Value val
+        Left err -> RuntimeError
+    where fenv = initFenv fdefs
 
 
 
+
+
+
+
+
+
+
+
+evalExpr :: [(Var,EValue p)] -> Expr p -> Either String (EValue p)
+
+evalExpr varenv (ENum p var) = Right (MInt var)
+
+evalExpr varenv (EBool p var) =
+    case var of
+        True -> Right (MBool True)
+        False -> Right (MBool False)
+
+
+evalExpr varenv (EVar p var) = case getVariable var varenv of
+    Just x -> Right x
+    otherwise -> Left "var undefined"
+
+-----------------------
+--Operatory unarne
+-----------------------
+
+
+evalExpr varenv (EUnary p UNeg expr) =
+    case evalExpr varenv expr of
+        Right (MInt val) -> Right (MInt (-val))
+        Left err -> Left err
+
+evalExpr varenv (EUnary p UNot expr) =
+    case evalExpr varenv expr of
+        Right (MBool val) -> Right (MBool (not val))
+        Left err -> Left err
+
+
+-----------------------
+--Operatory arytmetyczne
+-----------------------
+
+evalExpr varenv (EBinary p BAdd expr1 expr2) =
+    case evalExpr varenv expr1 of
+        Right (MInt val1) -> case evalExpr varenv expr2 of
+            Right (MInt val2) -> Right (MInt (val1 + val2))
+            Left err -> Left err
+        Left err -> Left err
+
+evalExpr varenv (EBinary p BSub expr1 expr2) =
+    case evalExpr varenv expr1 of
+        Right (MInt val1) -> case evalExpr varenv expr2 of
+            Right (MInt val2) -> Right (MInt (val1 - val2))
+            Left err -> Left err
+        Left err -> Left err
+
+evalExpr varenv (EBinary p BMul expr1 expr2) =
+    case evalExpr varenv expr1 of
+        Right (MInt val1) -> case evalExpr varenv expr2 of
+            Right (MInt val2) -> Right (MInt (val1 * val2))
+            Left err -> Left err
+        Left err -> Left err
+
+evalExpr varenv (EBinary p BDiv expr1 expr2) =
+    case evalExpr varenv expr1 of
+        Right (MInt val1) -> case evalExpr varenv expr2 of
+            Right (MInt 0) -> Left "div by 0"
+            Right (MInt val2) -> Right (MInt (val1 `div` val2))
+            Left err -> Left err
+        Left err -> Left err
+
+evalExpr varenv (EBinary p BMod expr1 expr2) =
+    case evalExpr varenv expr1 of
+        Right (MInt val1) -> case evalExpr varenv expr2 of
+            Right (MInt 0) -> Left "mod by 0"
+            Right (MInt val2) -> Right (MInt (val1 `mod` val2))
+            Left err -> Left err
+        Left err -> Left err
+
+
+-----------------------
+--Operatory logiczne
+-----------------------
+evalExpr varenv (EBinary p BAnd expr1 expr2) =
+    case evalExpr varenv expr1 of
+        Right (MBool b1) -> case evalExpr varenv expr2 of
+            Right (MBool b2) -> Right (MBool (b1 && b2))
+            Left err -> Left err
+        Left err -> Left err
+
+evalExpr varenv (EBinary p BOr expr1 expr2) =
+    case evalExpr varenv expr1 of
+        Right (MBool b1) -> case evalExpr varenv expr2 of
+            Right (MBool b2) -> Right (MBool (b1 || b2))
+            Left err -> Left err
+        Left err -> Left err
+
+
+-----------------------
+--Operatory porownania
+-----------------------
+
+evalExpr varenv (EBinary p BLt expr1 expr2) =
+    case evalExpr varenv expr1 of
+        Right (MInt val1) -> case evalExpr varenv expr2 of
+            Right (MInt val2) -> Right (MBool (val1 < val2))
+            Left err -> Left err
+        Left err -> Left err
+
+evalExpr varenv (EBinary p BLe expr1 expr2) =
+    case evalExpr varenv expr1 of
+        Right (MInt val1) -> case evalExpr varenv expr2 of
+            Right (MInt val2) -> Right (MBool (val1 <= val2))
+            Left err -> Left err
+        Left err -> Left err
+
+evalExpr varenv (EBinary p BGt expr1 expr2) =
+    case evalExpr varenv expr1 of
+        Right (MInt val1) -> case evalExpr varenv expr2 of
+            Right (MInt val2) -> Right (MBool (val1 > val2))
+            Left err -> Left err
+        Left err -> Left err
+
+evalExpr varenv (EBinary p BGe expr1 expr2) =
+    case evalExpr varenv expr1 of
+        Right (MInt val1) -> case evalExpr varenv expr2 of
+            Right (MInt val2) -> Right (MBool (val1 >= val2))
+            Left err -> Left err
+        Left err -> Left err
+
+
+evalExpr varenv (EBinary p BEq expr1 expr2) =
+    case evalExpr varenv expr1 of
+        Right (MInt val1) -> case evalExpr varenv expr2 of
+            Right (MInt val2) -> Right (MBool (val1 == val2))
+            Left err -> Left err
+        Left err -> Left err
+
+evalExpr varenv (EBinary p BNeq expr1 expr2) =
+    case evalExpr varenv expr1 of
+        Right (MInt val1) -> case evalExpr varenv expr2 of
+            Right (MInt val2) -> Right (MBool (val1 /= val2))
+            Left err -> Left err
+        Left err -> Left err
+
+-----------------------
+--If
+-----------------------
+
+evalExpr varenv (EIf p exprbool expr1 expr2) =
+    case evalExpr varenv exprbool of
+        Right (MBool True) -> case evalExpr varenv expr1 of
+            Right val -> Right val
+            Left err -> Left err
+        Right (MBool False) -> case evalExpr varenv expr2 of
+            Right val -> Right val
+            Left err -> Left err
+        Left err -> Left err
+
+-----------------------
+--Let
+-----------------------
+
+evalExpr varenv (ELet p var expr1 expr2) =
+    case evalExpr varenv expr1 of
+        Right val -> case evalExpr (varenv ++ [(var,val)]) expr2 of
+            Right val2 -> Right val2
+            Left err -> Left err
+        Left err -> Left err
+
+
+
+---------------------------------------------------------------------------------
+--PRACOWNIA 5
+---------------------------------------------------------------------------------
+
+evalExpr varenv (EUnit p) = Right MUnit
+
+
+-----------------------
+--Pair
+-----------------------
+evalExpr varenv (EPair p expr1 expr2) =
+    case evalExpr varenv expr1 of
+        Right val1 -> case evalExpr varenv expr2 of
+            Right val2 -> Right (MPair (val1,val2))
+            Left err -> Left err
+        Left err -> Left err
+
+
+-----------------------
+--Fst
+-----------------------
+evalExpr varenv (EFst p expr) =
+    case evalExpr varenv expr of
+        Right (MPair (val1,val2)) -> Right val1
+        Left err -> Left err
+
+
+-----------------------
+--Snd
+-----------------------
+evalExpr varenv (ESnd p expr) =
+    case evalExpr varenv expr of
+        Right (MPair (val1,val2)) -> Right val2
+        Left err -> Left err
+
+
+-----------------------
+--ENil
+-----------------------
+
+evalExpr varenv (ENil _ _) = Right Null
+
+-----------------------
+--ECons
+-----------------------
+
+evalExpr varenv (ECons _ expr1 expr2) = 
+    case evalExpr varenv expr1 of
+        Right val1 -> case evalExpr varenv expr2 of
+            Right val2 -> Right (MList (val1 : [val2]))
+            Left err -> Left err
+        Left err -> Left err
+
+-----------------------
+--EMatch
+-----------------------
+
+evalExpr varenv (EMatchL _ elist nilclause (h,t,conslause)) =
+    case list of
+        Right Null -> evalExpr varenv nilclause
+        Right (MList (x:[xs])) -> evalExpr (varenv ++ [(h,x),(t,xs)]) conslause
+        Left err -> Left err
+        where list = evalExpr varenv elist
+
+
+
+------------------------------------------------------------------------------
+--PRACOWNIA 6
+-------------------------------------------------------------------------------
+
+evalExpr varenv (EFn p var t expr) = Right (MFun (var, expr))
+
+-----------------------
+--EApp
+-----------------------
+
+evalExpr varenv (EApp p expr1 expr2) =
+    case evalExpr varenv expr2 of 
+        Left err -> Left err
+        Right val -> case expr1 of
+            (EFn p var t exprLambda) -> case evalExpr (varenv ++ [(var,val)]) exprLambda of
+                Right val -> Right val
+                Left err -> Left err
+            otherwise -> case evalExpr varenv expr1 of
+                Right (MFun (var1,body)) -> evalExpr (varenv ++ [(var1,val)]) body
