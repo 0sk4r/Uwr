@@ -1,16 +1,16 @@
 #include <stdio.h>
 #include "string.h"
-
+#include "stdint.h"
 
 void cyk() {
 
     int terminale, nieterminale;
-    int litery[26][8];
-    int produkcje[8][8];
+    char litery[26][8];
+    char produkcje[8][8];
 
     char buffer[1005];
-    int kombinacje[256][256]; //tablica wszystkich mozliwych kombinacji 8 bitow
-    int tablica[1005][1005];
+    char kombinacje[256][256]; //tablica wszystkich mozliwych kombinacji 8 bitow
+    char tablica[1005][1005];
     char a, b, c;
 
 

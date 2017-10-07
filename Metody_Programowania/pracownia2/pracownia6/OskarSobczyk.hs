@@ -412,10 +412,6 @@ eval fdefs varenv expr =
 
 
 
-
-
-
-
 evalExpr :: [(Var,EValue p)] -> Expr p -> Either String (EValue p)
 
 evalExpr varenv (ENum p var) = Right (MInt var)

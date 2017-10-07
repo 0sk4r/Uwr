@@ -601,12 +601,12 @@ evalExpr fenv varenv (ESnd p expr) =
 -----------------------
 --EApp
 -----------------------
---eapp jest analogiczne do let
+
 evalExpr fenv varenv (EApp p identifier expr) =
     case findFnc fenv identifier of
-        Just def -> evalExpr fenv varenv exprlet
+        Just def -> evalExpr fenv varenv (ELet p (funcArg def) expr (funcBody def))
         Nothing -> Left "Cos poszlo nie tak"
-        where exprlet = ELet p (funcArg def) expr (funcBody def)
+
 -----------------------
 --ENil
 -----------------------
