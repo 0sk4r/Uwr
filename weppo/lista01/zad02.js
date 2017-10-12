@@ -13,12 +13,12 @@ function foo(num) {
 
 var array = []
 
-for (var i = 1; i <= 30; i++) {
+for (var i = 1; i <= 100000; i++) {
     if (foo(i)) {
         array.push(i);
     }
 }
 
-console.log(array);
+console.log(array.length);
 
 foo(10);

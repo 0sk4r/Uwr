@@ -1,17 +1,17 @@
 def encrypt(text, code):
-    tmp = []
+    tmp = ""
     for char in text:
         encrypted = code ^ ord(char)
-        tmp.append(chr(encrypted))
-    return "".join(tmp)
+        tmp += chr(encrypted)
+    return tmp
 
 
 def decrypt(text, code):
-    tmp = []
+    tmp = ""
     for char in text:
         encrypted = code ^ ord(char)
-        tmp.append(chr(encrypted))
-    return "".join(tmp)
+        tmp += chr(encrypted)
+    return tmp
 
 
 def main():
