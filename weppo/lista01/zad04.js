@@ -6,7 +6,7 @@ function fib1(num) {
 
 function fib2(num) {
     let a = 0,
-    b = 1;
+        b = 1;
     for (let i = 0; i < num; i++) {
         [a, b] = [b, a + b];
     }
@@ -24,7 +24,7 @@ for(let i = 10; i <=40; i +=10){
 console.log("Fibonaci itterative: ")
 
 for(let i = 10; i <=40; i +=10){
-    console.time("itterative");
+    console.time("iterative");
     fib2(i);
-    console.timeEnd("itterative");
+    console.timeEnd("iterative");
 }

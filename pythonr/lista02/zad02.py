@@ -62,7 +62,7 @@ class Div(Program):
         if e2 == 0:
             raise ZeroDivisionError
         else:
-            return e1 * e2
+            return e1 / e2
 
     def __str__(self):
         return "%s / %s" % (self.expr1, self.expr2)
@@ -162,11 +162,12 @@ class Loop(Program):
 
     def __str__(self):
         return "for %s in range(%s, %s):\n" \
-               "    %s" % (self.variable, self.startval, self.stopval, self.expresion)
+               "    %s" % (self.variable, self.startval,
+                           self.stopval, self.expresion)
 
 
 def main():
-    add = Program(Add(Cons(2),Cons(3)))
+    add = Program(Add(Cons(2), Cons(3)))
     print(add)
     print(add.exec({}))
 
@@ -181,12 +182,17 @@ def main():
     div = Program(Div(Cons(2), Cons(0)))
     print(div)
     print(div.exec({}))
-    
-    x1 = Program(Condition(Bool(Cons(2), ">", Cons(3)), Mult(Cons(1), Var("X")), Mult(Cons(1), Var("Y"))))
+
+    undef = Program(Var("x"))
+    print(undef)
+    print(undef.exec({}))
+
+    x1 = Program(Condition(Bool(Cons(2), ">", Cons(3)), Mult(
+        Cons(1), Var("X")), Mult(Cons(1), Var("Y"))))
     print(x1.exec(({"X": 2, "Y": 4})))
     print(x1)
 
-    x2 = Program(Loop("x", 1, 5, Mult(Cons(2),Var("x"))))
+    x2 = Program(Loop("x", 1, 5, Mult(Cons(2), Var("x"))))
     print(x2.exec({"X": 2, "Y": 4}))
     print(x2)
 

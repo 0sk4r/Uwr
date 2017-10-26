@@ -1,9 +1,9 @@
 function foo(num) {
-    let sum = 0
-    let temp = num
+    let sum = 0;
+    let temp = num;
     while (num > 0) {
         let digit = num % 10;
-        sum += digit
+        sum += digit;
         if (temp % digit !== 0) return false
         num = Math.floor(num / 10);
     }
@@ -11,7 +11,7 @@ function foo(num) {
     else return false
 }
 
-var array = []
+var array = [];
 
 for (var i = 1; i <= 100000; i++) {
     if (foo(i)) {
