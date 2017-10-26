@@ -14,4 +14,4 @@ var o = {
 console.log(obj.a);
 console.log(obj.get_a);
 obj.set_a = 5
-console.log(obj.get_a);
+console.log(obj.get_a);kjllkdas
