@@ -21,6 +21,7 @@ function filter(list, fun){
     }
     return tmp;
 }
-console.log(forEach( a, _ => { console.log( _ ); }));
+forEach( a, _ => { console.log( _ ); });
 console.log(map( a, _ => _ * 2 ));
 console.log(filter( a, _ => _ < 3 ));
+
