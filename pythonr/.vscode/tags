@@ -14,12 +14,16 @@ Cons	../lista02/zad02.py	/^class Cons(Program):$/;"	kind:class	line:85
 Div	../lista02/zad.py	/^class Div(Expression):$/;"	kind:class	line:41
 Div	../lista02/zad02.py	/^class Div(Program):$/;"	kind:class	line:53
 Expression	../lista02/zad.py	/^class Expression:$/;"	kind:class	line:1
+IteratorPrime	../lista04/zad01.py	/^def IteratorPrime(n):$/;"	kind:function	line:35
 Loop	../lista02/zad02.py	/^class Loop(Program):$/;"	kind:class	line:151
 Minus	../lista02/zad.py	/^class Minus(Expression):$/;"	kind:class	line:23
 Minus	../lista02/zad02.py	/^class Minus(Program):$/;"	kind:class	line:29
 Mult	../lista02/zad.py	/^class Mult(Expression):$/;"	kind:class	line:32
 Mult	../lista02/zad02.py	/^class Mult(Program):$/;"	kind:class	line:41
+PierwszeIterator	../lista04/test.py	/^class PierwszeIterator:$/;"	kind:class	line:26
+PrimeIt	../lista04/zad01.py	/^class PrimeIt:$/;"	kind:class	line:17
 Program	../lista02/zad02.py	/^class Program:$/;"	kind:class	line:1
+StringIO	../lista04/zad02.py	/^from io import StringIO$/;"	kind:namespace	line:1
 Var	../lista02/zad.py	/^class Var(Expression):$/;"	kind:class	line:56
 Var	../lista02/zad02.py	/^class Var(Program):$/;"	kind:class	line:71
 __init__	../lista02/zad.py	/^    def __init__(self, e1, e2):$/;"	kind:member	line:15
@@ -40,6 +44,12 @@ __init__	../lista02/zad02.py	/^    def __init__(self, var, val, e1):$/;"	kind:me
 __init__	../lista02/zad02.py	/^    def __init__(self, x):$/;"	kind:member	line:72
 __init__	../lista02/zad02.py	/^    def __init__(self, x):$/;"	kind:member	line:86
 __init__	../lista02/zad02.py	/^    def __init__(self, x, e1, e2):$/;"	kind:member	line:132
+__init__	../lista04/test.py	/^    def __init__(self):$/;"	kind:member	line:27
+__init__	../lista04/zad01.py	/^    def __init__(self):$/;"	kind:member	line:18
+__iter__	../lista04/test.py	/^    def __iter__(self):$/;"	kind:member	line:40
+__iter__	../lista04/zad01.py	/^    def __iter__(self):$/;"	kind:member	line:31
+__next__	../lista04/test.py	/^    def __next__(self):$/;"	kind:member	line:30
+__next__	../lista04/zad01.py	/^    def __next__(self):$/;"	kind:member	line:21
 __str__	../lista02/zad02.py	/^    def __str__(self):$/;"	kind:member	line:106
 __str__	../lista02/zad02.py	/^    def __str__(self):$/;"	kind:member	line:123
 __str__	../lista02/zad02.py	/^    def __str__(self):$/;"	kind:member	line:13
@@ -51,6 +61,8 @@ __str__	../lista02/zad02.py	/^    def __str__(self):$/;"	kind:member	line:49
 __str__	../lista02/zad02.py	/^    def __str__(self):$/;"	kind:member	line:67
 __str__	../lista02/zad02.py	/^    def __str__(self):$/;"	kind:member	line:81
 __str__	../lista02/zad02.py	/^    def __str__(self):$/;"	kind:member	line:92
+after	../lista04/zad02.py	/^    after = list(map(lambda s: korekta(s), zdania(in2)))$/;"	kind:variable	line:32
+before	../lista04/zad02.py	/^    before = list(zdania(in1))$/;"	kind:variable	line:31
 calculate	../lista02/zad.py	/^    def calculate(self, vars):$/;"	kind:member	line:19
 calculate	../lista02/zad.py	/^    def calculate(self, vars):$/;"	kind:member	line:28
 calculate	../lista02/zad.py	/^    def calculate(self, vars):$/;"	kind:member	line:37
@@ -59,6 +71,8 @@ calculate	../lista02/zad.py	/^    def calculate(self, vars):$/;"	kind:member	lin
 calculate	../lista02/zad.py	/^    def calculate(self, vars):$/;"	kind:member	line:60
 calculate	../lista02/zad.py	/^    def calculate(self, vars):$/;"	kind:member	line:71
 decrypt	../lista01/zad02.py	/^def decrypt(text, code):$/;"	kind:function	line:9
+divs	../lista03/zad02.py	/^    def divs(m): return list(filter(lambda e: m %$/;"	kind:function	line:11
+divs	../lista03/zad02.py	/^    def divs(m):$/;"	kind:function	line:5
 encrypt	../lista01/zad02.py	/^def encrypt(text, code):$/;"	kind:function	line:1
 exec	../lista02/zad02.py	/^    def exec(self, vars):$/;"	kind:member	line:102
 exec	../lista02/zad02.py	/^    def exec(self, vars):$/;"	kind:member	line:116
@@ -71,16 +85,64 @@ exec	../lista02/zad02.py	/^    def exec(self, vars):$/;"	kind:member	line:5
 exec	../lista02/zad02.py	/^    def exec(self, vars):$/;"	kind:member	line:58
 exec	../lista02/zad02.py	/^    def exec(self, vars):$/;"	kind:member	line:75
 exec	../lista02/zad02.py	/^    def exec(self, vars):$/;"	kind:member	line:89
+in1	../lista04/zad02.py	/^    in1 = StringIO(str)$/;"	kind:variable	line:29
+in2	../lista04/zad02.py	/^    in2 = StringIO(str)$/;"	kind:variable	line:30
+islice	../lista04/test.py	/^from itertools import islice$/;"	kind:namespace	line:3
+islice	../lista04/zad01.py	/^from itertools import islice$/;"	kind:namespace	line:3
+korekta	../lista04/zad02.py	/^def korekta(str):$/;"	kind:function	line:8
 main	../lista01/zad02.py	/^def main():$/;"	kind:function	line:17
 main	../lista01/zad05.py	/^def main():$/;"	kind:function	line:17
 main	../lista02/zad.py	/^def main():$/;"	kind:function	line:75
 main	../lista02/zad02.py	/^def main():$/;"	kind:function	line:169
-pierwsze_funkcyjna	../lista03/zad02.py	/^def pierwsze_funkcyjna(n):$/;"	kind:function	line:4
+main	../lista03/zad01.py	/^def main():$/;"	kind:function	line:16
+main	../lista03/zad02.py	/^def main():$/;"	kind:function	line:16
+main	../lista04/zad01.py	/^def main():$/;"	kind:function	line:45
+not_in_list	../lista04/test.py	/^    def not_in_list(_list): return lambda x: x not in _list$/;"	kind:function	line:15
+perfect_functional	../lista03/zad02.py	/^def perfect_functional(n):$/;"	kind:function	line:10
+perfect_listcomp	../lista03/zad02.py	/^def perfect_listcomp(n):$/;"	kind:function	line:4
+pierwsze_funkcyjna	../lista04/test.py	/^                        setup="from __main__ import pierwsze_funkcyjna", number=1), "secs")$/;"	kind:namespace	line:62
+pierwsze_funkcyjna	../lista04/test.py	/^                        setup="from __main__ import pierwsze_funkcyjna", number=1), "secs")$/;"	kind:namespace	line:72
+pierwsze_funkcyjna	../lista04/test.py	/^                        setup="from __main__ import pierwsze_funkcyjna", number=1), "secs")$/;"	kind:namespace	line:82
+pierwsze_funkcyjna	../lista04/test.py	/^def pierwsze_funkcyjna(n):$/;"	kind:function	line:14
+pierwsze_iterowane	../lista04/test.py	/^                        setup="from __main__ import pierwsze_iterowane", number=1), "secs")$/;"	kind:namespace	line:65
+pierwsze_iterowane	../lista04/test.py	/^                        setup="from __main__ import pierwsze_iterowane", number=1), "secs")$/;"	kind:namespace	line:75
+pierwsze_iterowane	../lista04/test.py	/^                        setup="from __main__ import pierwsze_iterowane", number=1), "secs")$/;"	kind:namespace	line:85
+pierwsze_iterowane	../lista04/test.py	/^def pierwsze_iterowane(n):$/;"	kind:function	line:44
+pierwsze_skladana	../lista04/test.py	/^                        setup="from __main__ import pierwsze_skladana", number=1), "secs,")$/;"	kind:namespace	line:59
+pierwsze_skladana	../lista04/test.py	/^                        setup="from __main__ import pierwsze_skladana", number=1), "secs,")$/;"	kind:namespace	line:69
+pierwsze_skladana	../lista04/test.py	/^                        setup="from __main__ import pierwsze_skladana", number=1), "secs,")$/;"	kind:namespace	line:79
+pierwsze_skladana	../lista04/test.py	/^def pierwsze_skladana(n):$/;"	kind:function	line:6
+prime_functional	../lista03/zad01.py	/^def prime_functional(n):$/;"	kind:function	line:5
+prime_functional	../lista04/zad01.py	/^def prime_functional(n):$/;"	kind:function	line:6
+prime_listcomp	../lista03/zad01.py	/^def prime_listcomp(n):$/;"	kind:function	line:12
+prime_listcomp	../lista04/zad01.py	/^def prime_listcomp(n):$/;"	kind:function	line:13
+reduce	../lista04/test.py	/^from functools import reduce$/;"	kind:namespace	line:2
+secs	../lista04/test.py	/^                        setup="from __main__ import pierwsze_funkcyjna", number=1), "secs")$/;"	kind:namespace	line:62
+secs	../lista04/test.py	/^                        setup="from __main__ import pierwsze_funkcyjna", number=1), "secs")$/;"	kind:namespace	line:72
+secs	../lista04/test.py	/^                        setup="from __main__ import pierwsze_funkcyjna", number=1), "secs")$/;"	kind:namespace	line:82
+secs	../lista04/test.py	/^                        setup="from __main__ import pierwsze_iterowane", number=1), "secs")$/;"	kind:namespace	line:65
+secs	../lista04/test.py	/^                        setup="from __main__ import pierwsze_iterowane", number=1), "secs")$/;"	kind:namespace	line:75
+secs	../lista04/test.py	/^                        setup="from __main__ import pierwsze_iterowane", number=1), "secs")$/;"	kind:namespace	line:85
+secs	../lista04/test.py	/^                        setup="from __main__ import pierwsze_skladana", number=1), "secs,")$/;"	kind:namespace	line:59
+secs	../lista04/test.py	/^                        setup="from __main__ import pierwsze_skladana", number=1), "secs,")$/;"	kind:namespace	line:69
+secs	../lista04/test.py	/^                        setup="from __main__ import pierwsze_skladana", number=1), "secs,")$/;"	kind:namespace	line:79
+sqrt	../lista04/test.py	/^from math import sqrt$/;"	kind:namespace	line:1
+str	../lista04/zad02.py	/^    str = "testowy napis. ala ma kota.kot ma ale"$/;"	kind:variable	line:28
 tabliczka	../lista01/zad05.py	/^def tabliczka(x1, x2, y1, y2):$/;"	kind:function	line:1
+test.py	../lista04/test.py	1;"	kind:file	line:1
 test.py	../test.py	1;"	kind:file	line:1
+time	../lista03/zad01.py	/^import time$/;"	kind:namespace	line:2
+time	../lista03/zad02.py	/^import time$/;"	kind:namespace	line:1
+time	../lista04/zad01.py	/^import time$/;"	kind:namespace	line:2
+timeit	../lista04/test.py	/^    import timeit$/;"	kind:namespace	line:55
+upper_first	../lista04/zad02.py	/^def upper_first(str):$/;"	kind:function	line:4
 x	../test.py	/^x = "ala ma kota"$/;"	kind:variable	line:1
 zad.py	../lista02/zad.py	1;"	kind:file	line:1
+zad01.py	../lista03/zad01.py	1;"	kind:file	line:1
+zad01.py	../lista04/zad01.py	1;"	kind:file	line:1
 zad02.py	../lista01/zad02.py	1;"	kind:file	line:1
 zad02.py	../lista02/zad02.py	1;"	kind:file	line:1
 zad02.py	../lista03/zad02.py	1;"	kind:file	line:1
+zad02.py	../lista04/zad02.py	1;"	kind:file	line:1
 zad05.py	../lista01/zad05.py	1;"	kind:file	line:1
+zdania	../lista04/zad02.py	/^def zdania(stream):$/;"	kind:function	line:18

@@ -1,9 +1,8 @@
-function parmFib(max) {
+function fibParm(max) {
 	return function fib() {
 		var _state0 = 0;
 		var _state1 = 1;
 		var _n = 0;
-
 		return {
 			next : function() {
 				_tmp = _state1 + _state0;
@@ -20,7 +19,7 @@ function parmFib(max) {
 	}
 }
 
-function fib() {
+function fibUnlimited() {
 	var _state0 = 0;
 	var _state1 = 1;
 	return {
@@ -36,7 +35,7 @@ function fib() {
 	}
 }
 
-function *fibYield() {
+function* fibYield() {
 	var _state0 = 0;
 	var _state1 = 1;
 
@@ -50,20 +49,20 @@ function *fibYield() {
 }
 
 
-var foo = {
-	[Symbol.iterator] : fib
+var fib1 = {
+	[Symbol.iterator] : fibUnlimited
 }
 
-var foo2 = {
-	[Symbol.iterator] : parmFib(15) 
+var fib2 = {
+	[Symbol.iterator] : fibParm(10) 
 }
 
-for( let i of foo2)
+for( let i of fib2)
 console.log(i);
 
 var gen = fibYield();
 
-for( let i = 0; i < 14; i++ )
+for( let i = 0; i < 9; i++ )
     console.log(gen.next().value);
     
 
@@ -72,6 +71,6 @@ function* take(it, top) {
         yield it.next().value;
 }
 
-for( let num of take( fib(), 10 ) ) {
+for( let num of take( fibUnlimited(), 10 ) ) {
 	console.log(num);	
 }

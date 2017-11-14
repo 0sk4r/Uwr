@@ -18,7 +18,6 @@ obj.new_function();
 Object.defineProperty(obj,'value', { get: function() {return `wartosc c: ${this.c}`;},
                                     set: function(x) { this.c = x;}});
 
-
 console.log(obj.value);
 obj.value = 10;
 console.log(obj.value);

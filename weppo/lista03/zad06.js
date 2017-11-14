@@ -12,16 +12,16 @@ function parmGenerator(max){
 	}
 }
 
-var foo1 = {
+var fib1 = {
 	[Symbol.iterator] : parmGenerator(5)
 };
 
-for( let i of foo1)
+for( let i of fib1)
     console.log(i);
 
-var foo2 = {
+var fib2 = {
 	[Symbol.iterator] : parmGenerator(10)
 }
 
-for( let i of foo2)
+for( let i of fib2)
 	console.log(i);
