@@ -23,6 +23,7 @@ Mult	../lista02/zad02.py	/^class Mult(Program):$/;"	kind:class	line:41
 PierwszeIterator	../lista04/test.py	/^class PierwszeIterator:$/;"	kind:class	line:26
 PrimeIt	../lista04/zad01.py	/^class PrimeIt:$/;"	kind:class	line:17
 Program	../lista02/zad02.py	/^class Program:$/;"	kind:class	line:1
+Scanner	../lista05/zad.py	/^class Scanner:$/;"	kind:class	line:7
 StringIO	../lista04/zad02.py	/^from io import StringIO$/;"	kind:namespace	line:1
 Var	../lista02/zad.py	/^class Var(Expression):$/;"	kind:class	line:56
 Var	../lista02/zad02.py	/^class Var(Program):$/;"	kind:class	line:71
@@ -46,6 +47,7 @@ __init__	../lista02/zad02.py	/^    def __init__(self, x):$/;"	kind:member	line:8
 __init__	../lista02/zad02.py	/^    def __init__(self, x, e1, e2):$/;"	kind:member	line:132
 __init__	../lista04/test.py	/^    def __init__(self):$/;"	kind:member	line:27
 __init__	../lista04/zad01.py	/^    def __init__(self):$/;"	kind:member	line:18
+__init__	../lista05/zad.py	/^    def __init__(self, max_depth, func):$/;"	kind:member	line:8
 __iter__	../lista04/test.py	/^    def __iter__(self):$/;"	kind:member	line:40
 __iter__	../lista04/zad01.py	/^    def __iter__(self):$/;"	kind:member	line:31
 __next__	../lista04/test.py	/^    def __next__(self):$/;"	kind:member	line:30
@@ -85,10 +87,12 @@ exec	../lista02/zad02.py	/^    def exec(self, vars):$/;"	kind:member	line:5
 exec	../lista02/zad02.py	/^    def exec(self, vars):$/;"	kind:member	line:58
 exec	../lista02/zad02.py	/^    def exec(self, vars):$/;"	kind:member	line:75
 exec	../lista02/zad02.py	/^    def exec(self, vars):$/;"	kind:member	line:89
+f	../lista05/zad.py	/^    def f(page):$/;"	kind:member	line:50
 in1	../lista04/zad02.py	/^    in1 = StringIO(str)$/;"	kind:variable	line:29
 in2	../lista04/zad02.py	/^    in2 = StringIO(str)$/;"	kind:variable	line:30
 islice	../lista04/test.py	/^from itertools import islice$/;"	kind:namespace	line:3
 islice	../lista04/zad01.py	/^from itertools import islice$/;"	kind:namespace	line:3
+iter	../lista05/zad.py	/^    iter = x.scan("http:\/\/www.python.org\/downloads\/release\/python-363\/")$/;"	kind:variable	line:55
 korekta	../lista04/zad02.py	/^def korekta(str):$/;"	kind:function	line:8
 main	../lista01/zad02.py	/^def main():$/;"	kind:function	line:17
 main	../lista01/zad05.py	/^def main():$/;"	kind:function	line:17
@@ -116,7 +120,10 @@ prime_functional	../lista03/zad01.py	/^def prime_functional(n):$/;"	kind:functio
 prime_functional	../lista04/zad01.py	/^def prime_functional(n):$/;"	kind:function	line:6
 prime_listcomp	../lista03/zad01.py	/^def prime_listcomp(n):$/;"	kind:function	line:12
 prime_listcomp	../lista04/zad01.py	/^def prime_listcomp(n):$/;"	kind:function	line:13
+queue	../lista05/zad.py	/^import queue$/;"	kind:namespace	line:3
+re	../lista05/zad.py	/^import re$/;"	kind:namespace	line:2
 reduce	../lista04/test.py	/^from functools import reduce$/;"	kind:namespace	line:2
+scan	../lista05/zad.py	/^    def scan(self, site, depth=1):$/;"	kind:member	line:14
 secs	../lista04/test.py	/^                        setup="from __main__ import pierwsze_funkcyjna", number=1), "secs")$/;"	kind:namespace	line:62
 secs	../lista04/test.py	/^                        setup="from __main__ import pierwsze_funkcyjna", number=1), "secs")$/;"	kind:namespace	line:72
 secs	../lista04/test.py	/^                        setup="from __main__ import pierwsze_funkcyjna", number=1), "secs")$/;"	kind:namespace	line:82
@@ -128,6 +135,7 @@ secs	../lista04/test.py	/^                        setup="from __main__ import pi
 secs	../lista04/test.py	/^                        setup="from __main__ import pierwsze_skladana", number=1), "secs,")$/;"	kind:namespace	line:79
 sqrt	../lista04/test.py	/^from math import sqrt$/;"	kind:namespace	line:1
 str	../lista04/zad02.py	/^    str = "testowy napis. ala ma kota.kot ma ale"$/;"	kind:variable	line:28
+sys	../lista05/zad.py	/^import sys$/;"	kind:namespace	line:4
 tabliczka	../lista01/zad05.py	/^def tabliczka(x1, x2, y1, y2):$/;"	kind:function	line:1
 test.py	../lista04/test.py	1;"	kind:file	line:1
 test.py	../test.py	1;"	kind:file	line:1
@@ -136,8 +144,11 @@ time	../lista03/zad02.py	/^import time$/;"	kind:namespace	line:1
 time	../lista04/zad01.py	/^import time$/;"	kind:namespace	line:2
 timeit	../lista04/test.py	/^    import timeit$/;"	kind:namespace	line:55
 upper_first	../lista04/zad02.py	/^def upper_first(str):$/;"	kind:function	line:4
+urlopen	../lista05/zad.py	/^from urllib.request import urlopen$/;"	kind:namespace	line:1
+x	../lista05/zad.py	/^    x = Scanner(3, f)$/;"	kind:variable	line:54
 x	../test.py	/^x = "ala ma kota"$/;"	kind:variable	line:1
 zad.py	../lista02/zad.py	1;"	kind:file	line:1
+zad.py	../lista05/zad.py	1;"	kind:file	line:1
 zad01.py	../lista03/zad01.py	1;"	kind:file	line:1
 zad01.py	../lista04/zad01.py	1;"	kind:file	line:1
 zad02.py	../lista01/zad02.py	1;"	kind:file	line:1

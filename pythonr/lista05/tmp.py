@@ -1,7 +1,7 @@
-from urllib.request import urlopen
 import re
 import queue
 import sys
+from urllib.request import urlopen
 
 
 class Scanner:
@@ -13,14 +13,12 @@ class Scanner:
 
     def scan(self, site, depth=1):
         try:
-            # page = open(site, 'r', encoding='utf-8').read()
             page = urlopen(site).read().decode('utf-8')
         except:
             e = sys.exc_info()[0]
             print(e)
             print(site)
             return
-            # print(self.visited)
 
         if depth == 1:
             self.visited.add(site)
@@ -29,12 +27,12 @@ class Scanner:
             regex = re.compile(r'(?<=href=").*?(?=")')
             for match in regex.finditer(page):
                 link = match.group()
-                if (link not in self.visited and ".html" in link):
+                if link not in self.visited:
                     self.visited.add(link)
                     self.next.put((link, depth + 1))
 
-        for x in self.function(page):
-            yield x
+        for match in self.function(page):
+            yield match
 
         if not self.next.empty():
             first = self.next.get()
@@ -46,6 +44,11 @@ class Scanner:
 
 
 if __name__ == "__main__":
+    #    def f(page):
+    #       expr = re.compile("[\w ]*Python(\w*,* *)*\.")
+    #       iter = expr.finditer(page)
+    #       return [match.group() for match in iter]
+
     def f(page):
         text = re.findall(r'>(.*?)<', page)
         return [t for t in text if "Python" in t]
@@ -53,6 +56,4 @@ if __name__ == "__main__":
     x = Scanner(3, f)
     iter = x.scan("http://www.python.org/downloads/release/python-363/")
     for i in iter:
-        print(i
-
-    print("Koniec")
+        print(i)
