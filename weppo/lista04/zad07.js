@@ -12,18 +12,6 @@ lineReader.on('line', (line) => {
   }
 });
 
-
-
-var dict = {};
-lineReader.on('line', (line) => {
-  var ip = line.split(" ")[1]
-  if (dict[ip] === undefined) {
-    dict[ip] = 1;
-  } else {
-    dict[ip] += 1;
-  }
-  //print(ip, dict[ip]);
-});
 lineReader.on('close', function () {
   console.log(dict);
   var max = {}
