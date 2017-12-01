@@ -1,28 +1,20 @@
-var Person = (function () {
+var Foo = (function () {
 
-  var name = "Adam"; //prywatne
+  var Qux = function() {console.log("qux")}; //prywatne
 
 
 
-  var PersonIn = function () {
-    this.getName = function () {
-      return name;
-    };
-
-    this.setName = function (x) {
-      name = x;
-    };
+  var Bar = function () {
+    console.log("Wywołanie z Bar: ");
+    Qux()
   };
 
-  return PersonIn;
+  return Bar;
 })();
 
-var person = new Person();
+var foo = new Foo();
 
-person.name = "Krzysztof";
+foo.Bar;
 
-console.log(person.getName());
-
-person.setName("Karol");
-
-console.log(person.getName());
+console.log("wywolannie z zewnatrz:");
+foo.Qux;

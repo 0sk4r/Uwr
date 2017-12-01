@@ -14,6 +14,9 @@ Cons	../lista02/zad02.py	/^class Cons(Program):$/;"	kind:class	line:85
 Div	../lista02/zad.py	/^class Div(Expression):$/;"	kind:class	line:41
 Div	../lista02/zad02.py	/^class Div(Program):$/;"	kind:class	line:53
 Expression	../lista02/zad.py	/^class Expression:$/;"	kind:class	line:1
+GObject	../lista07/zad.py	/^from gi.repository import Gtk, GObject$/;"	kind:namespace	line:5
+Gtk	../lista07/test.py	/^from gi.repository import Gtk$/;"	kind:namespace	line:3
+Gtk	../lista07/zad.py	/^from gi.repository import Gtk, GObject$/;"	kind:namespace	line:5
 IteratorPrime	../lista04/zad01.py	/^def IteratorPrime(n):$/;"	kind:function	line:35
 Loop	../lista02/zad02.py	/^class Loop(Program):$/;"	kind:class	line:151
 Minus	../lista02/zad.py	/^class Minus(Expression):$/;"	kind:class	line:23
@@ -23,8 +26,13 @@ Mult	../lista02/zad02.py	/^class Mult(Program):$/;"	kind:class	line:41
 PierwszeIterator	../lista04/test.py	/^class PierwszeIterator:$/;"	kind:class	line:26
 PrimeIt	../lista04/zad01.py	/^class PrimeIt:$/;"	kind:class	line:17
 Program	../lista02/zad02.py	/^class Program:$/;"	kind:class	line:1
+Scanner	../lista05/tmp.py	/^class Scanner:$/;"	kind:class	line:7
 Scanner	../lista05/zad.py	/^class Scanner:$/;"	kind:class	line:7
+Scanner	../lista06/zad3.py	/^class Scanner:$/;"	kind:class	line:8
+Scanner	../lista06/zadn.py	/^class Scanner:$/;"	kind:class	line:7
+Scanner	../lista06/zadt.py	/^class Scanner:$/;"	kind:class	line:8
 StringIO	../lista04/zad02.py	/^from io import StringIO$/;"	kind:namespace	line:1
+Timer	../lista07/zad.py	/^class Timer:$/;"	kind:class	line:8
 Var	../lista02/zad.py	/^class Var(Expression):$/;"	kind:class	line:56
 Var	../lista02/zad02.py	/^class Var(Program):$/;"	kind:class	line:71
 __init__	../lista02/zad.py	/^    def __init__(self, e1, e2):$/;"	kind:member	line:15
@@ -47,7 +55,12 @@ __init__	../lista02/zad02.py	/^    def __init__(self, x):$/;"	kind:member	line:8
 __init__	../lista02/zad02.py	/^    def __init__(self, x, e1, e2):$/;"	kind:member	line:132
 __init__	../lista04/test.py	/^    def __init__(self):$/;"	kind:member	line:27
 __init__	../lista04/zad01.py	/^    def __init__(self):$/;"	kind:member	line:18
+__init__	../lista05/tmp.py	/^    def __init__(self, max_depth, func):$/;"	kind:member	line:8
 __init__	../lista05/zad.py	/^    def __init__(self, max_depth, func):$/;"	kind:member	line:8
+__init__	../lista06/zad3.py	/^    def __init__(self, max_depth, func, site):$/;"	kind:member	line:9
+__init__	../lista06/zadn.py	/^    def __init__(self, max_depth, func):$/;"	kind:member	line:8
+__init__	../lista06/zadt.py	/^    def __init__(self, max_depth, func, site):$/;"	kind:member	line:9
+__init__	../lista07/zad.py	/^    def __init__(self):$/;"	kind:member	line:9
 __iter__	../lista04/test.py	/^    def __iter__(self):$/;"	kind:member	line:40
 __iter__	../lista04/zad01.py	/^    def __iter__(self):$/;"	kind:member	line:31
 __next__	../lista04/test.py	/^    def __next__(self):$/;"	kind:member	line:30
@@ -64,6 +77,7 @@ __str__	../lista02/zad02.py	/^    def __str__(self):$/;"	kind:member	line:67
 __str__	../lista02/zad02.py	/^    def __str__(self):$/;"	kind:member	line:81
 __str__	../lista02/zad02.py	/^    def __str__(self):$/;"	kind:member	line:92
 after	../lista04/zad02.py	/^    after = list(map(lambda s: korekta(s), zdania(in2)))$/;"	kind:variable	line:32
+app	../lista07/zad.py	/^    app = Timer()$/;"	kind:variable	line:81
 before	../lista04/zad02.py	/^    before = list(zdania(in1))$/;"	kind:variable	line:31
 calculate	../lista02/zad.py	/^    def calculate(self, vars):$/;"	kind:member	line:19
 calculate	../lista02/zad.py	/^    def calculate(self, vars):$/;"	kind:member	line:28
@@ -72,9 +86,13 @@ calculate	../lista02/zad.py	/^    def calculate(self, vars):$/;"	kind:member	lin
 calculate	../lista02/zad.py	/^    def calculate(self, vars):$/;"	kind:member	line:5
 calculate	../lista02/zad.py	/^    def calculate(self, vars):$/;"	kind:member	line:60
 calculate	../lista02/zad.py	/^    def calculate(self, vars):$/;"	kind:member	line:71
+countdown	../lista07/zad.py	/^    def countdown(self):$/;"	kind:member	line:70
 decrypt	../lista01/zad02.py	/^def decrypt(text, code):$/;"	kind:function	line:9
+delete_event	../lista07/zad.py	/^    def delete_event(widget, event, data=None):$/;"	kind:member	line:50
+destroy	../lista07/zad.py	/^    def destroy(widget, data=None):$/;"	kind:member	line:54
 divs	../lista03/zad02.py	/^    def divs(m): return list(filter(lambda e: m %$/;"	kind:function	line:11
 divs	../lista03/zad02.py	/^    def divs(m):$/;"	kind:function	line:5
+eggs_clicked	../lista07/zad.py	/^    def eggs_clicked(self, sender):$/;"	kind:member	line:62
 encrypt	../lista01/zad02.py	/^def encrypt(text, code):$/;"	kind:function	line:1
 exec	../lista02/zad02.py	/^    def exec(self, vars):$/;"	kind:member	line:102
 exec	../lista02/zad02.py	/^    def exec(self, vars):$/;"	kind:member	line:116
@@ -87,12 +105,23 @@ exec	../lista02/zad02.py	/^    def exec(self, vars):$/;"	kind:member	line:5
 exec	../lista02/zad02.py	/^    def exec(self, vars):$/;"	kind:member	line:58
 exec	../lista02/zad02.py	/^    def exec(self, vars):$/;"	kind:member	line:75
 exec	../lista02/zad02.py	/^    def exec(self, vars):$/;"	kind:member	line:89
-f	../lista05/zad.py	/^    def f(page):$/;"	kind:member	line:50
+f	../lista05/tmp.py	/^    def f(page):$/;"	kind:member	line:52
+f	../lista05/zad.py	/^    def f(page):$/;"	kind:member	line:54
+f	../lista06/zad3.py	/^    def f(page):$/;"	kind:member	line:84
+f	../lista06/zadn.py	/^    def f(page):$/;"	kind:member	line:54
+f	../lista06/zadt.py	/^    def f(page):$/;"	kind:member	line:84
+gi	../lista07/test.py	/^import gi$/;"	kind:namespace	line:1
+gi	../lista07/zad.py	/^import gi$/;"	kind:namespace	line:3
 in1	../lista04/zad02.py	/^    in1 = StringIO(str)$/;"	kind:variable	line:29
 in2	../lista04/zad02.py	/^    in2 = StringIO(str)$/;"	kind:variable	line:30
 islice	../lista04/test.py	/^from itertools import islice$/;"	kind:namespace	line:3
 islice	../lista04/zad01.py	/^from itertools import islice$/;"	kind:namespace	line:3
-iter	../lista05/zad.py	/^    iter = x.scan("http:\/\/www.python.org\/downloads\/release\/python-363\/")$/;"	kind:variable	line:55
+iter	../lista05/tmp.py	/^    iter = x.scan("http:\/\/www.python.org\/downloads\/release\/python-363\/")$/;"	kind:variable	line:57
+iter	../lista05/zad.py	/^    iter = x.scan("http:\/\/www.python.org\/downloads\/release\/python-363\/")$/;"	kind:variable	line:59
+iter	../lista06/zad3.py	/^    def iter(self):$/;"	kind:member	line:23
+iter	../lista06/zadn.py	/^    iter = x.scan("http:\/\/www.python.org\/downloads\/release\/python-363\/")$/;"	kind:variable	line:59
+iter	../lista06/zadt.py	/^    def iter(self):$/;"	kind:member	line:23
+iter	../lista06/zadt.py	/^    iter = x.iter()$/;"	kind:variable	line:90
 korekta	../lista04/zad02.py	/^def korekta(str):$/;"	kind:function	line:8
 main	../lista01/zad02.py	/^def main():$/;"	kind:function	line:17
 main	../lista01/zad05.py	/^def main():$/;"	kind:function	line:17
@@ -120,10 +149,23 @@ prime_functional	../lista03/zad01.py	/^def prime_functional(n):$/;"	kind:functio
 prime_functional	../lista04/zad01.py	/^def prime_functional(n):$/;"	kind:function	line:6
 prime_listcomp	../lista03/zad01.py	/^def prime_listcomp(n):$/;"	kind:function	line:12
 prime_listcomp	../lista04/zad01.py	/^def prime_listcomp(n):$/;"	kind:function	line:13
+queue	../lista05/tmp.py	/^import queue$/;"	kind:namespace	line:2
 queue	../lista05/zad.py	/^import queue$/;"	kind:namespace	line:3
+queue	../lista06/zad3.py	/^import queue$/;"	kind:namespace	line:5
+queue	../lista06/zadn.py	/^import queue$/;"	kind:namespace	line:3
+queue	../lista06/zadt.py	/^import queue$/;"	kind:namespace	line:5
+re	../lista05/tmp.py	/^import re$/;"	kind:namespace	line:1
 re	../lista05/zad.py	/^import re$/;"	kind:namespace	line:2
+re	../lista06/zad3.py	/^import re$/;"	kind:namespace	line:2
+re	../lista06/zadn.py	/^import re$/;"	kind:namespace	line:2
+re	../lista06/zadt.py	/^import re$/;"	kind:namespace	line:2
 reduce	../lista04/test.py	/^from functools import reduce$/;"	kind:namespace	line:2
+rice_clicked	../lista07/zad.py	/^    def rice_clicked(self, sender):$/;"	kind:member	line:66
+scan	../lista05/tmp.py	/^    def scan(self, site, depth=1):$/;"	kind:member	line:14
 scan	../lista05/zad.py	/^    def scan(self, site, depth=1):$/;"	kind:member	line:14
+scan	../lista06/zad3.py	/^    def scan(self, site, depth=1):$/;"	kind:member	line:32
+scan	../lista06/zadn.py	/^    def scan(self, site, depth=1):$/;"	kind:member	line:14
+scan	../lista06/zadt.py	/^    def scan(self, site, depth=1):$/;"	kind:member	line:33
 secs	../lista04/test.py	/^                        setup="from __main__ import pierwsze_funkcyjna", number=1), "secs")$/;"	kind:namespace	line:62
 secs	../lista04/test.py	/^                        setup="from __main__ import pierwsze_funkcyjna", number=1), "secs")$/;"	kind:namespace	line:72
 secs	../lista04/test.py	/^                        setup="from __main__ import pierwsze_funkcyjna", number=1), "secs")$/;"	kind:namespace	line:82
@@ -134,21 +176,40 @@ secs	../lista04/test.py	/^                        setup="from __main__ import pi
 secs	../lista04/test.py	/^                        setup="from __main__ import pierwsze_skladana", number=1), "secs,")$/;"	kind:namespace	line:69
 secs	../lista04/test.py	/^                        setup="from __main__ import pierwsze_skladana", number=1), "secs,")$/;"	kind:namespace	line:79
 sqrt	../lista04/test.py	/^from math import sqrt$/;"	kind:namespace	line:1
+start_clicked	../lista07/zad.py	/^    def start_clicked(self, sender):$/;"	kind:member	line:58
 str	../lista04/zad02.py	/^    str = "testowy napis. ala ma kota.kot ma ale"$/;"	kind:variable	line:28
+sys	../lista05/tmp.py	/^import sys$/;"	kind:namespace	line:3
 sys	../lista05/zad.py	/^import sys$/;"	kind:namespace	line:4
+sys	../lista06/zad3.py	/^import sys$/;"	kind:namespace	line:3
+sys	../lista06/zadn.py	/^import sys$/;"	kind:namespace	line:4
+sys	../lista06/zadt.py	/^import sys$/;"	kind:namespace	line:3
 tabliczka	../lista01/zad05.py	/^def tabliczka(x1, x2, y1, y2):$/;"	kind:function	line:1
 test.py	../lista04/test.py	1;"	kind:file	line:1
+test.py	../lista07/test.py	1;"	kind:file	line:1
 test.py	../test.py	1;"	kind:file	line:1
+threading	../lista06/zad3.py	/^import threading$/;"	kind:namespace	line:4
+threading	../lista06/zadt.py	/^import threading$/;"	kind:namespace	line:4
 time	../lista03/zad01.py	/^import time$/;"	kind:namespace	line:2
 time	../lista03/zad02.py	/^import time$/;"	kind:namespace	line:1
 time	../lista04/zad01.py	/^import time$/;"	kind:namespace	line:2
 timeit	../lista04/test.py	/^    import timeit$/;"	kind:namespace	line:55
+tmp.py	../lista05/tmp.py	1;"	kind:file	line:1
 upper_first	../lista04/zad02.py	/^def upper_first(str):$/;"	kind:function	line:4
+urlopen	../lista05/tmp.py	/^from urllib.request import urlopen$/;"	kind:namespace	line:4
 urlopen	../lista05/zad.py	/^from urllib.request import urlopen$/;"	kind:namespace	line:1
-x	../lista05/zad.py	/^    x = Scanner(3, f)$/;"	kind:variable	line:54
+urlopen	../lista06/zad3.py	/^from urllib.request import urlopen$/;"	kind:namespace	line:1
+urlopen	../lista06/zadn.py	/^from urllib.request import urlopen$/;"	kind:namespace	line:1
+urlopen	../lista06/zadt.py	/^from urllib.request import urlopen$/;"	kind:namespace	line:1
+window	../lista07/test.py	/^window = Gtk.Window(title="Hello World")$/;"	kind:variable	line:5
+x	../lista05/tmp.py	/^    x = Scanner(3, f)$/;"	kind:variable	line:56
+x	../lista05/zad.py	/^    x = Scanner(2, f)$/;"	kind:variable	line:58
+x	../lista06/zad3.py	/^    x = Scanner(2, f, "http:\/\/www.python.org\/")$/;"	kind:variable	line:89
+x	../lista06/zadn.py	/^    x = Scanner(2, f)$/;"	kind:variable	line:58
+x	../lista06/zadt.py	/^    x = Scanner(2, f, "http:\/\/www.python.rk.edu.pl\/w\/p\/wprowadzenie-do-pythona\/")$/;"	kind:variable	line:88
 x	../test.py	/^x = "ala ma kota"$/;"	kind:variable	line:1
 zad.py	../lista02/zad.py	1;"	kind:file	line:1
 zad.py	../lista05/zad.py	1;"	kind:file	line:1
+zad.py	../lista07/zad.py	1;"	kind:file	line:1
 zad01.py	../lista03/zad01.py	1;"	kind:file	line:1
 zad01.py	../lista04/zad01.py	1;"	kind:file	line:1
 zad02.py	../lista01/zad02.py	1;"	kind:file	line:1
@@ -156,4 +217,7 @@ zad02.py	../lista02/zad02.py	1;"	kind:file	line:1
 zad02.py	../lista03/zad02.py	1;"	kind:file	line:1
 zad02.py	../lista04/zad02.py	1;"	kind:file	line:1
 zad05.py	../lista01/zad05.py	1;"	kind:file	line:1
+zad3.py	../lista06/zad3.py	1;"	kind:file	line:1
+zadn.py	../lista06/zadn.py	1;"	kind:file	line:1
+zadt.py	../lista06/zadt.py	1;"	kind:file	line:1
 zdania	../lista04/zad02.py	/^def zdania(stream):$/;"	kind:function	line:18

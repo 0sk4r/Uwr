@@ -25,7 +25,8 @@ class Scanner:
             try:
                 yield self.solution.get()
             except:
-                print("KONIEC!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                print(
+                    "KONIEC!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 if self.threads.qsize() == self.finished.qsize() and self.solution.empty():
                     raise StopIteration()
 
@@ -55,7 +56,8 @@ class Scanner:
                         link = site + link
                     if (link not in self.visited):  # and ".html" in link
 
-                        thrd = threading.Thread(target=self.scan(link, depth + 1))
+                        thrd = threading.Thread(
+                            target=self.scan(link, depth + 1))
                         self.threads.put(thrd)
                         self.visited.add(link)
                         thrd.start()
@@ -82,7 +84,6 @@ if __name__ == "__main__":
     def f(page):
         text = re.findall(r'>(.*?)<', page)
         return [t for t in text if "Python" in t]
-
 
     x = Scanner(2, f, "http://www.python.rk.edu.pl/w/p/wprowadzenie-do-pythona/")
     # iter = x.scan("http://www.python.org/downloads/release/python-363/")
