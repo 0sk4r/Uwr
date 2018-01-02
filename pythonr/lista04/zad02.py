@@ -25,7 +25,7 @@ def zdania(stream):
 
 
 if __name__ == "__main__":
-    str = "testowy napis. ala ma kota.kot ma ale"
+    str = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Pellentesque elit ullamcorper dignissim cras tincidunt lobortis. Faucibus ornare suspendisse sed nisi lacus sed viverra tellus. Quam id leo in vitae turpis massa. Tristique senectus et netus et malesuada fames. Convallis tellus id interdum velit laoreet id donec. At augue eget arcu dictum varius. Scelerisque varius morbi enim nunc faucibus a pellentesque sit. At imperdiet dui accumsan sit amet nulla. In tellus integer feugiat scelerisque. Nec ultrices dui sapien eget mi. At auctor urna nunc id cursus metus aliquam. Elit scelerisque mauris pellentesque pulvinar pellentesque habitant morbi tristique. Ullamcorper velit sed ullamcorper morbi. Tempor nec feugiat nisl pretium. Leo in vitae turpis massa. Quis imperdiet massa tincidunt nunc pulvinar sapien et ligula. Purus faucibus ornare suspendisse sed. Purus non enim praesent elementum facilisis leo vel fringilla. Commodo nulla facilisi nullam vehicula."
     in1 = StringIO(str)
     in2 = StringIO(str)
     before = list(zdania(in1))
