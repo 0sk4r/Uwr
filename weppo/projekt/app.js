@@ -17,17 +17,16 @@ var storage = multer.diskStorage({
         callback(null, "./images");
     },
     filename: function(req, file, callback) {
-        console.log(file);
         callback(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname))
     }
 });
 
-
+var upload = multer({storage: storage}).single('photo');
 // set the view engine to ejs
 app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({extended: true}));
-app.use(express.session({secret: 'aldkjsalkdjlkasjlkjaldjsjdaljlska'}))
+app.use(session({secret: 'aldkjsalkdjlkasjlkjaldjsjdaljlska'}))
 app.use(cookieParser('aldkjsalkdjlkasjlkjaldjsjdaljlska'));
 
 // app.use((req, res, next) => {
@@ -115,15 +114,15 @@ app.get('/add', (req,res) => {
 
 
 //TODO ORM
-app.post('/add', (req,res) => {
-    console.log(req.body.name);
-    var upload = multer({
-        storage: storage
-    }).single('photo');
-    upload(req, res, function(err) {
-        res.end('File is uploaded');
-    });
-    console.log(upload);
+app.post('/add', upload ,(req,res) => {
+    let filename = req.file.filename;
+    let name = req.body.name;
+    let description = req.body.description;
+    let price = req.body.price;
+
+    product.create({name: name, description: description, price: price, image: filename});
+
+    res.end("Dodano");
 })
 
 // app.get('/content', auth, function (req, res) {
