@@ -1,5 +1,8 @@
 // server.js
 // load the things we need
+var fs = require('fs'),
+    https = require('https'),
+    bcrypt = require('bcrypt');
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
@@ -8,27 +11,47 @@ var session = require('express-session');
 var path = require('path');
 var multer = require('multer');
 var Sequelize = require('sequelize');
-
 const sqlite3 = require('sqlite3').verbose();
 
+// https.createServer({
+//     key: fs.readFileSync('key.pem'),
+//     cert: [fs.readFileSync('cert.pem'),'1234']
+// }, app).listen(8080);
+var generateHash = function (password, done) {
+     bcrypt.genSalt(10, function (err, salt) {
+        bcrypt.hash(password, salt, null, done);
+    })
+    };
 
 var storage = multer.diskStorage({
-    destination: function(req, file, callback) {
+    destination: function (req, file, callback) {
         callback(null, "./images");
     },
-    filename: function(req, file, callback) {
+    filename: function (req, file, callback) {
         callback(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname))
     }
 });
 
-var upload = multer({storage: storage}).single('photo');
+var upload = multer({
+    storage: storage
+}).single('photo');
 // set the view engine to ejs
 app.set('view engine', 'ejs');
 
-app.use(express.urlencoded({extended: true}));
-app.use(session({secret: 'aldkjsalkdjlkasjlkjaldjsjdaljlska'}))
+app.use(express.urlencoded({
+    extended: true
+}));
+app.use(session({
+    key: 'user_sid',
+    secret: 'aldkjsalkdjlkasjlkjaldjsjdaljlska',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        expires: 600000
+    }
+}));
 app.use(cookieParser('aldkjsalkdjlkasjlkjaldjsjdaljlska'));
-
+app.use(express.static(__dirname + '/images'));
 // app.use((req, res, next) => {
 //     if (req.cookie.user_id && !req.session.user){
 //         res.clearCookie('user_id');
@@ -43,13 +66,19 @@ var db = new Sequelize(null, null, null, {
     storage: 'db/database.db',
 });
 
-var user = db.define('user',{
+var user = db.define('user', {
     login: Sequelize.STRING,
     password: Sequelize.STRING,
     admin: Sequelize.STRING
+}, {
+    instanceMethods: {
+        validPassword: function (password) {
+            return bcrypt.compareSync(password, this.password);
+        }
+    }
 });
 
-var product = db.define('product',{
+var product = db.define('product', {
     name: Sequelize.STRING,
     description: Sequelize.TEXT,
     price: Sequelize.FLOAT,
@@ -65,9 +94,19 @@ var product = db.define('product',{
 
 // db.run(`CREATE TABLE IF NOT EXISTS user (id INT, login TEXT, password TEXT)`);
 
-// index page 
+// index page
+// app.get('/images/:id',function (req,res){
+//         res.sendFile('images/'+id)
+//     }
+//     )
 app.get('/', function (req, res) {
-    res.render('index');
+    if(req.session.valid){
+        console.log(req.session.user);
+    }
+
+    product.findAll().then(function (table) {
+        res.render('index',{product: table});
+    })
 });
 
 app.get('/login', function (req, res) {
@@ -78,15 +117,60 @@ app.get('/login', function (req, res) {
 app.get('/register', function (req, res) {
     res.render('register');
 });
+
+app.get('/logout', function (req, res) {
+    req.session.destroy();
+    res.redirect('/');
+})
+function authenticate(req,res,next){
+    if(req.session.valid){
+        console.log('dziala');
+        next();
+    }
+    else{
+        console.log('jebło');
+        res.send('jebło');
+    }
+}
+
+app.get('/secret', authenticate, function (req,res) {
+    res.render('secret');
+});
+
 //TODO ORM
 app.post('/register', function (req, res) {
     let login = req.body.login.toString();
-    let password = req.body.password.toString();
     let admin = req.body.admin;
-   // db.run(`INSERT INTO user (login,password) VALUES ('${login}','${password}')`);
+    let password = req.body.password.toString();
 
-    user.create({login: login, password: password, admin: admin});
-    res.redirect('/')
+    // db.run(`INSERT INTO user (login,password) VALUES ('${login}','${password}')`);
+    user.count({
+        where: {
+            login: login
+        }
+    })
+        .then((result) => {
+            if (result >= 1) {
+                res.end('istnieje juz');
+            } else {
+
+                bcrypt.genSalt(10, function (err, salt) {
+                    bcrypt.hash(password,salt, function (err, hashedPassword) {
+
+                        console.log(hashedPassword);
+
+                        user.create({
+                            login: login,
+                            password: hashedPassword,
+                            admin: admin
+                        });
+                    })
+
+                })
+
+                res.redirect('/');
+            }
+        });
 })
 
 //TODO ORM
@@ -94,37 +178,61 @@ app.post('/login', (req, res) => {
     let login = req.body.login.toString();
     let password = req.body.password.toString();
     let admin = req.body.admin;
-    let querry = `SELECT login login FROM user WHERE password = ? and login = ?`
 
-    db.get(querry, [password, login], (err, row) => {
-        if (err) {
-            return console.log(err);
-        }
-        else {
-            res.cookie('user', login, { signed: true });
-            res.redirect('/');
-        }
+    user.findOne({where: {login: login}}).then(function (result) {
+        let hashedPassword = result.dataValues.password
+        bcrypt.compare(password,hashedPassword, function(err, x){
+            if(x){
+                console.log('hasło poprawne');
+                req.session.user = login;
+                req.session.valid = true;
+                res.redirect('/');
+            }
+            else {
+                console.log('hasło błędne!!!');
+            }
+        });
+        //console.log(result);
     })
 
 });
 
-app.get('/add', (req,res) => {
-    res.render('add');
+app.get('/add', (req, res) => {
+    product.findAll().then(function (table) {
+        res.render('add',{product: table});
+    })
+    
 });
 
 
 //TODO ORM
-app.post('/add', upload ,(req,res) => {
+app.post('/add', upload, (req, res) => {
     let filename = req.file.filename;
     let name = req.body.name;
     let description = req.body.description;
     let price = req.body.price;
 
-    product.create({name: name, description: description, price: price, image: filename});
+    product.create({
+        name: name,
+        description: description,
+        price: price,
+        image: filename
+    });
 
     res.end("Dodano");
 })
 
+app.get('/delete/:name', function (req,res){
+    
+    let name = req.param('name');
+    console.log(name);
+    product.destroy({
+        where:{
+            name: name
+        }
+    });
+    res.redirect('/add');
+});
 // app.get('/content', auth, function (req, res) {
 //     res.send("You can only see this after you've logged in.");
 // });
