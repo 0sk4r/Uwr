@@ -17,8 +17,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy"
         crossorigin="anonymous">
-
-
     <title>Dodaj produkt</title>
 
 </head>
@@ -48,14 +46,18 @@
     <!-- Formularz -->
     <form method="POST" enctype="multipart/form-data">
         Podaj nazwe:
-        <input type="text" name="name" value="Podaj opis"> Podaj opis:
-        <input type="text" name="description"> Podaj cene:
-        <input type="number" name="price"> Dodaj zdjęcie:
-        <input type="file" name="photo">
+        <input type="text" name="name" value="Podaj opis"> <br>
+        Podaj opis:
+        <input type="text" name="description"> <br>
+        Podaj cene:
+        <input type="number" name="price"> <br>
+        Dodaj zdjęcie:
+        <input type="file" name="photo"> <br>
         <button type="submit" name="submint">Dodaj</button>
     </form>
     <table>
         <tr>
+            <th>ID</th>
             <th>Nazwa</th>
             <th>Cena</th>
             <th>Edytuj</th>
@@ -64,21 +66,27 @@
         <% for(var i = 0; i < product.length; i++) { %>
             <tr>
                 <td>
+                    <%= product[i].dataValues.id %>
+                </td>
+                <td>
                     <%= product[i].dataValues.name %>
                 </td>
+
                 <td>
                     <%= product[i].dataValues.price %>
                 </td>
+
                 <td>
-                    <input type="button" value="Edytuj"/>
+                    <input type="button" value="Edytuj" onclick=<%=`window.location.href='/edit/${product[i].dataValues.id}'`%> />
                 </td>
+
                 <td>
-                        <input type="button" value="Usuń" onclick=<%= "window.location.href='/delete/" + product[i].dataValues.name +"'"%> />
-                    </td>
+                    <input type="button" value="Usuń" onclick=<%=`window.location.href='/delete/${product[i].dataValues.id}'`%> />
+                </td>
             </tr>
 
 
-            <% } %>
+        <% } %>
     </table>
 </body>
 

@@ -219,20 +219,52 @@ app.post('/add', upload, (req, res) => {
         image: filename
     });
 
-    res.end("Dodano");
+    res.redirect("/add");
 })
 
-app.get('/delete/:name', function (req,res){
+app.get('/delete/:id', function (req,res){
     
-    let name = req.param('name');
-    console.log(name);
+    let id = req.param('id');
+    // console.log(name);
     product.destroy({
         where:{
-            name: name
+            id: id
         }
     });
     res.redirect('/add');
 });
+
+
+app.get('/edit/:id', function (req,res) {
+    let id = req.param('id');
+    console.log(id);
+    product.findById(id).then((product) => {
+        console.log(product);
+        res.render('edit',{product: product});
+    });
+});
+
+
+app.post('/edit/:id', upload, (req,res) => {
+    if(req.file != undefined) {
+        var filename = req.file.filename;
+    }
+    console.log(filename);
+    let name = req.body.name;
+    let description = req.body.description;
+    let price = req.body.price;
+    let id = req.param('id');
+    console.log(name);
+
+    product.update({
+        name: name,
+        description: description,
+        price: price,
+        image: filename
+    }, {where: {id: id}}).then(() => {res.redirect('/add')});
+
+});
+
 // app.get('/content', auth, function (req, res) {
 //     res.send("You can only see this after you've logged in.");
 // });
