@@ -1,0 +1,3 @@
+[submodule "weppo/weppo_projekt"]
+	path = weppo/weppo_projekt
+	url = https://github.com/0sk4r/weppo_projekt.git
