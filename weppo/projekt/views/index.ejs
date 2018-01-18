@@ -99,6 +99,18 @@
             <li class="nav-item ">
                 <a class="nav-link" href="/secret">Secret</a>
             </li>
+
+            <li class="nav-item ">
+                <a class="nav-link" href="/cart">Cart</a>
+            </li>
+
+            <li class="nav-item">
+                <form method="post">
+                    <input type="text" name="search_text">
+                    <button type="submit" name="submint">Szukaj</button>
+                </form>
+            </li>
+
         </ul>
     </div>
 </nav>
@@ -121,7 +133,7 @@
                             <%= product[i].dataValues.price %> zł</p>
                     </div>
                     <div class="col-xs-12 col-md-6">
-                        <a class="btn btn-success" href="http://www.jquery2dotnet.com">Add to cart</a>
+                        <a class="btn btn-success" onclick=<%=`window.location.href='/buy/${product[i].dataValues.id}'`%> >Add to cart</a>
                     </div>
                 </div>
             </div>
