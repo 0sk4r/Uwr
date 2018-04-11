@@ -115,7 +115,17 @@ SELECT w1.data, w2.data, w2.data - w1.data   FROM semestr s
 WHERE s.nazwa = 'Semestr zimowy 2009/2010'
 ORDER BY 3 DESC
 
+SELECT DISTINCT CAST(data AS date)
 
+FROM wybor
+
+      JOIN grupa USING (kod_grupy)
+
+      JOIN przedmiot_semestr USING (kod_przed_sem)
+
+WHERE semestr_id=32
+
+ORDER BY 1;
 --Ile przedmiotów typu kurs nie miało edycji w żadnym semestrze (nie występują w tabeli przedmiot_semestr)?
 SELECT * FROM przedmiot
 WHERE rodzaj = 'k' AND kod_przed not in (SELECT kod_przed FROM przedmiot_semestr WHERE rodzaj = 'k');
@@ -123,3 +133,36 @@ WHERE rodzaj = 'k' AND kod_przed not in (SELECT kod_przed FROM przedmiot_semestr
 (SELECT kod_przed FROM przedmiot WHERE rodzaj='k')
 EXCEPT
 (SELECT kod_przed FROM przedmiot_semestr);
+
+--Ile grup ćwiczenio-pracowni prowadziła P. Kanarek?
+
+SELECT * FROM grupa
+  JOIN uzytkownik USING(kod_uz)
+WHERE nazwisko = 'Kanarek' AND rodzaj_zajec = 'r'
+
+--Ile grup z Logiki dla informatyków prowadził W. Charatonik?
+SELECT * FROM grupa
+  JOIN uzytkownik USING (kod_uz)
+  JOIN przedmiot_semestr USING (kod_przed_sem)
+  JOiN przedmiot USING (kod_przed)
+WHERE nazwisko = 'Charatonik' and nazwa = 'Logika dla informatyków'
+SELECT *
+
+FROM przedmiot
+
+      JOIN przedmiot_semestr USING (kod_przed)
+
+      JOIN grupa USING (kod_przed_sem)
+
+      JOIN uzytkownik USING (kod_uz)
+
+WHERE nazwisko='Charatonik'
+
+      AND imie='Witold'
+
+      AND nazwa LIKE 'Logika dla informatyk%w';
+
+--Ile osób uczęszczało dwa razy na Bazy danych?
+
+SELECT * FROM przedmiot WHERE nazwa = 'Bazy danych'
+

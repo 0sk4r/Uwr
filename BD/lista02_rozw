@@ -1,0 +1,691 @@
+Zadanie 1
+Podaj kody, imiona i nazwiska wszystkich osób, które chodziły na dowolne zajęcia z Algorytmów i struktur danych, a w jakimś semestrze późniejszym (o większym  numerze) chodziły na zajęcia z Matematyki dyskretnej. Za AiSD oraz MD uznaj  wszystkie przedmioty, których nazwa zaczyna się od podanych nazw. Zapisz to  zapytanie używając operatora IN z podzapytaniem.
+
+Znajdźmy osoby, które chodziły na AiSD i…
+SELECT uzytkownik.kod_uz, imie, nazwisko
+
+FROM uzytkownik JOIN wybor USING(kod_uz)
+
+   JOIN grupa USING(kod_grupy)
+
+   JOIN przedmiot_semestr USING(kod_przed_sem)
+
+   JOIN przedmiot USING(kod_przed)
+
+WHERE nazwa LIKE 'Algorytmy i struktury danych%' AND ...
+
+Chcemy, by osoby te chodziły także na Matematykę dyskretną, czyli należały do zbioru osób chodzących na Matematykę dyskretną:
+...
+
+AND uzytkownik.kod_uz IN 
+
+  (SELECT wybor.kod_uz
+
+   FROM wybor JOIN grupa USING(kod_grupy)
+
+      JOIN przedmiot_semestr USING(kod_przed_sem)
+
+      JOIN przedmiot USING(kod_przed)
+
+   WHERE nazwa LIKE 'Matematyka dyskretna%');
+
+Chcemy jeszcze dodać warunek w podzapytaniu, że wybór MD był w semestrze o numerze większym niż AISD; aby porównać te dwa semestry występujące w zewnętrznej i wewnętrznej relacji przedmiot_semestr, musimy mieć możliwość ich rozróżnienia, czyli potrzebujemy aliasu, np. dla zewnętrznej kopii:
+SELECT uzytkownik.kod_uz, imie, nazwisko
+
+FROM uzytkownik JOIN wybor USING(kod_uz)
+
+ JOIN grupa USING(kod_grupy)
+
+ JOIN przedmiot_semestr ps USING(kod_przed_sem)
+
+JOIN przedmiot USING(kod_przed)
+
+WHERE nazwa LIKE 'Algorytmy i struktury danych%'
+
+AND uzytkownik.kod_uz IN
+
+(SELECT wybor.kod_uz
+
+ FROM wybor JOIN grupa USING(kod_grupy)
+
+ JOIN przedmiot_semestr USING(kod_przed_sem)
+
+ JOIN przedmiot USING(kod_przed)
+
+WHERE nazwa LIKE 'Matematyka dyskretna%'
+
+ AND ps.semestr_id<semestr_id);
+
+W końcowym zapytaniu warto usunąć powtórzenia, bo jedną osobę możemy wypisać wielokrotnie, gdy uczęszczała na AISD kilka razy (także na różne zajęcia):
+SELECT DISTINCT uzytkownik.kod_uz, imie, nazwisko...
+
+Zadanie 2
+Zapisz poprzednie zapytanie pierwsze używając operatora EXISTS z podzapytaniem.
+
+Jak poprzednio znajdujemy osoby chodzące na AiSD i…
+SELECT uzytkownik.kod_uz, imie, nazwisko
+
+FROM uzytkownik JOIN wybor USING(kod_uz)
+
+ JOIN grupa USING(kod_grupy)
+
+ JOIN przedmiot_semestr USING(kod_przed_sem)
+
+ JOIN przedmiot USING(kod_przed)
+
+WHERE nazwa LIKE 'Algorytmy i struktury danych%' AND ...
+
+Chcemy, by dla wybranej osoby istniał także JEJ wybór Matematyki dyskretnej w semestrze późniejszym niż wybór AISD:
+AND EXISTS
+
+ (SELECT * FROM wybor
+
+ JOIN grupa USING(kod_grupy)
+
+ JOIN przedmiot_semestr USING(kod_przed_sem)
+
+ JOIN przedmiot USING(kod_przed)
+
+ WHERE nazwa LIKE 'Matematyka dyskretna%'
+
+ AND...
+
+ );
+
+W podzapytaniu musimy odwołać się do zewnętrzej relacji użytkownik oraz zewnętrznej relacji przedmiot_semestr. Tej ostatniej koniecznie musimy nadać w tym celu alias, by  odróżnić ją od relacji w podzapytaniu wewnętrznym. Relacji uzytkownik możemy nadać  alias, ale nie musimy, bo jej nazwa jest unikalna w całym zapytaniu:
+SELECT uzytkownik.kod_uz, imie, nazwisko
+
+FROM uzytkownik JOIN wybor USING(kod_uz)
+
+ JOIN grupa USING(kod_grupy)
+
+ JOIN przedmiot_semestr ps USING(kod_przed_sem)
+
+ JOIN przedmiot USING(kod_przed)
+
+WHERE nazwa LIKE 'Algorytmy i struktury danych%'
+
+AND EXISTS
+
+ (SELECT * FROM wybor
+
+ JOIN grupa USING(kod_grupy)
+
+ JOIN przedmiot_semestr USING(kod_przed_sem)
+
+ JOIN przedmiot USING(kod_przed)
+
+ WHERE nazwa LIKE 'Matematyka dyskretna%'
+
+ AND ps.semestr_id<semestr_id
+
+ AND uzytkownik.kod_uz=wybor.kod_uz);
+
+Jak poprzednio, usuwamy powtórzenia:
+
+SELECT DISTINCT uzytkownik.kod_uz, imie, nazwisko...
+
+Zadanie 3
+Podaj kody, imiona i nazwiska osób, które prowadziły jakiś wykład, ale nigdy  nie prowadziły żadnego seminarium (nie patrzymy, czy zajęcia były w tym samym  semestrze). Pisząc zapytanie użyj operatora NOT EXISTS.
+
+Wybieramy osoby, które prowadziły jakiś wykład:
+SELECT uzytkownik.kod_uz, imie,nazwisko
+
+FROM uzytkownik JOIN grupa USING(kod_uz)
+
+WHERE rodzaj_zajec='w' AND...
+
+Dodajemy warunek, że nie istnieje w bazie grupa typu seminarium prowadzona przez tę osobę:
+NOT EXISTS
+
+ (SELECT * FROM grupa
+
+ WHERE uzytkownik.kod_uz=grupa.kod_uz AND rodzaj_zajec='s');
+
+Ostatecznie zapytanie ma postać:
+SELECT uzytkownik.kod_uz, imie,nazwisko
+
+FROM uzytkownik JOIN grupa USING(kod_uz)
+
+WHERE rodzaj_zajec='w' AND
+
+ NOT EXISTS 
+
+ (SELECT * FROM grupa
+
+ WHERE uzytkownik.kod_uz=grupa.kod_uz AND rodzaj_zajec='s');
+
+Usuwamy powtórzenia z wyniku, by nie oglądać wielokrotnie jednej osoby, jesli prowadziła wiele wykładów:
+
+SELECT DISTINCT uzytkownik.kod_uz, imie,nazwisko...
+
+Zadanie 4
+Zapisz zapytanie trzecie, używając różnicy zbiorów.
+
+Zbiór osób (kod, imię, nazwisko), które prowadziły wykład:
+
+SELECT uzytkownik.kod_uz, imie,nazwisko
+
+FROM grupa JOIN uzytkownik USING(kod_uz)
+
+WHERE rodzaj_zajec='w';
+
+
+Zbiór osób (kod, imię, nazwisko), które prowadziły seminarium:
+
+SELECT uzytkownik.kod_uz, imie,nazwisko
+
+FROM grupa JOIN uzytkownik USING(kod_uz)
+
+WHERE rodzaj_zajec='s';
+
+
+Różnica zbiorów:
+
+( SELECT uzytkownik.kod_uz, imie,nazwisko
+
+FROM grupa JOIN uzytkownik USING(kod_uz)
+
+WHERE rodzaj_zajec='w' )
+
+EXCEPT
+
+( SELECT uzytkownik.kod_uz, imie,nazwisko
+
+FROM grupa JOIN uzytkownik USING(kod_uz)
+
+WHERE rodzaj_zajec='s' );
+
+
+W tym zapytaniu nie trzeba usuwać powtórzeń z wyniku, bo operacje teoriomnogościowe (UNION, EXCEPT i INTERSECT) automatycznie je usuwają. W zapytaniu warto pamiętać o ujęciu odejmowanych relacji w nawiasy, choć nie zawsze jest to konieczne. Uchroni nas o przed "nieprzewidywalną" kolejnością wykonywania ciągu operacji UNION/EXCEPT/INTERSECT/JOIN – system wykonuje łańcuch takich operacji od lewej do prawej (jeśli nie ma nawiasów), co nie zawsze jest zgodne z intuicją, która podpowiada, że złączenia mogłyby mieć wiekszy priorytet niż dodawanie/odejmowanie zbiorów.
+Zadanie 5
+Dla każdego przedmiotu typu kurs z bazy danych podaj jego nazwę oraz liczbę osób, które na niego uczęszczały.
+Uwzględnij w odpowiedzi kursy, na które nikt  nie uczęszczał – w tym celu użyj złączenia zewnętrznego (LEFT JOIN lub RIGHT JOIN).
+
+Aby ustalić, ile osób uczęszczało na przedmiot, trzeba połączyć ciąg relacji od przedmiotu do wyboru; dodajemy od razu warunek, że rozważane przedmioty to kursy:
+
+
+SELECT ... FROM przedmiot
+
+ JOIN przedmiot_semestr USING(kod_przed)
+
+ JOIN grupa USING(kod_przed_sem)
+
+ JOIN wybor USING(kod_grupy)
+
+WHERE rodzaj='k';
+
+
+W tym momencie moglibyśmy pogrupować wynik tak, by w jednej grupie znalazły się wszystkie krotki złączenia oznaczające zapisy na jeden przedmiot:
+
+SELECT ... FROM przedmiot
+
+ JOIN przedmiot_semestr USING(kod_przed)
+
+ JOIN grupa USING(kod_przed_sem)
+
+ JOIN wybor USING(kod_grupy)
+
+WHERE rodzaj='k'
+
+GROUP BY przedmiot.kod_przed;
+
+
+Dla każdej grupy chcemy pokazać nazwę przedmiotu (przedmiot.nazwa) – warto ten atrybut dodać do listy GROUP BY, bo takie atrybuty na pewno są ustalone w ramach grupy i można je pokazać w wyniku, oraz liczbę osób, które go wybrały, usuwając przy tym powtórzenia (COUNT(DISTINCT wybor.kod_uz)):
+
+SELECT przedmiot.nazwa, COUNT(DISTINCT wybor.kod_uz) FROM
+
+przedmiot
+
+ JOIN przedmiot_semestr USING(kod_przed)
+
+ JOIN grupa USING(kod_przed_sem)
+
+ JOIN wybor USING(kod_grupy)
+
+WHERE rodzaj='k'
+
+GROUP BY przedmiot.kod_przed, przedmiot.nazwa;
+
+
+Tak sformułowane zapytanie liczy dobrze wynik, tylko dla przedmiotów, na które ktoś się zapisał; przedmioty, dla których nie było edycji w żadnym semestrze, nie było żadnej grupy lub nie zostały przez nikogo wybrane, są odrzucane w kolejnych złączeniach JOIN; żeby je zachować trzeba zamienić łańcych zwykłych złączeń na złączenia na lewostronne:
+
+SELECT przedmiot.nazwa, COUNT(DISTINCT wybor.kod_uz) FROM
+
+przedmiot
+
+ LEFT JOIN przedmiot_semestr USING(kod_przed)
+
+ LEFT JOIN grupa USING(kod_przed_sem)
+
+ LEFT JOIN wybor USING(kod_grupy)
+
+WHERE rodzaj='k'
+
+GROUP BY przedmiot.kod_przed, przedmiot.nazwa;
+
+Zadanie 6
+Podaj kody użytkowników, którzy uczęszczali w semestrze letnim 2010/2011 na  wykład z 'Baz danych' i nie uczęszczali na wykład z 'Sieci komputerowych', i  odwrotnie. Sformułuj to zapytanie używając instrukcji WITH, by wstępnie  zdefiniować zbiory osób uczęszczających na każdy z wykładów.
+
+Sformułujemy najpierw dwa zapytania zwracające dwa zbiory: uczestników wykładu Bazy danych i uczestników wykładu Sieci komputerowe w podanym semestrze:
+
+SELECT wybor.kod_uz FROM wybor JOIN grupa USING(kod_grupy)
+
+ JOIN przedmiot_semestr USING(kod_przed_sem)
+
+ JOIN przedmiot USING(kod_przed)
+
+ JOIN semestr USING(semestr_id)
+
+WHERE przedmiot.nazwa='Bazy danych' AND rodzaj_zajec='w' AND
+
+ semestr.nazwa='Semestr letni 2010/2011';
+
+
+SELECT wybor.kod_uz FROM wybor JOIN grupa USING(kod_grupy)
+
+ JOIN przedmiot_semestr USING(kod_przed_sem)
+
+ JOIN przedmiot USING(kod_przed)
+
+ JOIN semestr USING(semestr_id)
+
+WHERE przedmiot.nazwa='Sieci komputerowe' AND rodzaj_zajec='w'
+
+AND
+
+ semestr.nazwa='Semestr letni 2010/2011';
+
+
+Przyjmując, że dwie powyższe relacje nazwiemy odpowiednio BD i SK widzimy, że mamy zwrócić różnicę symetryczną tych relacji, czyli: (BD-SK)+(SK-BD), co zapisujemy następująco (zwróćmy uwagę, że zapis BD EXCEPT SK nie jest zgodny ze składnią SQL, bo samo BD nie jest zapytaniem zwracającym krotki relacji BD):
+
+
+((SELECT * FROM BD) EXCEPT (SELECT * FROM SK)) UNION
+
+((SELECT * FROM SK) EXCEPT (SELECT * FROM BD))
+
+
+Łączymy w instrukcji WITH definicje relacji pomocniczych i końcowe zapytanie korzystające z relacji pomocniczych:
+
+WITH BD AS
+
+( SELECT wybor.kod_uz FROM wybor JOIN grupa USING(kod_grupy)
+
+ JOIN przedmiot_semestr USING(kod_przed_sem)
+
+ JOIN przedmiot USING(kod_przed) JOIN semestr
+
+USING(semestr_id)
+
+ WHERE przedmiot.nazwa='Bazy danych' AND rodzaj_zajec='w' AND
+
+ semestr.nazwa='Semestr letni 2010/2011'),
+
+SK AS
+
+( SELECT wybor.kod_uz FROM wybor JOIN grupa USING(kod_grupy)
+
+ JOIN przedmiot_semestr USING(kod_przed_sem)
+
+ JOIN przedmiot USING(kod_przed) JOIN semestr
+
+USING(semestr_id)
+
+WHERE przedmiot.nazwa='Sieci komputerowe' AND rodzaj_zajec='w'
+
+AND
+
+ semestr.nazwa='Semestr letni 2010/2011' )
+
+((SELECT * FROM BD) EXCEPT (SELECT * FROM SK)) UNION
+
+((SELECT * FROM SK) EXCEPT (SELECT * FROM BD));
+
+
+Zapytanie nie wymaga usuwania powtórzeń, bo automatycznie robią to końcowe instrukcje UNION i EXCEPT. Relacje SK i BD nie istnieją poza instrukcją WITH i nie mogą być używane w innych zapytaniach bez wcześniejszej definicji i wyliczenia.
+Zadanie 7
+Podaj kody, imiona i nazwiska wszystkich prowadzących, którzy w jakiejś prowadzonej przez siebie grupie mieli więcej zapisanych osób, niż wynosił limit max_osoby dla tej grupy. Do zapisania zapytania użyj GROUP BY i HAVING.
+
+Rozpoczniemy od złączenia relacji tak, by dostać grupy wraz z prowadzącymi i zapisami do tej grupy:
+
+SELECT ... FROM
+
+ wybor JOIN grupa USING(kod_grupy)
+
+ JOIN uzytkownik ON (uzytkownik.kod_uz=grupa.kod_uz)
+
+
+Pogrupujmy relację po kodzie grupy (by w grupie dostać wszystkie zapisy do grupy):
+
+SELECT ... FROM
+
+ wybor JOIN grupa USING(kod_grupy)
+
+ JOIN uzytkownik ON (uzytkownik.kod_uz=grupa.kod_uz)
+
+GROUP BY grupa.kod_grupy
+
+
+Z każdej grupy potrzebujemy wartości: kod, imię i nazwisko prowadzącego (by pokazać je w wyniku) oraz max_osoby (by wykorzystać ten atrubut w klauzuli HAVING, w czasie wybierania grup, gdzie jest za dużo zapisanych); uzupełnijmy więc klauzulę GROUP BY:
+
+SELECT ... FROM
+
+ wybor JOIN grupa USING(kod_grupy)
+
+ JOIN uzytkownik ON (uzytkownik.kod_uz=grupa.kod_uz)
+
+GROUP BY grupa.kod_grupy,
+
+ uzytkownik.kod_uz, imie, nazwisko, max_osoby
+
+
+Teraz możemy dodać kaluzulę selekcji grup (HAVING) pozostawiając tylko te grupy, gdzie liczba zapisanych przekracza max_osoby; liczbę zapisanych znajdujemy po prostu jako liczbę krotek (COUNT(*)):
+
+SELECT ... FROM
+
+ wybor JOIN grupa USING(kod_grupy)
+
+ JOIN uzytkownik ON (uzytkownik.kod_uz=grupa.kod_uz)
+
+GROUP BY grupa.kod_grupy,
+
+ uzytkownik.kod_uz, imie, nazwisko, max_osoby
+
+HAVING max_osoby < COUNT(*);
+
+
+Na koniec uzupełniamy listę wartości pokazywanych w wyniku, czyli dane prowadzących. Z wyniku trzeba usunąć powtórzenia, bo jedna osoba mogła prowadzić wiele grup z przekroczonym limitem zapisów:
+
+SELECT DISTINCT uzytkownik.kod_uz,imie,nazwisko FROM
+
+ wybor JOIN grupa USING(kod_grupy)
+
+ JOIN uzytkownik ON (uzytkownik.kod_uz=grupa.kod_uz)
+
+GROUP BY grupa.kod_grupy,
+
+ uzytkownik.kod_uz, imie, nazwisko, max_osoby
+
+HAVING max_osoby < COUNT(*);
+
+Zadanie 8
+Podaj nazwę przedmiotu podstawowego, na wykład do którego chodziło najwięcej różnych osób. Użyj w tym celu zapytania z GROUP BY i HAVING (z warunkiem używającym ponownie GROUP BY).
+
+Najpierw utworzymy zapytanie, w którym dla każdego przedmiotu podstawowego utworzymy grupę różnych osób, które chodziły na wykład do niego. Tworząc grupy dla przedmiotu grupujemy zarówno po kodzie przedmiotu (ta wartość rzeczywiście rozróżnia przedmioty), jak i po nazwach (tę wartość chcemy pokazać w wyniku więc musi być na liście atrybutów grupowania). Robimy to używając klauzuli GROUP BY:
+
+SELECT przedmiot.nazwa FROM przedmiot
+
+ JOIN przedmiot_semestr USING(kod_przed)
+
+ JOIN grupa USING(kod_przed_sem)
+
+ JOIN wybor USING(kod_grupy)
+
+WHERE rodzaj='p' AND ordzaj_zajec='w'
+
+GROUP BY przedmiot.nazwa, przedmiot.kod_przed...
+
+
+Teraz w klauzuli HAVING chcielibyśmy pozostawić tylko te przedmioty/grupy, w których liczba elementów (zapisanych osób), jest większa niż wszystkie liczby oznaczające liczby zapisanych na wykład do przedmiotu podstawowego:
+
+SELECT przedmiot.nazwa FROM przedmiot
+
+ JOIN przedmiot_semestr USING(kod_przed)
+
+ JOIN grupa USING(kod_przed_sem)
+
+ JOIN wybor USING(kod_grupy)
+
+WHERE rodzaj='p' AND ordzaj_zajec='w'
+
+GROUP BY przedmiot.nazwa, przedmiot.kod_przed
+
+HAVING COUNT(DISTINCT wybor.kod_uz) >=
+
+ ALL (zbiór liczb, z których każda to liczba zapisanych
+
+ na wykład do jakiegoś przedmiotu podstawowego)
+
+
+Zapisując interesujący nas zbiór w postaci pod zapytania dostajemy końcową postać:
+
+SELECT przedmiot.nazwa FROM przedmiot
+
+ JOIN przedmiot_semestr USING(kod_przed)
+
+ JOIN grupa USING(kod_przed_sem)
+
+ JOIN wybor USING(kod_grupy)
+
+WHERE rodzaj='p' AND rodzaj_zajec='w'
+
+GROUP BY przedmiot.nazwa, przedmiot.kod_przed
+
+HAVING COUNT(DISTINCT wybor.kod_uz) >=
+
+ ALL
+
+ (SELECT COUNT(DISTINCT wybor.kod_uz)
+
+ FROM przedmiot
+
+ JOIN przedmiot_semestr USING(kod_przed)
+
+ JOIN grupa USING(kod_przed_sem)
+
+ JOIN wybor USING(kod_grupy)
+
+ WHERE rodzaj='p' AND rodzaj_zajec='w'
+
+ GROUP BY przedmiot.kod_przed);
+
+Zadanie 9
+Dla każdego semestru letniego podaj jego numer oraz nazwisko osoby, która jako pierwsza zapisała się na zajęcia w tym semestrze. Jeśli w semestrze było kilka osób, które zapisały się jednocześnie: podaj wszystkie podaj tę o najwcześniejszym leksykograficznie nazwisku.
+
+Łatwo napisać dla każdego semestru letniego czas najwcześniejszego zapisu na zajęcia:
+
+SELECT semestr.semestr_id, MIN(data) FROM semestr
+
+ JOIN przedmiot_semestr USING(semestr_id)
+
+ JOIN grupa USING(kod_przed_sem)
+
+ JOIN wybor USING(kod_grupy)
+
+WHERE nazwa LIKE '%letni%'
+
+GROUP BY semestr.semestr_id;
+
+
+Wykorzystajmy obliczoną relację (nazwijmy ją POM(semestr_id,data)). Jeśli złączymy ją z relacją ( wybór JOIN grupa JOIN przedmiot_semestr) według atrybutów data i semestr_id, to otrzymamy dla każdego semestru wszystkie zapisy w tym semestrze dokonane w momencie, który wybraliśmy jako najwcześniejszy dla tego semestru:
+
+SELECT ... FROM
+
+(SELECT semestr.semestr_id AS "semestr_id",
+
+ MIN(data) AS "data"
+
+ FROM semestr
+
+ JOIN przedmiot_semestr USING(semestr_id)
+
+ JOIN grupa USING(kod_przed_sem)
+
+ JOIN wybor USING(kod_grupy)
+
+ WHERE nazwa LIKE '%letni%'
+
+ GROUP BY semestr.semestr_id) POM
+
+ JOIN wybor USING(data)
+
+ JOIN grupa USING(kod_grupy)
+
+ JOIN przedmiot_semestr USING(kod_przed_sem,semestr_id)...
+
+
+W tym momencie wystarczy dołączyć do łączony relacji realcję uzytkownik, by odczytać nazwisko osoby, która zapisała się jako pierwsza w danym semestrze:
+
+SELECT POM.semestr_id,nazwisko FROM
+
+(SELECT semestr.semestr_id AS "semestr_id",
+
+ MIN(data) AS "data"
+
+ FROM semestr
+
+ JOIN przedmiot_semestr USING(semestr_id)
+
+ JOIN grupa USING(kod_przed_sem)
+
+ JOIN wybor USING(kod_grupy)
+
+ WHERE nazwa LIKE '%letni%'
+
+ GROUP BY semestr.semestr_id) POM 
+
+ JOIN wybor USING(data)
+
+ JOIN grupa USING(kod_grupy)
+
+ JOIN przedmiot_semestr USING(kod_przed_sem,semestr_id)
+
+ JOIN uzytkownik ON wybor.kod_uz=uzytkownik.kod_uz
+
+ ORDER BY 1,2 ;
+
+Zadanie 10
+Jaka jest średnia liczba osób zapisujących się na wykład w semestrze letnim 2010/2011? Zapisz to zapytanie definiując najpierw pomocniczą relację (np. na liście from z aliasem), w której dla każdego interesującego cię wykładu znajdziesz liczbę zapisanych na niego osób).
+
+Rozpoczynamy, zgodnie z radą, od zapytania znajdującego liczbę zapisanych osób dla każdego wykładu z semestrze letnim 2010/2011:
+
+SELECT grupa.kod_grupy,
+
+ COUNT(wybor.kod_uz) AS "liczba"
+
+FROM wybor JOIN grupa USING(kod_grupy)
+
+ JOIN przedmiot_semestr USING(kod_przed_sem)
+
+ JOIN semestr USING(semestr_id)
+
+WHERE nazwa='Semestr letni 2010/2011' AND rodzaj_zajec='w'
+
+GROUP BY grupa.kod_grupy;
+
+
+Gdy mamy tę relację, nazwijmy ją POM(kod_grupy,liczba), wystarczy wypisać jako wynik średnią wartośc kolumny liczba:
+
+SELECT AVG(liczba) FROM POM;
+
+
+Powyższe jest niepoprawne, dopóki do polecenia nie włączymy opisu wyliczanie relacji POM – w konstrukcji WITH lub z aliasem na liście FROM. Po zastosowaniu drugiej ewentualności mamy końcowe zapytanie:
+
+SELECT AVG(liczba) FROM
+
+ (SELECT grupa.kod_grupy,
+
+ COUNT(wybor.kod_uz) AS "liczba"
+
+ FROM wybor JOIN grupa USING(kod_grupy)
+
+ JOIN przedmiot_semestr USING(kod_przed_sem)
+
+ JOIN semestr USING(semestr_id)
+
+ WHERE nazwa='Semestr letni 2010/2011' AND rodzaj_zajec='w'
+
+ GROUP BY grupa.kod_grupy) POM;
+
+
+Gdybyśmy chcieli zastosować zapytanie podobne do poprzedniego do znalezienia średnich w innych semestrach, warto by było warunek selekcji rodzaju grupy i semestru wyciągnąć z definicji relacji pomocniczej na zewnątrz. Wtedy dostalibyśmy zapytanie:
+
+SELECT AVG(liczba) FROM
+
+ (SELECT grupa.kod_grupy,
+
+ COUNT(wybor.kod_uz) AS "liczba",
+
+ nazwa,
+
+ rodzaj_zajec
+
+ FROM wybor JOIN grupa USING(kod_grupy)
+
+ JOIN przedmiot_semestr USING(kod_przed_sem)
+
+ JOIN semestr USING(semestr_id)
+
+ GROUP BY grupa.kod_grupy, nazwa, rodzaj_zajec) POM
+
+WHERE nazwa='Semestr letni 2010/2011' AND rodzaj_zajec='w';
+
+Zadanie 11
+Kto prowadzi w jednym semestrze wykład do przedmiotu i co najmniej dwie grupy innych zajęć do tego przedmiotu (nie muszą być tego samego typu)?
+
+To zapytanie możemy zapisać łącząc prowadzącego z trzema różnymi grupami do jednego przedmiotu w jednym semestrze, z czego jedna grupa musi być wykładowa, a pozostałe dwie muszą być inne. W zapytaniu potrzebujemy relacji uzytkownik (nadamy jej alias u) oraz trzech kopii relacji grupa (nadamy im aliasy g1, g2 i g3). Jednakowy semestr i jednakowy przedmiot poznamy po jednakowej wartości atrybutu kod_przed_sem.
+
+SELECT DISTINCT u.kod_uz, imie, nazwisko FROM uzytkownik u
+
+ JOIN grupa g1 USING(kod_uz)
+
+ JOIN grupa g2 USING(kod_uz)
+
+ JOIN grupa g3 USING(kod_uz)
+
+WHERE g1.rodzaj_zajec='w'
+
+ AND g1.kod_przed_sem=g2.kod_przed_sem
+
+ AND g1.kod_przed_sem=g3.kod_przed_sem
+
+ AND g2.rodzaj_zajec<>'w'
+
+ AND g3.rodzaj_zajec<>'w'
+
+ AND g3.kod_grupy<>g2.kod_grupy;
+
+
+Inny sposób zadania tego zapytania, to zdefiniowanie dwóch relacji pomocniczych (np. Na liście FROM z aliasem): osobę z przedmiotem, do którego prowadzi wykład wraz z numerem semestru (nazwijmy ją GW(kod_uz,kod_przed,semestr_id)), oraz osobę z liczbą grup niewykładowych w semestrze z identyfikatorem przedmiotu i semestru (nazwijmy ją GNW(kod_uz,kod_przed,semestr_id,liczba)):
+
+SELECT kod_uz,kod_przed,semestr_id
+
+FROM grupa JOIN przedmiot_semestr USING(kod_przed_sem)
+
+WHERE rodzaj_zajec='w';
+
+SELECT kod_uz, kod_przed, semestr_id, COUNT(*) as "liczba"
+
+FROM grupa JOIN przedmiot_semestr USING(kod_przed_sem)
+
+WHERE rodzaj_zajec<>'w'
+
+GROUP BY kod_uz,kod_przed,semestr_id;
+
+
+Połączenie relacji pomocniczych według wspólnych atrybutów wraz z relacją użytkownik i dodanie prostego warunku selekcji daje końcowe zapytanie:
+
+SELECT DISTINCT u.kod_uz, u.imie, u.nazwisko
+
+FROM uzytkownik u JOIN
+
+( SELECT kod_uz,kod_przed,semestr_id
+
+ FROM grupa JOIN przedmiot_semestr USING(kod_przed_sem)
+
+ WHERE rodzaj_zajec='w') GW
+
+USING(kod_uz) JOIN
+
+( SELECT kod_uz, kod_przed, semestr_id, COUNT(*) AS "liczba"
+
+ FROM grupa JOIN przedmiot_semestr USING(kod_przed_sem)
+
+ WHERE rodzaj_zajec<>'w'
+
+ GROUP BY kod_uz,kod_przed,semestr_id ) GNW
+
+USING(kod_uz, semestr_id, kod_przed)
+
+WHERE liczba>1;
+

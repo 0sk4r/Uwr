@@ -1,3 +1,6 @@
+/* vim: ft=gas :
+*/
+
 .global puzzle3
 
 .text

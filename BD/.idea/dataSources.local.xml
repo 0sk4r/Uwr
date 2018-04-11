@@ -6,8 +6,7 @@
         <identifier-quote-string>&quot;</identifier-quote-string>
       </database-info>
       <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
-      <secret-storage>master_key</secret-storage>
-      <user-name>postgres</user-name>
+      <user-name>oskar</user-name>
       <introspection-schemas>oskar:public</introspection-schemas>
     </data-source>
   </component>

@@ -1,0 +1,12 @@
+syntax on
+set hlsearch
+set autoindent
+set smartindent
+set number
+set enc=utf8
+set tabstop=2
+set shiftwidth=2
+set expandtab
+set ruler
+set title
+set ft=gas
