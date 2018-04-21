@@ -1,0 +1,6 @@
+/Users/oskar/Downloads/iiuwr-bachelor-assignments-master/[4] Projektowanie obiektowe oprogramowania/Zestaw 6/6.3/6.3 (in Visitor)/bin/Debug/6.3 (in Visitor).exe.config
+/Users/oskar/Downloads/iiuwr-bachelor-assignments-master/[4] Projektowanie obiektowe oprogramowania/Zestaw 6/6.3/6.3 (in Visitor)/bin/Debug/6.3 (in Visitor).exe
+/Users/oskar/Downloads/iiuwr-bachelor-assignments-master/[4] Projektowanie obiektowe oprogramowania/Zestaw 6/6.3/6.3 (in Visitor)/bin/Debug/6.3 (in Visitor).pdb
+/Users/oskar/Downloads/iiuwr-bachelor-assignments-master/[4] Projektowanie obiektowe oprogramowania/Zestaw 6/6.3/6.3 (in Visitor)/obj/Debug/6.3 (in Visitor).csproj.CoreCompileInputs.cache
+/Users/oskar/Downloads/iiuwr-bachelor-assignments-master/[4] Projektowanie obiektowe oprogramowania/Zestaw 6/6.3/6.3 (in Visitor)/obj/Debug/6.3 (in Visitor).exe
+/Users/oskar/Downloads/iiuwr-bachelor-assignments-master/[4] Projektowanie obiektowe oprogramowania/Zestaw 6/6.3/6.3 (in Visitor)/obj/Debug/6.3 (in Visitor).pdb

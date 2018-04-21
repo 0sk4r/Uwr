@@ -1,0 +1,18 @@
+1. objdump -a /usr/lib/x86_64-linux-gnu/libc.a | grep 'file format' | wc -l
+   1579
+
+   objdump -a /usr/lib/x86_64-linux-gnu/libm.a | grep 'file format' | wc -l
+   471 
+   
+2. objdump -dx prog1 >> dump1
+   objdump -dx prog2 >> dump2
+   diff dump1 dump2
+
+3. readelf -d /usr/bin/python3 | grep 'Shared library'
+    0x0000000000000001 (NEEDED)             Shared library: [libpthread.so.0]
+ 0x0000000000000001 (NEEDED)             Shared library: [libc.so.6]
+ 0x0000000000000001 (NEEDED)             Shared library: [libdl.so.2]
+ 0x0000000000000001 (NEEDED)             Shared library: [libutil.so.1]
+ 0x0000000000000001 (NEEDED)             Shared library: [libexpat.so.1]
+ 0x0000000000000001 (NEEDED)             Shared library: [libz.so.1]
+ 0x0000000000000001 (NEEDED)             Shared library: [libm.so.6]

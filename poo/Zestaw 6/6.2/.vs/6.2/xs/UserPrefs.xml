@@ -1,0 +1,23 @@
+﻿<Properties StartupConfiguration="{F908918A-391B-4D6F-960F-BC5DF5640A3A}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Tests/Tests.cs">
+    <Files>
+      <File FileName="6.2/AbstractExpression.cs" Line="1" Column="1" />
+      <File FileName="6.2/UnaryEpression.cs" Line="1" Column="1" />
+      <File FileName="6.2/NegationExpression.cs" Line="19" Column="51" />
+      <File FileName="6.2/DisjunctionExpression.cs" Line="20" Column="10" />
+      <File FileName="6.2/ConstExpression.cs" Line="1" Column="1" />
+      <File FileName="6.2/VariableExpression.cs" Line="23" Column="2" />
+      <File FileName="6.2/ConjunctionExpression.cs" Line="1" Column="1" />
+      <File FileName="6.2/Context.cs" Line="1" Column="1" />
+      <File FileName="6.2/Program.cs" Line="1" Column="1" />
+      <File FileName="Tests/Tests.cs" Line="39" Column="61" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.6.2 PreferredExecutionTarget="MonoDevelop.Default" />
+  <MultiItemStartupConfigurations />
+</Properties>

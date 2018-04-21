@@ -1,0 +1,12 @@
+/Users/oskar/Downloads/iiuwr-bachelor-assignments-master/[4] Projektowanie obiektowe oprogramowania/Zestaw 6/6.1/6.1/bin/Debug/6.1.exe.config
+/Users/oskar/Downloads/iiuwr-bachelor-assignments-master/[4] Projektowanie obiektowe oprogramowania/Zestaw 6/6.1/6.1/bin/Debug/6.1.exe
+/Users/oskar/Downloads/iiuwr-bachelor-assignments-master/[4] Projektowanie obiektowe oprogramowania/Zestaw 6/6.1/6.1/bin/Debug/6.1.pdb
+/Users/oskar/Downloads/iiuwr-bachelor-assignments-master/[4] Projektowanie obiektowe oprogramowania/Zestaw 6/6.1/6.1/obj/Debug/6.1.csproj.CoreCompileInputs.cache
+/Users/oskar/Downloads/iiuwr-bachelor-assignments-master/[4] Projektowanie obiektowe oprogramowania/Zestaw 6/6.1/6.1/obj/Debug/6.1.exe
+/Users/oskar/Downloads/iiuwr-bachelor-assignments-master/[4] Projektowanie obiektowe oprogramowania/Zestaw 6/6.1/6.1/obj/Debug/6.1.pdb
+/Users/oskar/Uwr/poo/Zestaw 6/6.1/6.1/bin/Debug/6.1.exe.config
+/Users/oskar/Uwr/poo/Zestaw 6/6.1/6.1/bin/Debug/6.1.exe
+/Users/oskar/Uwr/poo/Zestaw 6/6.1/6.1/bin/Debug/6.1.pdb
+/Users/oskar/Uwr/poo/Zestaw 6/6.1/6.1/obj/Debug/6.1.csproj.CoreCompileInputs.cache
+/Users/oskar/Uwr/poo/Zestaw 6/6.1/6.1/obj/Debug/6.1.exe
+/Users/oskar/Uwr/poo/Zestaw 6/6.1/6.1/obj/Debug/6.1.pdb
