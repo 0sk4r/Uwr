@@ -1,0 +1,18 @@
+all: src.o asm.o
+	gcc -o zad1 zad1.o clz.o -Wall -Wextra 
+
+src.o: zad1.c
+	gcc -Og -c zad1.c -Wall -Wextra
+
+asm.o: clz.s
+	gcc -c clz.s -Wall -Wextra
+
+clean:
+	rm -f clz.o zad1.o zad1
+
+dis:
+	objdump -d zad1
+
+debug: zad1
+	gdb -x .gdbinit -ex 'break main' -ex 'run' zad1
+	
