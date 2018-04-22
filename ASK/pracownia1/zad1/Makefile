@@ -1,7 +1,7 @@
-all: src.o asm.o
-	gcc -o zad1 zad1.o clz.o -Wall -Wextra 
+all: zad1.o asm.o
+	gcc -o zad1 zad1.o clz.o -Wall -Wextra
 
-src.o: zad1.c
+zad1.o: zad1.c
 	gcc -Og -c zad1.c -Wall -Wextra
 
 asm.o: clz.s

@@ -5,6 +5,7 @@ extern int clz(long num);
 
 int main(int argc, char* argv[]) {
 
+	// long res = clz(4);
 	if (argc == 2) { 
 		
 		long num = atol(argv[1]); 
