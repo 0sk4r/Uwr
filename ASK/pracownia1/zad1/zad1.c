@@ -5,14 +5,13 @@ extern int clz(long num);
 
 int main(int argc, char* argv[]) {
 
-	long res = clz(-1);
-	// if (argc == 2) { 
+	if (argc == 2) { 
 		
-	// 	long num = atol(argv[1]); 
-	// 	long res = clz(num);
+		long num = atol(argv[1]); 
+		long res = clz(num);
 
-	// 	printf("clz(%ld) = %ld \n",num,res);
-	// }
+		printf("clz(%ld) = %ld \n",num,res);
+	}
 
 	return 0;
 }
