@@ -1,6 +1,7 @@
     .file   "clz.s"
 
-    MASK = 0xFFFF0000
+    #MASK = 0xFFFF0000
+    MASK = 0xFFFFFFFF00000000
     mask = %rsi
     tmp = %rdx
     arg = %rdi
@@ -14,9 +15,9 @@
 # rdi, rsi, rdx, rcx, r8, r9 - argumenty funkcji sa kolejno w tych rejestrach
 clz:
 #init
-    xorq %rax, %rax
-    cmp $0, arg
-    jz zero
+    xorq %rax, %rax #zerowanie rejestru wyniku
+    cmp $0, arg #sprawdzenie czy arg to 0
+    jz zero #jesli tak zwracamy 64
     mov $MASK, mask
     mov $32, count
 
