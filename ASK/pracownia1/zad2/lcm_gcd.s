@@ -2,7 +2,6 @@
 
     arg1 = %rdi
     arg2 = %rsi
-    resoult = %rax
     lcm = %r8
     gcd = %rdx
     temp = %r9
@@ -17,15 +16,14 @@ lcm_gcd:
     mul arg2
 loop:
     cmp arg2, arg1 #chcemy arg1 > arg2
-    js switch #if r0 > r1, r0 = r0 - r1
-    sub arg2, arg1
+    js switch 
+    sub arg2, arg1 #arg1 = arg1 - arg2
 
     cmp arg1, arg2
     jnz loop
     #gcd = arg1
-    #mov arg1, resoult
-
-    div arg1
+    div arg1 #(arg1 * arg2)/gcd(arg1,arg2) = lcm(arg1, arg2)
+    #lcm juz jest w %rax
     mov arg1, gcd
     ret
 
