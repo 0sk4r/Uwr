@@ -14,5 +14,5 @@ dis:
 	objdump -d zad3
 
 debug: zad3
-	gdb -x .gdbinit -ex 'break main' -ex 'run' zad3
+	gdb -x .gdbinit -ex 'break main' -ex 'run' -args zad3 3 2 1
 	
