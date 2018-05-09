@@ -1,0 +1,17 @@
+/Users/oskar/workspace/testowanie/Zadania.Tests/obj/Debug/netcoreapp2.0/Zadania.Tests.csproj.CoreCompileInputs.cache
+/Users/oskar/workspace/testowanie/Zadania.Tests/obj/Debug/netcoreapp2.0/Zadania.Tests.AssemblyInfoInputs.cache
+/Users/oskar/workspace/testowanie/Zadania.Tests/obj/Debug/netcoreapp2.0/Zadania.Tests.AssemblyInfo.cs
+/Users/oskar/workspace/testowanie/Zadania.Tests/bin/Debug/netcoreapp2.0/NUnit3.TestAdapter.dll
+/Users/oskar/workspace/testowanie/Zadania.Tests/bin/Debug/netcoreapp2.0/NUnit3.TestAdapter.pdb
+/Users/oskar/workspace/testowanie/Zadania.Tests/bin/Debug/netcoreapp2.0/nunit.engine.netstandard.dll
+/Users/oskar/workspace/testowanie/Zadania.Tests/bin/Debug/netcoreapp2.0/Mono.Cecil.dll
+/Users/oskar/workspace/testowanie/Zadania.Tests/bin/Debug/netcoreapp2.0/Zadania.Tests.deps.json
+/Users/oskar/workspace/testowanie/Zadania.Tests/bin/Debug/netcoreapp2.0/Zadania.Tests.runtimeconfig.json
+/Users/oskar/workspace/testowanie/Zadania.Tests/bin/Debug/netcoreapp2.0/Zadania.Tests.runtimeconfig.dev.json
+/Users/oskar/workspace/testowanie/Zadania.Tests/bin/Debug/netcoreapp2.0/Zadania.Tests.dll
+/Users/oskar/workspace/testowanie/Zadania.Tests/bin/Debug/netcoreapp2.0/Zadania.Tests.pdb
+/Users/oskar/workspace/testowanie/Zadania.Tests/bin/Debug/netcoreapp2.0/Zadania.dll
+/Users/oskar/workspace/testowanie/Zadania.Tests/bin/Debug/netcoreapp2.0/Zadania.pdb
+/Users/oskar/workspace/testowanie/Zadania.Tests/obj/Debug/netcoreapp2.0/Zadania.Tests.csproj.CopyComplete
+/Users/oskar/workspace/testowanie/Zadania.Tests/obj/Debug/netcoreapp2.0/Zadania.Tests.dll
+/Users/oskar/workspace/testowanie/Zadania.Tests/obj/Debug/netcoreapp2.0/Zadania.Tests.pdb

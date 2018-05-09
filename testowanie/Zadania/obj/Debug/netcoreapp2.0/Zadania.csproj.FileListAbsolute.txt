@@ -1,0 +1,10 @@
+/Users/oskar/workspace/testowanie/Zadania/obj/Debug/netcoreapp2.0/Zadania.csproj.CoreCompileInputs.cache
+/Users/oskar/workspace/testowanie/Zadania/obj/Debug/netcoreapp2.0/Zadania.AssemblyInfoInputs.cache
+/Users/oskar/workspace/testowanie/Zadania/obj/Debug/netcoreapp2.0/Zadania.AssemblyInfo.cs
+/Users/oskar/workspace/testowanie/Zadania/bin/Debug/netcoreapp2.0/Zadania.deps.json
+/Users/oskar/workspace/testowanie/Zadania/bin/Debug/netcoreapp2.0/Zadania.runtimeconfig.json
+/Users/oskar/workspace/testowanie/Zadania/bin/Debug/netcoreapp2.0/Zadania.runtimeconfig.dev.json
+/Users/oskar/workspace/testowanie/Zadania/bin/Debug/netcoreapp2.0/Zadania.dll
+/Users/oskar/workspace/testowanie/Zadania/bin/Debug/netcoreapp2.0/Zadania.pdb
+/Users/oskar/workspace/testowanie/Zadania/obj/Debug/netcoreapp2.0/Zadania.dll
+/Users/oskar/workspace/testowanie/Zadania/obj/Debug/netcoreapp2.0/Zadania.pdb

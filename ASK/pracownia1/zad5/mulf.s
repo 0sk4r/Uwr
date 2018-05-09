@@ -53,10 +53,10 @@ mulf:
     sub $0x7f, exp1
 
 
-    #or $0x00800000, frac1
-    #shl $7, frac1
-    #or $0x00800000, frac2
-    #shl $8, frac2
+    or $0x00800000, frac1
+    shl $7, frac1
+    or $0x00800000, frac2
+    shl $8, frac2
 
     #mantisa frac1 = frac1 * frac2
     mov frac1, %rax
@@ -80,7 +80,7 @@ lol:
     cmp $0, tmp
     jns xd
 
-    shl $1, zfrac1
+    shl $1, frac1
     dec exp1
 xd:
     shl $31, sign1
@@ -96,3 +96,6 @@ zero:
     ret
 
     .size mulf, .-mulf
+
+# vim: ft=gas 
+ 
