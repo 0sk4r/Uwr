@@ -1,3 +1,12 @@
+# Ignore all
+*
+
+# Unignore all with extensions
+!*.*
+
+# Unignore all dirs
+!*/
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
@@ -49,5 +58,6 @@ Temporary Items
 # Aisd in
 .in
 
+*.o
 node_modules
 .idea
