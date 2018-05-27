@@ -90,20 +90,20 @@ int main(int argc, char **argv) {
   timer_print(&timer);
 
   // printf("%d\n",sizeof(int));
-  for(int i = 0; i<n; i++){
-    for(int j = 0; j<n; j++){
-      printf("%d ",src[i*n+j]);
-    }
-    printf("\n");
-  }
+  // for(int i = 0; i<n; i++){
+  //   for(int j = 0; j<n; j++){
+  //     printf("%d ",src[i*n+j]);
+  //   }
+  //   printf("\n");
+  // }
 
-  printf("++++++++++++++++++++++++++++++++++++++++\n");
-   for(int i = 0; i<n; i++){
-    for(int j = 0; j<n; j++){
-      printf("%d ",dst[i*n+j]);
-    }
-    printf("\n");
-  }
+  // printf("++++++++++++++++++++++++++++++++++++++++\n");
+  //  for(int i = 0; i<n; i++){
+  //   for(int j = 0; j<n; j++){
+  //     printf("%d ",dst[i*n+j]);
+  //   }
+  //   printf("\n");
+  // }
 
   free(src);
   free(dst);
