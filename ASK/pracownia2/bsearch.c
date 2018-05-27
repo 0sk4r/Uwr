@@ -26,6 +26,25 @@ void fill(int *arr, int n) {
 
 void heapify(int *dst, int *src, int n) {
   /* XXX: Fill in this procedure! */
+  for(int i = 0; i<n; i++){
+    dst[i] = src[i];
+  }
+
+  for(int i = 1; i < n; i++){
+    if (dst[i] > dst[(i - 1)/2]){
+      int j = i;
+
+      while(dst[j] > dst[(j-1/2)]){
+        int tmp = dst[j];
+        dst[j] = dst[(j-1)/2];
+        dst[(j-1)/2] = tmp;
+        j = (j-1)/2; 
+      }
+    }
+  }
+
+
+
 }
 
 bool binary_search(int *arr, long size, int x) {
@@ -43,15 +62,11 @@ bool binary_search(int *arr, long size, int x) {
 
 bool heap_search(int *arr, long size, int x) {
   long i = 1;
-  do {
-    int y = arr[i - 1];
-    long j = i * 2;
-    if (y < x)
-      j |= 1;
-    if (y == x)
-      return true;
-    i = j;
-  } while (i <= size);
+
+  while(i < size){
+    if(arr[i] == x) return true;
+    i = arr[i] < x ? 2*i+1 : 2*i+2;
+  }
   return false;
 }
 
