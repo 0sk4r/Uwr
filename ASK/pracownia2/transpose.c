@@ -23,7 +23,27 @@ void transpose1(int *dst, int *src, int n) {
 }
 
 void transpose2(int *dst, int *src, int n) {
-  /* XXX: Fill in this procedure! */
+
+  for (int i = 0; i < n; i+=BLOCK){
+    for (int j = 0; j < n; j+=BLOCK){
+      for(int ii = i; ii < i + BLOCK; ii++){
+        for(int jj = j; jj < j + BLOCK; jj++){
+          dst[ii + jj*n] = src[jj+ii*n];
+        }
+      }
+    }
+  }
+
+//   for (int i = 0; i < n; i += BLOCK) {
+//     for (int j = 0; j < n; j += BLOCK) {
+//         // transpose the block beginning at [i,j]
+//         for (int k = i; k < i + BLOCK; ++k) {
+//             for (int l = j; l < j + BLOCK; ++l) {
+//                 dst[k + l*n] = src[l + k*n];
+//             }
+//         }
+//     }
+// }
 }
 
 int main(int argc, char **argv) {
@@ -68,6 +88,22 @@ int main(int argc, char **argv) {
     transpose2(dst, src, n);
   timer_stop(&timer);
   timer_print(&timer);
+
+  // printf("%d\n",sizeof(int));
+  for(int i = 0; i<n; i++){
+    for(int j = 0; j<n; j++){
+      printf("%d ",src[i*n+j]);
+    }
+    printf("\n");
+  }
+
+  printf("++++++++++++++++++++++++++++++++++++++++\n");
+   for(int i = 0; i<n; i++){
+    for(int j = 0; j<n; j++){
+      printf("%d ",dst[i*n+j]);
+    }
+    printf("\n");
+  }
 
   free(src);
   free(dst);
