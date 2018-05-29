@@ -24,27 +24,40 @@ void fill(int *arr, int n) {
   qsort(arr, n, sizeof(int), icmp);
 }
 
+
+void heapify_help(int *src, int *dst, int start, int end, int i) {
+
+    if(start>end) return;
+
+    int middle = (end+start)/2;
+    dst[i] = src[middle];
+
+    heapify_help(src, dst, start, middle - 1, 2*i+1);
+    heapify_help(src, dst, middle + 1, end, 2*i+2);
+
+
+}
+
 void heapify(int *dst, int *src, int n) {
   /* XXX: Fill in this procedure! */
-  for(int i = 0; i<n; i++){
-    dst[i] = src[i];
-  }
+  
+  heapify_help(src,dst,0,n-1,0);
+  // for(int i = 0; i<n; i++){
+  //   dst[i] = src[i];
+  // }
 
-  for(int i = 1; i < n; i++){
-    if (dst[i] > dst[(i - 1)/2]){
-      int j = i;
+  // for(int i = 1; i < n; i++){
+  //   if (dst[i] > dst[(i - 1)/2]){
+  //     int j = i;
 
-      while(dst[j] > dst[(j-1/2)]){
-        int tmp = dst[j];
-        dst[j] = dst[(j-1)/2];
-        dst[(j-1)/2] = tmp;
-        j = (j-1)/2; 
-      }
-    }
-  }
-
-
-
+  //     while(dst[j] > dst[(j-1/2)]){
+  //       int tmp = dst[j];
+  //       dst[j] = dst[(j-1)/2];
+  //       dst[(j-1)/2] = tmp;
+  //       j = (j-1)/2; 
+  //     }
+  //   }
+  // }
 }
 
 bool binary_search(int *arr, long size, int x) {
