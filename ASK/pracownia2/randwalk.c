@@ -88,18 +88,10 @@ int randwalk2(uint8_t *arr, int n, int len)
     // /* XXX: Replace switch statement with code that does not use branch
     //  * instructions. */
     
-    // i -= (!(d^0) && i>0) ? 1 : 0;
-    // i += (!(d^1) && i<n-1) ? 1 : 0;
-    // j -= (!(d^2) && j>0) ? 1 : 0;
-    // j += (!(d^0) && !(d^1) && !(d^2) && j < n-1) ? 1 : 0;
-
-    uint16_t tmp = (dir >> k) & 3;
-    bool l = tmp >> 1; // sprawdzamy czy tmp < 2
-    bool b = tmp & 1; // to samo co tmp % 2
-    i -= !b && !l && (i > 0) ? 1 : 0;
-    i += b && !l && (i < n-1) ? 1 : 0;
-    j -= !b && l && (j > 0) ? 1 : 0;
-    j += b && l && (j < n-1) ? 1 : 0;
+    i -= (!(d^0) && i>0) ? 1 : 0;
+    i += (!(d^1) && i<n-1) ? 1 : 0;
+    j -= (!(d^2) && j>0) ? 1 : 0;
+    j += (!(d^0) && !(d^1) && !(d^2) && j < n-1) ? 1 : 0;
 
     // if (d == 0)
     // {
