@@ -9,7 +9,7 @@
 #include "common.h"
 
 #define BLOCK (BLOCK_SIZE / sizeof(int))
-
+// #define BLOCK 4
 void fill(int *dst, int n) {
   for (int i = 0; i < n; i++)
     for (int j = 0; j < n; j++)
@@ -23,27 +23,23 @@ void transpose1(int *dst, int *src, int n) {
 }
 
 void transpose2(int *dst, int *src, int n) {
+  int b;
 
-  for (int i = 0; i < n; i+=BLOCK){
-    for (int j = 0; j < n; j+=BLOCK){
-      for(int ii = i; ii < i + BLOCK; ii++){
-        for(int jj = j; jj < j + BLOCK; jj++){
+  if (n >= 16) {
+    b = BLOCK;
+    }
+  else {
+    b = n;
+    }
+  for (int i = 0; i < n; i+=b){
+    for (int j = 0; j < n; j+=b){
+      for(int ii = i; ii < i + b; ii++){
+        for(int jj = j; jj < j + b; jj++){
           dst[ii + jj*n] = src[jj+ii*n];
         }
       }
     }
   }
-
-//   for (int i = 0; i < n; i += BLOCK) {
-//     for (int j = 0; j < n; j += BLOCK) {
-//         // transpose the block beginning at [i,j]
-//         for (int k = i; k < i + BLOCK; ++k) {
-//             for (int l = j; l < j + BLOCK; ++l) {
-//                 dst[k + l*n] = src[l + k*n];
-//             }
-//         }
-//     }
-// }
 }
 
 int main(int argc, char **argv) {
