@@ -6,10 +6,11 @@
  * $ ./transpose -n 15 -v 1
  * Time elapsed: 5.416954 seconds.
  */
+
 #include "common.h"
 
 #define BLOCK (BLOCK_SIZE / sizeof(int))
-// #define BLOCK 4
+
 void fill(int *dst, int n) {
   for (int i = 0; i < n; i++)
     for (int j = 0; j < n; j++)
