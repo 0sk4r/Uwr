@@ -26,12 +26,13 @@ void transpose1(int *dst, int *src, int n) {
 void transpose2(int *dst, int *src, int n) {
   int b;
 
-  if (n >= 16) {
+  if (n >= BLOCK) {
     b = BLOCK;
     }
   else {
     b = n;
     }
+
   for (int i = 0; i < n; i+=b){
     for (int j = 0; j < n; j+=b){
       for(int ii = i; ii < i + b; ii++){
