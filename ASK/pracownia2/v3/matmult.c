@@ -15,7 +15,7 @@
 #include "common.h"
 
 /* You can modify following definitions to try out different settings. */
-#define T int
+#define T double
 #define BLOCK 16
 
 /* Break matrices start alignment with following offsets: */
@@ -135,15 +135,15 @@ int main(int argc, char **argv)
   flush_cache();
 
   printf("Performing matrix multiplication.\n");
-
-  
+  for(int i = 0; i < 10; i++){
   _timer_t timer;
   timer_reset(&timer);
   timer_start(&timer);
   multiply[variant](n, a + A_OFFSET, b + B_OFFSET, c + C_OFFSET);
   timer_stop(&timer);
   timer_print(&timer);
-
+  }
+  
   free(a);
   free(b);
   free(c);
