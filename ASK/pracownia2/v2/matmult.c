@@ -41,7 +41,7 @@ static __noinline void multiply0(int n, T *a, T *b, T *c)
   {
     for (int j = 0; j < n; j++)
     {
-      double sum = 0.0;
+      T sum = 0.0;
       for (int k = 0; k < n; k++)
         sum += M(a, i, k) * M(b, k, j);
       M(c, i, j) = sum;
@@ -58,7 +58,7 @@ static __noinline void multiply1(int n, T *a, T *b, T *c)
   {
     for (int i = 0; i < n; i++)
     {
-      double r = M(a, i, k);
+      T r = M(a, i, k);
       for (int j = 0; j < n; j++)
         M(c, i, j) += r * M(b, k, j);
     }
@@ -72,7 +72,7 @@ static __noinline void multiply2(int n, T *a, T *b, T *c)
   {
     for (int k = 0; k < n; k++)
     {
-      double r = M(b, k, j);
+      T r = M(b, k, j);
       for (int i = 0; i < n; i++)
         M(c, i, j) += M(a, i, k) * r;
     }
