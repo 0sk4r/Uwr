@@ -15,7 +15,7 @@
 #include "common.h"
 
 /* You can modify following definitions to try out different settings. */
-#define T int
+#define T double
 #define BLOCK 16
 
 /* Break matrices start alignment with following offsets: */
@@ -82,6 +82,7 @@ static __noinline void multiply2(int n, T *a, T *b, T *c)
 /* BLOCK*BLOCK tiled version */
 static __noinline void multiply3(int n, T *a, T *b, T *c)
 {
+  // printf("n = %d\n",n);
   /* XXX: Fill in this procedure! */
   int bsize = BLOCK;
 
@@ -98,12 +99,12 @@ static __noinline void multiply3(int n, T *a, T *b, T *c)
     for (int j = 0; j < n; j += bsize)
       for (int k = 0; k < n; k += bsize)
         /* B x B mini matrix multiplications */
-        for (int i1 = i; i1 < i + bsize; i++)
-          for (int j1 = j; j1 < j + bsize; j++)
-            for (int k1 = k; k1 < k + bsize; k++){
+        for (int i1 = i; i1 < i + bsize; i1++)
+          for (int j1 = j; j1 < j + bsize; j1++)
+            for (int k1 = k; k1 < k + bsize; k1++)
               c[i1 * n + j1] += a[i1 * n + k1] * b[k1 * n + j1];
               // if(!(k<n))printf("i=%d,j=%d,k=%d\n",i,j,k);
-            }
+            
 }
 
 typedef void (*matmult_t)(int n, T *a, T *b, T *c);

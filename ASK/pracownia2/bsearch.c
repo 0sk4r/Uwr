@@ -42,6 +42,7 @@ void heapify(int *dst, int *src, int n) {
   /* XXX: Fill in this procedure! */
   
   heapify_help(src,dst,0,n-1,0);
+  
   // for(int i = 0; i<n; i++){
   //   dst[i] = src[i];
   // }
@@ -113,6 +114,7 @@ int main(int argc, char **argv) {
   printf("Generate array of 2^%d-1 elements (%d KiB)\n", exp, size >> 10);
 
   fill(arr, n);
+  for(int i=0;i<n;i++) printf("%d ",arr[i]);
   if (var == 1) {
     posix_memalign((void **)&tmp, getpagesize(), size);
     heapify(tmp, arr, n);
@@ -135,6 +137,7 @@ int main(int argc, char **argv) {
   }
   timer_stop(&timer);
   timer_print(&timer);
+  for(int i=0;i<n;i++) printf("%d ",arr[i]);
 
   free(arr);
 
