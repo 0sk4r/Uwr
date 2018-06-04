@@ -25,8 +25,25 @@ static void fill(int *arr, int n) {
   qsort(arr, n, sizeof(int), icmp);
 }
 
+
+void heapify_help(int *src, int *dst, int start, int end, int i) {
+
+    if(start>end) return;
+
+    int middle = (end+start)/2;
+    dst[i] = src[middle];
+
+    heapify_help(src, dst, start, middle - 1, 2*i+1);
+    heapify_help(src, dst, middle + 1, end, 2*i+2);
+
+
+}
+
 static void heapify(int *dst, int *src, int n) {
   /* XXX: Fill in this procedure! */
+
+  heapify_help(src,dst,0,n-1,0);
+
 }
 
 static __noinline bool binary_search(int *arr, long size, int x) {
@@ -43,6 +60,24 @@ static __noinline bool binary_search(int *arr, long size, int x) {
 
 static __noinline bool heap_search(int *arr, long size, int x) {
   /* XXX: Fill in this procedure! */
+  long i = 0;
+  while(i < size){
+
+    // if(arr[i] == x) return true;
+    // i = arr[i] < x ? 2*i+2 : 2*i+1;
+
+   
+    if(arr[i] == x) {return true;}
+    else{
+      if (arr[i]<x){
+        i = 2*i+2;
+      }
+      else{
+        i = 2*i+1;
+      }
+    }
+  }
+
   return false;
 }
 
@@ -109,8 +144,8 @@ int main(int argc, char **argv) {
 
   printf("Performing %d searches\n", times);
 
+  // for(int i=0;i<n;i++) printf("%d ",arr[i]);
   unsigned found = 0;
-
   _timer_t timer;
   timer_reset(&timer);
   timer_start(&timer);
