@@ -31,10 +31,10 @@ static __noinline void transpose2(T *dst, T *src, int n) {
 
   if (n >= BLOCK) {
     b = BLOCK;
-    }
+  }
   else {
     b = n;
-    }
+  }
 
   for (int i = 0; i < n; i+=b){
     for (int j = 0; j < n; j+=b){

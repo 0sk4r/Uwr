@@ -83,15 +83,27 @@ static __noinline void multiply2(int n, T *a, T *b, T *c)
 static __noinline void multiply3(int n, T *a, T *b, T *c)
 {
   /* XXX: Fill in this procedure! */
+  int bsize = BLOCK;
 
-  for (int i = 0; i < n; i += BLOCK)
-    for (int j = 0; j < n; j += BLOCK)
-      for (int k = 0; k < n; k += BLOCK)
+  // if (n >= BLOCK)
+  // {
+  //   bsize = BLOCK;
+  // }
+  // else
+  // {
+  //   bsize = n;
+  // }
+  // printf("Mnoze bsize=%d\n",bsize);
+  for (int i = 0; i < n; i += bsize)
+    for (int j = 0; j < n; j += bsize)
+      for (int k = 0; k < n; k += bsize)
         /* B x B mini matrix multiplications */
-        for (int i1 = i; i1 < i + BLOCK; i++)
-          for (int j1 = j; j1 < j + BLOCK; j++)
-            for (int k1 = k; k1 < k + BLOCK; k++)
+        for (int i1 = i; i1 < i + bsize; i++)
+          for (int j1 = j; j1 < j + bsize; j++)
+            for (int k1 = k; k1 < k + bsize; k++){
               c[i1 * n + j1] += a[i1 * n + k1] * b[k1 * n + j1];
+              // if(!(k<n))printf("i=%d,j=%d,k=%d\n",i,j,k);
+            }
 }
 
 typedef void (*matmult_t)(int n, T *a, T *b, T *c);
@@ -136,7 +148,6 @@ int main(int argc, char **argv)
 
   printf("Performing matrix multiplication.\n");
 
-  
   _timer_t timer;
   timer_reset(&timer);
   timer_start(&timer);

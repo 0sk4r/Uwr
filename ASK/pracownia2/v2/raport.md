@@ -22,6 +22,9 @@ Pamięć TLB:
  * L1d: 4KiB strony, 4-drożny, 64 wpisy
  * L2: 4KiB strony, 6-drożny, 1536 wpisów
 
+ ![Zrzut z porgamu lstopo](img/memory.png)
+
+
  Informacje uzyskane na podstawie programu `x86info`.
 
 # Zadanie 1
