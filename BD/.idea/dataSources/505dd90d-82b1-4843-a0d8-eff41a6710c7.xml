@@ -2,18 +2,22 @@
 <dataSource name="postgres@localhost">
   <database-model serializer="dbm" rdbms="POSTGRES" format-version="4.8">
     <root id="1">
-      <ServerVersion>10.3</ServerVersion>
+      <ServerVersion>10.4</ServerVersion>
     </root>
-    <database id="2" parent="1" name="postgres">
-      <ObjectId>12558</ObjectId>
-      <Current>1</Current>
-    </database>
-    <database id="3" parent="1" name="oskar">
+    <database id="2" parent="1" name="oskar">
       <ObjectId>16384</ObjectId>
+      <IntrospectionStateNumber>115</IntrospectionStateNumber>
       <Current>1</Current>
       <Visible>1</Visible>
     </database>
-    <role id="4" parent="1" name="oskar">
+    <database id="3" parent="1" name="postgres">
+      <ObjectId>12558</ObjectId>
+      <Comment>default administrative connection database</Comment>
+    </database>
+    <database id="4" parent="1" name="projekt">
+      <ObjectId>24674</ObjectId>
+    </database>
+    <role id="5" parent="1" name="oskar">
       <ObjectId>10</ObjectId>
       <SuperRole>1</SuperRole>
       <Inherit>1</Inherit>
@@ -24,62 +28,113 @@
       <ConnectionLimit>-1</ConnectionLimit>
       <BypassRls>1</BypassRls>
     </role>
-    <role id="5" parent="1" name="pg_monitor">
+    <role id="6" parent="1" name="pg_monitor">
       <ObjectId>3373</ObjectId>
       <Inherit>1</Inherit>
       <ConnectionLimit>-1</ConnectionLimit>
     </role>
-    <role id="6" parent="1" name="pg_read_all_settings">
+    <role id="7" parent="1" name="pg_read_all_settings">
       <ObjectId>3374</ObjectId>
       <Inherit>1</Inherit>
       <ConnectionLimit>-1</ConnectionLimit>
     </role>
-    <role id="7" parent="1" name="pg_read_all_stats">
+    <role id="8" parent="1" name="pg_read_all_stats">
       <ObjectId>3375</ObjectId>
       <Inherit>1</Inherit>
       <ConnectionLimit>-1</ConnectionLimit>
     </role>
-    <role id="8" parent="1" name="pg_signal_backend">
+    <role id="9" parent="1" name="pg_signal_backend">
       <ObjectId>4200</ObjectId>
       <Inherit>1</Inherit>
       <ConnectionLimit>-1</ConnectionLimit>
     </role>
-    <role id="9" parent="1" name="pg_stat_scan_tables">
+    <role id="10" parent="1" name="pg_stat_scan_tables">
       <ObjectId>3377</ObjectId>
       <Inherit>1</Inherit>
       <ConnectionLimit>-1</ConnectionLimit>
     </role>
-    <schema id="10" parent="3" name="public">
-      <ObjectId>2200</ObjectId>
-      <IntrospectionTimestamp>2018-04-20.13:25:38.983</IntrospectionTimestamp>
-      <IntrospectionStateNumber>791</IntrospectionStateNumber>
-      <Current>1</Current>
-      <Visible>1</Visible>
-    </schema>
-    <schema id="11" parent="3" name="pg_catalog">
-      <ObjectId>11</ObjectId>
-      <IntrospectionTimestamp>2018-03-21.10:48:31.052</IntrospectionTimestamp>
-      <IntrospectionStateNumber>505</IntrospectionStateNumber>
-    </schema>
-    <schema id="12" parent="3" name="pg_toast">
-      <ObjectId>99</ObjectId>
-      <IntrospectionTimestamp>2018-03-21.10:48:31.052</IntrospectionTimestamp>
-      <IntrospectionStateNumber>736</IntrospectionStateNumber>
-    </schema>
-    <schema id="13" parent="3" name="pg_temp_1">
-      <ObjectId>11736</ObjectId>
-      <IntrospectionTimestamp>2018-03-21.10:48:31.052</IntrospectionTimestamp>
-    </schema>
-    <schema id="14" parent="3" name="pg_toast_temp_1">
-      <ObjectId>11737</ObjectId>
-      <IntrospectionTimestamp>2018-03-21.10:48:31.052</IntrospectionTimestamp>
-    </schema>
-    <schema id="15" parent="3" name="information_schema">
+    <role id="11" parent="1" name="projektdb">
+      <ObjectId>24673</ObjectId>
+      <Inherit>1</Inherit>
+      <CanLogin>1</CanLogin>
+      <ConnectionLimit>-1</ConnectionLimit>
+    </role>
+    <schema id="12" parent="2" name="information_schema">
       <ObjectId>12267</ObjectId>
       <IntrospectionTimestamp>2018-03-21.10:48:31.052</IntrospectionTimestamp>
       <IntrospectionStateNumber>503</IntrospectionStateNumber>
     </schema>
-    <sequence id="16" parent="10" name="numer_grupy">
+    <schema id="13" parent="2" name="pg_catalog">
+      <ObjectId>11</ObjectId>
+      <Comment>system catalog schema</Comment>
+      <IntrospectionTimestamp>2018-03-21.10:48:31.052</IntrospectionTimestamp>
+      <IntrospectionStateNumber>505</IntrospectionStateNumber>
+    </schema>
+    <schema id="14" parent="2" name="pg_temp_1">
+      <ObjectId>11736</ObjectId>
+      <IntrospectionTimestamp>2018-03-21.10:48:31.052</IntrospectionTimestamp>
+    </schema>
+    <schema id="15" parent="2" name="pg_toast">
+      <ObjectId>99</ObjectId>
+      <Comment>reserved schema for TOAST tables</Comment>
+      <IntrospectionTimestamp>2018-03-21.10:48:31.052</IntrospectionTimestamp>
+      <IntrospectionStateNumber>736</IntrospectionStateNumber>
+    </schema>
+    <schema id="16" parent="2" name="pg_toast_temp_1">
+      <ObjectId>11737</ObjectId>
+      <IntrospectionTimestamp>2018-03-21.10:48:31.052</IntrospectionTimestamp>
+    </schema>
+    <schema id="17" parent="2" name="public">
+      <ObjectId>2200</ObjectId>
+      <Comment>standard public schema</Comment>
+      <IntrospectionTimestamp>2018-06-04.22:55:11.526</IntrospectionTimestamp>
+      <IntrospectionStateNumber>791</IntrospectionStateNumber>
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <access-method id="18" parent="2" name="btree">
+      <ObjectId>403</ObjectId>
+      <Comment>b-tree index access method</Comment>
+      <Handler>pg_catalog.bthandler</Handler>
+      <HandlerId>330</HandlerId>
+      <Type>index</Type>
+    </access-method>
+    <access-method id="19" parent="2" name="hash">
+      <ObjectId>405</ObjectId>
+      <Comment>hash index access method</Comment>
+      <Handler>pg_catalog.hashhandler</Handler>
+      <HandlerId>331</HandlerId>
+      <Type>index</Type>
+    </access-method>
+    <access-method id="20" parent="2" name="gist">
+      <ObjectId>783</ObjectId>
+      <Comment>GiST index access method</Comment>
+      <Handler>pg_catalog.gisthandler</Handler>
+      <HandlerId>332</HandlerId>
+      <Type>index</Type>
+    </access-method>
+    <access-method id="21" parent="2" name="gin">
+      <ObjectId>2742</ObjectId>
+      <Comment>GIN index access method</Comment>
+      <Handler>pg_catalog.ginhandler</Handler>
+      <HandlerId>333</HandlerId>
+      <Type>index</Type>
+    </access-method>
+    <access-method id="22" parent="2" name="spgist">
+      <ObjectId>4000</ObjectId>
+      <Comment>SP-GiST index access method</Comment>
+      <Handler>pg_catalog.spghandler</Handler>
+      <HandlerId>334</HandlerId>
+      <Type>index</Type>
+    </access-method>
+    <access-method id="23" parent="2" name="brin">
+      <ObjectId>3580</ObjectId>
+      <Comment>block range index (BRIN) access method</Comment>
+      <Handler>pg_catalog.brinhandler</Handler>
+      <HandlerId>335</HandlerId>
+      <Type>index</Type>
+    </access-method>
+    <sequence id="24" parent="17" name="numer_grupy">
       <ObjectId>24670</ObjectId>
       <StateNumber>787</StateNumber>
       <SequenceIdentity>1</SequenceIdentity>
@@ -87,14 +142,14 @@
       <CacheSize>1</CacheSize>
       <DataType>bigint</DataType>
     </sequence>
-    <sequence id="17" parent="10" name="numer_przedmiot_semestr">
+    <sequence id="25" parent="17" name="numer_przedmiot_semestr">
       <ObjectId>24667</ObjectId>
       <StateNumber>783</StateNumber>
       <SequenceIdentity>1</SequenceIdentity>
       <CacheSize>1</CacheSize>
       <DataType>bigint</DataType>
     </sequence>
-    <sequence id="18" parent="10" name="numer_semestru">
+    <sequence id="26" parent="17" name="numer_semestru">
       <ObjectId>24650</ObjectId>
       <StateNumber>768</StateNumber>
       <SequenceIdentity>1</SequenceIdentity>
@@ -102,43 +157,43 @@
       <CacheSize>1</CacheSize>
       <DataType>bigint</DataType>
     </sequence>
-    <object-type id="19" parent="10" name="semestry">
+    <object-type id="27" parent="17" name="semestry">
       <ObjectId>24648</ObjectId>
       <StateNumber>764</StateNumber>
       <SubKind>domain</SubKind>
       <SubCategory>string</SubCategory>
       <Definition>text</Definition>
     </object-type>
-    <table id="20" parent="10" name="grupa">
+    <table id="28" parent="17" name="grupa">
       <ObjectId>24576</ObjectId>
       <StateNumber>755</StateNumber>
     </table>
-    <table id="21" parent="10" name="przedmiot">
+    <table id="29" parent="17" name="przedmiot">
       <ObjectId>24579</ObjectId>
       <StateNumber>753</StateNumber>
     </table>
-    <table id="22" parent="10" name="przedmiot_semestr">
+    <table id="30" parent="17" name="przedmiot_semestr">
       <ObjectId>24587</ObjectId>
       <StateNumber>754</StateNumber>
     </table>
-    <table id="23" parent="10" name="semestr">
+    <table id="31" parent="17" name="semestr">
       <ObjectId>24590</ObjectId>
       <StateNumber>771</StateNumber>
     </table>
-    <table id="24" parent="10" name="uzytkownik">
+    <table id="32" parent="17" name="uzytkownik">
       <ObjectId>24596</ObjectId>
       <StateNumber>756</StateNumber>
     </table>
-    <table id="25" parent="10" name="wybor">
+    <table id="33" parent="17" name="wybor">
       <ObjectId>24599</ObjectId>
       <StateNumber>756</StateNumber>
     </table>
-    <check id="26" parent="19" name="semestry_check">
+    <check id="34" parent="27" name="semestry_check">
       <ObjectId>24649</ObjectId>
       <StateNumber>764</StateNumber>
       <Predicate>(((VALUE = &apos;letni&apos;::text) OR (VALUE = &apos;zimowy&apos;::text)) AND (VALUE IS NOT NULL))</Predicate>
     </check>
-    <column id="27" parent="20" name="kod_grupy">
+    <column id="35" parent="28" name="kod_grupy">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
@@ -147,57 +202,57 @@
       <TypeId>23</TypeId>
       <SequenceName>numer_grupy</SequenceName>
     </column>
-    <column id="28" parent="20" name="kod_przed_sem">
+    <column id="36" parent="28" name="kod_przed_sem">
       <Position>2</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>733</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="29" parent="20" name="kod_uz">
+    <column id="37" parent="28" name="kod_uz">
       <Position>3</Position>
       <DataType>integer|0s</DataType>
       <StateNumber>791</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="30" parent="20" name="max_osoby">
+    <column id="38" parent="28" name="max_osoby">
       <Position>4</Position>
       <DataType>smallint|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>733</StateNumber>
       <TypeId>21</TypeId>
     </column>
-    <column id="31" parent="20" name="rodzaj_zajec">
+    <column id="39" parent="28" name="rodzaj_zajec">
       <Position>5</Position>
       <DataType>char|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>733</StateNumber>
       <TypeId>1042</TypeId>
     </column>
-    <column id="32" parent="20" name="termin">
+    <column id="40" parent="28" name="termin">
       <Position>6</Position>
       <DataType>char(13)|0s</DataType>
       <StateNumber>733</StateNumber>
       <TypeId>1042</TypeId>
     </column>
-    <column id="33" parent="20" name="sala">
+    <column id="41" parent="28" name="sala">
       <Position>7</Position>
       <DataType>varchar(3)|0s</DataType>
       <StateNumber>733</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <index id="34" parent="20" name="grupa_key">
+    <index id="42" parent="28" name="grupa_key">
       <ObjectId>24603</ObjectId>
       <ColNames>kod_grupy</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="35" parent="20" name="grupa_key">
+    <key id="43" parent="28" name="grupa_key">
       <ObjectId>24604</ObjectId>
       <ColNames>kod_grupy</ColNames>
       <UnderlyingIndexName>grupa_key</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="36" parent="20" name="fk_grupa_przed_sem">
+    <foreign-key id="44" parent="28" name="fk_grupa_przed_sem">
       <ObjectId>24615</ObjectId>
       <Deferrable>1</Deferrable>
       <ColNames>kod_przed_sem</ColNames>
@@ -207,7 +262,7 @@
       <RefKeyName>przedmiot_semestr_key</RefKeyName>
       <RefColNames>kod_przed_sem</RefColNames>
     </foreign-key>
-    <foreign-key id="37" parent="20" name="fk_grupa_uz">
+    <foreign-key id="45" parent="28" name="fk_grupa_uz">
       <ObjectId>24620</ObjectId>
       <Deferrable>1</Deferrable>
       <ColNames>kod_uz</ColNames>
@@ -217,35 +272,35 @@
       <RefKeyName>uzytkownik_key</RefKeyName>
       <RefColNames>kod_uz</RefColNames>
     </foreign-key>
-    <column id="38" parent="21" name="kod_przed">
+    <column id="46" parent="29" name="kod_przed">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>734</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="39" parent="21" name="nazwa">
+    <column id="47" parent="29" name="nazwa">
       <Position>2</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>734</StateNumber>
       <TypeId>25</TypeId>
     </column>
-    <column id="40" parent="21" name="punkty">
+    <column id="48" parent="29" name="punkty">
       <Position>3</Position>
       <DataType>smallint|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>734</StateNumber>
       <TypeId>21</TypeId>
     </column>
-    <column id="41" parent="21" name="rodzaj">
+    <column id="49" parent="29" name="rodzaj">
       <Position>4</Position>
       <DataType>char|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>734</StateNumber>
       <TypeId>1042</TypeId>
     </column>
-    <column id="42" parent="21" name="egzamin">
+    <column id="50" parent="29" name="egzamin">
       <Position>5</Position>
       <DataType>boolean|0s</DataType>
       <NotNull>1</NotNull>
@@ -253,23 +308,23 @@
       <DefaultExpression>false</DefaultExpression>
       <TypeId>16</TypeId>
     </column>
-    <index id="43" parent="21" name="przedmiot_pkey">
+    <index id="51" parent="29" name="przedmiot_pkey">
       <ObjectId>24605</ObjectId>
       <ColNames>kod_przed</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="44" parent="21" name="przedmiot_pkey">
+    <key id="52" parent="29" name="przedmiot_pkey">
       <ObjectId>24606</ObjectId>
       <ColNames>kod_przed</ColNames>
       <UnderlyingIndexName>przedmiot_pkey</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <check id="45" parent="21" name="rodzaj_stale">
+    <check id="53" parent="29" name="rodzaj_stale">
       <ObjectId>24583</ObjectId>
       <ColNames>rodzaj</ColNames>
       <Predicate>rodzaj = ANY (ARRAY[&apos;o&apos;::bpchar, &apos;z&apos;::bpchar, &apos;p&apos;::bpchar, &apos;k&apos;::bpchar, &apos;s&apos;::bpchar, &apos;n&apos;::bpchar])</Predicate>
     </check>
-    <column id="46" parent="22" name="kod_przed_sem">
+    <column id="54" parent="30" name="kod_przed_sem">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
@@ -277,44 +332,44 @@
       <DefaultExpression>nextval(&apos;numer_przedmiot_semestr&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="47" parent="22" name="semestr_id">
+    <column id="55" parent="30" name="semestr_id">
       <Position>2</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>735</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="48" parent="22" name="kod_przed">
+    <column id="56" parent="30" name="kod_przed">
       <Position>3</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>735</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="49" parent="22" name="strona_domowa">
+    <column id="57" parent="30" name="strona_domowa">
       <Position>4</Position>
       <DataType>varchar(120)|0s</DataType>
       <StateNumber>735</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="50" parent="22" name="angielski">
+    <column id="58" parent="30" name="angielski">
       <Position>5</Position>
       <DataType>boolean|0s</DataType>
       <StateNumber>735</StateNumber>
       <TypeId>16</TypeId>
     </column>
-    <index id="51" parent="22" name="przedmiot_semestr_key">
+    <index id="59" parent="30" name="przedmiot_semestr_key">
       <ObjectId>24607</ObjectId>
       <ColNames>kod_przed_sem</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="52" parent="22" name="przedmiot_semestr_key">
+    <key id="60" parent="30" name="przedmiot_semestr_key">
       <ObjectId>24608</ObjectId>
       <ColNames>kod_przed_sem</ColNames>
       <UnderlyingIndexName>przedmiot_semestr_key</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="53" parent="22" name="fk_przed_sem_semestr_id">
+    <foreign-key id="61" parent="30" name="fk_przed_sem_semestr_id">
       <ObjectId>24630</ObjectId>
       <Deferrable>1</Deferrable>
       <ColNames>semestr_id</ColNames>
@@ -324,7 +379,7 @@
       <RefKeyName>semestr_key</RefKeyName>
       <RefColNames>semestr_id</RefColNames>
     </foreign-key>
-    <foreign-key id="54" parent="22" name="fk_przed_sem_przed">
+    <foreign-key id="62" parent="30" name="fk_przed_sem_przed">
       <ObjectId>24625</ObjectId>
       <Deferrable>1</Deferrable>
       <ColNames>kod_przed</ColNames>
@@ -334,7 +389,7 @@
       <RefKeyName>przedmiot_pkey</RefKeyName>
       <RefColNames>kod_przed</RefColNames>
     </foreign-key>
-    <column id="55" parent="23" name="semestr_id">
+    <column id="63" parent="31" name="semestr_id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
@@ -343,83 +398,83 @@
       <TypeId>23</TypeId>
       <SequenceName>numer_semestru</SequenceName>
     </column>
-    <column id="56" parent="23" name="semestr">
+    <column id="64" parent="31" name="semestr">
       <Position>3</Position>
       <DataType>semestry|0s</DataType>
       <StateNumber>770</StateNumber>
       <DefaultExpression>&apos;zimowy&apos;::text</DefaultExpression>
       <TypeId>24648</TypeId>
     </column>
-    <column id="57" parent="23" name="rok">
+    <column id="65" parent="31" name="rok">
       <Position>4</Position>
       <DataType>varchar(9)|0s</DataType>
       <StateNumber>771</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <index id="58" parent="23" name="semestr_key">
+    <index id="66" parent="31" name="semestr_key">
       <ObjectId>24609</ObjectId>
       <ColNames>semestr_id</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="59" parent="23" name="semestr_key">
+    <key id="67" parent="31" name="semestr_key">
       <ObjectId>24610</ObjectId>
       <ColNames>semestr_id</ColNames>
       <UnderlyingIndexName>semestr_key</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <column id="60" parent="24" name="kod_uz">
+    <column id="68" parent="32" name="kod_uz">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>737</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="61" parent="24" name="imie">
+    <column id="69" parent="32" name="imie">
       <Position>2</Position>
       <DataType>varchar(15)|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>737</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="62" parent="24" name="nazwisko">
+    <column id="70" parent="32" name="nazwisko">
       <Position>3</Position>
       <DataType>varchar(30)|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>737</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="63" parent="24" name="semestr">
+    <column id="71" parent="32" name="semestr">
       <Position>4</Position>
       <DataType>smallint|0s</DataType>
       <StateNumber>737</StateNumber>
       <TypeId>21</TypeId>
     </column>
-    <index id="64" parent="24" name="uzytkownik_key">
+    <index id="72" parent="32" name="uzytkownik_key">
       <ObjectId>24611</ObjectId>
       <ColNames>kod_uz</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="65" parent="24" name="uzytkownik_key">
+    <key id="73" parent="32" name="uzytkownik_key">
       <ObjectId>24612</ObjectId>
       <ColNames>kod_uz</ColNames>
       <UnderlyingIndexName>uzytkownik_key</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <column id="66" parent="25" name="kod_grupy">
+    <column id="74" parent="33" name="kod_grupy">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>738</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="67" parent="25" name="kod_uz">
+    <column id="75" parent="33" name="kod_uz">
       <Position>2</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>738</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="68" parent="25" name="data">
+    <column id="76" parent="33" name="data">
       <Position>3</Position>
       <DataType>timestamp with time zone|0s</DataType>
       <NotNull>1</NotNull>
@@ -427,20 +482,20 @@
       <DefaultExpression>now()</DefaultExpression>
       <TypeId>1184</TypeId>
     </column>
-    <index id="69" parent="25" name="wybor_key">
+    <index id="77" parent="33" name="wybor_key">
       <ObjectId>24613</ObjectId>
       <ColNames>kod_grupy
 kod_uz</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="70" parent="25" name="wybor_key">
+    <key id="78" parent="33" name="wybor_key">
       <ObjectId>24614</ObjectId>
       <ColNames>kod_grupy
 kod_uz</ColNames>
       <UnderlyingIndexName>wybor_key</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="71" parent="25" name="fk_wybor_grupa">
+    <foreign-key id="79" parent="33" name="fk_wybor_grupa">
       <ObjectId>24635</ObjectId>
       <Deferrable>1</Deferrable>
       <ColNames>kod_grupy</ColNames>
@@ -450,7 +505,7 @@ kod_uz</ColNames>
       <RefKeyName>grupa_key</RefKeyName>
       <RefColNames>kod_grupy</RefColNames>
     </foreign-key>
-    <foreign-key id="72" parent="25" name="fk_wybor_uz">
+    <foreign-key id="80" parent="33" name="fk_wybor_uz">
       <ObjectId>24640</ObjectId>
       <Deferrable>1</Deferrable>
       <ColNames>kod_uz</ColNames>

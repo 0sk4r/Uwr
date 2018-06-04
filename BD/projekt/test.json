@@ -1,2 +1,2 @@
 { "open": { "baza": "projekt", "login": "projektdb", "password": "db2018"}}
-{ "new": { "arg1": "value1", "arg2": "value2" } }
+{ "root": { "secret": "qwerty", "newpassword": "qwerty", "data": "dane prezesa", "emp":0} }
