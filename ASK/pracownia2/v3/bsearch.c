@@ -61,12 +61,7 @@ static __noinline bool heap_search(int *arr, long size, int x) {
   while(i < size){
     if(arr[i] == x) {return true;}
     else{
-      if (arr[i]<x){
-        i = 2*i+2;
-      }
-      else{
-        i = 2*i+1;
-      }
+      i = arr[i]<x ? 2*i+2 : 2*i+1;
     }
   }
 

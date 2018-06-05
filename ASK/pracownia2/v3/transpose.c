@@ -11,7 +11,7 @@
 #include "common.h"
 
 /* You can modify following definitions to try out different settings. */ 
-#define T int 
+#define T double 
 #define BLOCK 8
 
 static void fill(T *dst, int n) {
@@ -28,6 +28,24 @@ static __noinline void transpose1(T *dst, T *src, int n) {
 
 static __noinline void transpose2(T *dst, T *src, int n) {
   /* XXX: Fill in this procedure! */
+  int b;
+
+  if (n >= BLOCK) {
+    b = BLOCK;
+  }
+  else {
+    b = n;
+  }
+
+  for (int i = 0; i < n; i+=b){
+    for (int j = 0; j < n; j+=b){
+      for(int ii = i; ii < i + b; ii++){
+        for(int jj = j; jj < j + b; jj++){
+          dst[ii + jj*n] = src[jj+ii*n];
+        }
+      }
+    }
+  }
 }
 
 int main(int argc, char **argv) {
