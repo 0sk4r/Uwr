@@ -76,7 +76,7 @@ void timer_stop(_timer_t *t) {
 }
 
 void timer_print(_timer_t *t) {
-  printf("%ld.%06ld\n", t->sum.tv_sec, 
+  printf("Time elapsed: %ld.%06ld seconds.\n", t->sum.tv_sec, 
          t->sum.tv_nsec / 1000);
 }
 

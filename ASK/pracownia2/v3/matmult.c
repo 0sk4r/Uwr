@@ -14,7 +14,7 @@
  */
 #include "common.h"
 
-/* You can modify following definitions to try out different settings. */
+/* You can modify following definitions to try out different settings. */ 
 #define T double
 #define BLOCK 16
 
@@ -24,19 +24,16 @@
 #define C_OFFSET NITEMS(BLOCK_SIZE * 0, T)
 
 /* Useful macro for accessing row-major 2D arrays of size n×n. */
-#define M(a, i, j) a[(i)*n + (j)]
+#define M(a, i, j) a[(i) * n + (j)]
 
-static void fill(T *dst, int size)
-{
+static void fill(T *dst, int size) {
   for (int i = 0; i < size; i++)
-    dst[i] = 1;
+      dst[i] = 1;
 }
 
 /* ijk (& jik) */
-static __noinline void multiply0(int n, T *a, T *b, T *c)
-{
+static __noinline void multiply0(int n, T *a, T *b, T *c) {
   /* XXX: Fill in this procedure! */
-
   for (int i = 0; i < n; i++)
   {
     for (int j = 0; j < n; j++)
@@ -50,10 +47,8 @@ static __noinline void multiply0(int n, T *a, T *b, T *c)
 }
 
 /* kij (& ikj) */
-static __noinline void multiply1(int n, T *a, T *b, T *c)
-{
+static __noinline void multiply1(int n, T *a, T *b, T *c) {
   /* XXX: Fill in this procedure! */
-
   for (int k = 0; k < n; k++)
   {
     for (int i = 0; i < n; i++)
@@ -66,8 +61,8 @@ static __noinline void multiply1(int n, T *a, T *b, T *c)
 }
 
 /* jki (& kji) */
-static __noinline void multiply2(int n, T *a, T *b, T *c)
-{
+static __noinline void multiply2(int n, T *a, T *b, T *c) {
+  /* XXX: Fill in this procedure! */
   for (int j = 0; j < n; j++)
   {
     for (int k = 0; k < n; k++)
@@ -80,31 +75,40 @@ static __noinline void multiply2(int n, T *a, T *b, T *c)
 }
 
 /* BLOCK*BLOCK tiled version */
-static __noinline void multiply3(int n, T *a, T *b, T *c)
-{
+static __noinline void multiply3(int n, T *a, T *b, T *c) {
   /* XXX: Fill in this procedure! */
 
-  for (int i = 0; i < n; i += BLOCK)
-    for (int j = 0; j < n; j += BLOCK)
-      for (int k = 0; k < n; k += BLOCK)
+  int bsize;
+
+  if (n >= BLOCK)
+  {
+    bsize = BLOCK;
+  }
+  else
+  {
+    bsize = n;
+  }
+  
+  for (int i = 0; i < n; i += bsize)
+    for (int j = 0; j < n; j += bsize)
+      for (int k = 0; k < n; k += bsize)
         /* B x B mini matrix multiplications */
-        for (int i1 = i; i1 < i + BLOCK; i++)
-          for (int j1 = j; j1 < j + BLOCK; j++)
-            for (int k1 = k; k1 < k + BLOCK; k++)
+        for (int i1 = i; i1 < i + bsize; i1++)
+          for (int j1 = j; j1 < j + bsize; j1++)
+            for (int k1 = k; k1 < k + bsize; k1++)
               c[i1 * n + j1] += a[i1 * n + k1] * b[k1 * n + j1];
+
 }
 
 typedef void (*matmult_t)(int n, T *a, T *b, T *c);
 
 static matmult_t multiply[4] = {multiply0, multiply1, multiply2, multiply3};
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
   int opt, variant = -1, n = 0;
   bool err = false;
 
-  while ((opt = getopt(argc, argv, "n:v:")) != -1)
-  {
+  while ((opt = getopt(argc, argv, "n:v:")) != -1) {
     if (opt == 'n')
       n = atoi(optarg);
     else if (opt == 'v')
@@ -135,15 +139,14 @@ int main(int argc, char **argv)
   flush_cache();
 
   printf("Performing matrix multiplication.\n");
-  for(int i = 0; i < 10; i++){
+
   _timer_t timer;
   timer_reset(&timer);
   timer_start(&timer);
   multiply[variant](n, a + A_OFFSET, b + B_OFFSET, c + C_OFFSET);
   timer_stop(&timer);
   timer_print(&timer);
-  }
-  
+
   free(a);
   free(b);
   free(c);
