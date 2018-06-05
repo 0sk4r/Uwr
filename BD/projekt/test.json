@@ -1,2 +1,7 @@
 { "open": { "baza": "projekt", "login": "projektdb", "password": "db2018"}}
-{ "root": { "secret": "qwerty", "newpassword": "qwerty", "data": "dane prezesa", "emp":0} }
+{"child": {"admin": 7, "passwd":"asd", "emp":0}}
+{"parent": {"admin": 8, "passwd":"asd", "emp":8}}
+{"update": {"admin": 3, "passwd": "asd", "emp":8, "newdata":"lvl3update"}}
+{"read": {"admin": 1, "passwd": "asd", "emp":8}}
+{"descendants": {"admin": 8, "passwd":"asd", "emp":1}}
+{"ancestors": {"admin": 5, "passwd":"asd", "emp": 8}}

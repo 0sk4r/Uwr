@@ -1,0 +1,38 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+DBInterface	../main.py	/^class DBInterface:$/;"	kind:class	line:5
+JsonInterpreter	../main.py	/^class JsonInterpreter:$/;"	kind:class	line:55
+__init__	../main.py	/^    def __init__(self, file):$/;"	kind:member	line:56
+__init__	../main.py	/^    def __init__(self, login, pwd, dbname):$/;"	kind:member	line:6
+easy_install	../venv/bin/easy_install	1;"	kind:file	line:1
+easy_install-3.6	../venv/bin/easy_install-3.6	1;"	kind:file	line:1
+execute	../main.py	/^    def execute(self):$/;"	kind:member	line:64
+initialize	../main.py	/^    def initialize(self):$/;"	kind:member	line:15
+json	../main.py	/^import json$/;"	kind:namespace	line:2
+load_entry_point	../venv/bin/easy_install	/^from pkg_resources import load_entry_point$/;"	kind:namespace	line:6
+load_entry_point	../venv/bin/easy_install-3.6	/^from pkg_resources import load_entry_point$/;"	kind:namespace	line:6
+load_entry_point	../venv/bin/pip	/^from pkg_resources import load_entry_point$/;"	kind:namespace	line:6
+load_entry_point	../venv/bin/pip3	/^from pkg_resources import load_entry_point$/;"	kind:namespace	line:6
+load_entry_point	../venv/bin/pip3.6	/^from pkg_resources import load_entry_point$/;"	kind:namespace	line:6
+main	../main.py	/^def main():$/;"	kind:function	line:73
+main.py	../main.py	1;"	kind:file	line:1
+new	../main.py	/^    def new(self, data):$/;"	kind:member	line:51
+pip	../venv/bin/pip	1;"	kind:file	line:1
+pip3	../venv/bin/pip3	1;"	kind:file	line:1
+pip3.6	../venv/bin/pip3.6	1;"	kind:file	line:1
+psycopg2	../main.py	/^import psycopg2$/;"	kind:namespace	line:1
+re	../venv/bin/easy_install	/^import re$/;"	kind:namespace	line:4
+re	../venv/bin/easy_install-3.6	/^import re$/;"	kind:namespace	line:4
+re	../venv/bin/pip	/^import re$/;"	kind:namespace	line:4
+re	../venv/bin/pip3	/^import re$/;"	kind:namespace	line:4
+re	../venv/bin/pip3.6	/^import re$/;"	kind:namespace	line:4
+root	../main.py	/^    def root(self, data):$/;"	kind:member	line:34
+sys	../venv/bin/easy_install	/^import sys$/;"	kind:namespace	line:5
+sys	../venv/bin/easy_install-3.6	/^import sys$/;"	kind:namespace	line:5
+sys	../venv/bin/pip	/^import sys$/;"	kind:namespace	line:5
+sys	../venv/bin/pip3	/^import sys$/;"	kind:namespace	line:5
+sys	../venv/bin/pip3.6	/^import sys$/;"	kind:namespace	line:5
