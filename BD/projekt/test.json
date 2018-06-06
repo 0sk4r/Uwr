@@ -5,3 +5,5 @@
 {"read": {"admin": 1, "passwd": "asd", "emp":8}}
 {"descendants": {"admin": 8, "passwd":"asd", "emp":1}}
 {"ancestors": {"admin": 5, "passwd":"asd", "emp": 8}}
+{"ancestor": {"admin": 5, "passwd": "asd", "emp1":7, "emp2": 1}}
+{"ancestor": {"admin": 5, "passwd": "asd", "emp1":1, "emp2": 7}}

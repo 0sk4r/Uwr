@@ -6,19 +6,40 @@ class DBInterface:
     def __init__(self, login, pwd, dbname):
         try:
             print('connection')
-            self.connection = psycopg2.connect(user=login, password=pwd, dbname=dbname)
+            self.connection = psycopg2.connect(
+                user=login, password=pwd, dbname=dbname)
             self.curr = self.connection.cursor()
-        except:
+        except Exception as e:
+            print(e)
             error = {"status": "ERROR"}
             print(json.dumps(error))
 
-    def authenticate(self,id, pwd):
+    def authenticate(self, id, pwd):
         querry = "SELECT id FROM workers WHERE id = %s AND Password = crypt(%s, password)"
-        
-        self.curr.execute(querry,(id,pwd,))
 
-        if(self.curr.fetchall()): return True
+        self.curr.execute(querry, (id, pwd,))
+
+        if(self.curr.fetchone()): return True
         return False
+
+    def authenticate_hiearchy(self, id_admin, pwd, id_worker):
+        querry_search = "SELECT Superior FROM workers WHERE ID = %s"
+        querry_autchenticate = querry = "SELECT id FROM workers WHERE id = %s AND Password = crypt(%s, password)"
+
+        res = id_worker
+
+        try:
+            while(res is not None):
+                if(res == id_admin): return True
+                self.curr.execute(querry_search, (res,))
+                res = self.curr.fetchall()[0][0]
+            
+            return False
+        except Exception as e:
+            print(e)
+            return False
+
+
 
     def initialize(self):
         query = """CREATE TABLE IF NOT EXISTS workers(
@@ -26,18 +47,20 @@ class DBInterface:
             Password VARCHAR(99) NOT NULL,
             Superior INT,
             Data VARCHAR(100),
-            PRIMARY KEY (ID));"""
+            PRIMARY KEY (ID),
+            FOREIGN KEY (Superior) REFERENCES workers(ID) ON DELETE CASCADE);"""
 
         try:
             self.curr.execute(query)
             ok = {"status": "OK"}
             print(json.dumps(ok))
-        except:
-            error = {"status": "ERROR"}
+            self.connection.commit()
+        except Exception as e:
+            print(e)
+            error = {"status": "ERROR","initialize erro":True}
             print(json.dumps(error))
 
         # self.curr.execute("CREATE EXTENSION pgcrypto;")
-        self.connection.commit()
 
     def root(self, data):
         querry = "INSERT INTO workers(ID, Password, Data) VALUES(%s,crypt(%s, gen_salt('bf', 8)),%s)"
@@ -50,13 +73,14 @@ class DBInterface:
         if(secret == "qwerty"):
             try:
                 self.curr.execute(querry, (id, pwd, d,))
-                ok = {"status": "OK"}
+                ok = {"status": "OK", "debug": "root created"}
                 print(json.dumps(ok))
-            except:
-                error = {"status": "ERROR"}
+            except Exception as e:
+                print(e)
+                error = {"status": "ERROR", "debug":"problem with root creation"}
                 print(json.dumps(error))
         else:
-            error = {"status": "ERROR"}
+            error = {"status": "ERROR","debug":"wrong secret"}
             print(json.dumps(error))
         self.connection.commit()
 
@@ -70,34 +94,71 @@ class DBInterface:
         id_superior = data["emp1"]
         id = data["emp"]
 
-        try:
-            self.curr.execute(querry, (id, pwd, d,id_superior,))
-            ok = {"status": "OK"}
-            print(json.dumps(ok))
-        except Exception as e:
-            print(e)
-            error = {"status": "ERROR"}
+        if(self.authenticate_hiearchy(admin, pwd, id_superior)):
+            try:
+                self.curr.execute(querry, (id, pwd, d,id_superior,))
+                ok = {"status": "OK", "debug": "created worker id {0}".format(id)}
+                print(json.dumps(ok))
+            except Exception as e:
+                print(e)
+                error = {"status": "ERROR","debug": "worker creation failed id {0}".format(id)}
+                print(json.dumps(error))
+
+            self.connection.commit()
+        else:
+            error = {"status": "ERROR", "debug":"Wrong paswd"}
             print(json.dumps(error))
 
-        self.connection.commit()
+    def remove(self, data):
+        querry = "DELETE FROM workers WHERE ID = %s"
+        querry_parent = "SELECT Superior FROM workers WHERE ID = %s"
+        admin = data["admin"]
+        pwd = data["passwd"]
+        id = data["emp"]
+        parent = None
+        try:
+            self.curr.execute(querry_parent, (id,))
+            res = self.curr.fetchall()
+            if (res != []):
+                parent =  res[0][0]
+        except:
+            pass       
 
-    def remove(self,data):
-        pass
+        if(parent is not None and self.authenticate_hiearchy(admin,pwd, parent)):
+            try:
+                self.curr.execute(querry, (id,))
+                self.connection.commit()
+                ok = {"status": "OK", "debug": "remove worker id {0}".format(id)}
+                print(json.dumps(ok))
+            except:
+                error = {"status": "ERROR", "debug":"remove operation failed id {0}".format(id)}
+                print(json.dumps(error))
+        else:
+            error = {"status": "ERROR", "debug":"Wrong paswd"}
+            print(json.dumps(error))
+
 
     def child(self,data):
         querry = "SELECT ID FROM workers WHERE Superior = %s"
 
         id = data["emp"]
+        admin = data["admin"]
+        pwd = data["passwd"]
 
-        try:
-            self.curr.execute(querry, (id,))
-            childrens =  [r[0] for r in self.curr.fetchall()]
-            ok = {"status": childrens}
-            print(json.dumps(ok))
-        except Exception as e:
-            print(e)
-            error = {"status": "ERROR"}
+        if(self.authenticate(admin, pwd)):
+            try:
+                self.curr.execute(querry, (id,))
+                childrens =  [r[0] for r in self.curr.fetchall()]
+                ok = {"status": "OK", "data": childrens, "debug":"childrens for id {0}".format(id)}
+                print(json.dumps(ok))
+            except Exception as e:
+                print(e)
+                error = {"status": "ERROR", "debug": "Childred operation failed id {0}".format(id)}
+                print(json.dumps(error))
+        else:
+            error = {"status": "ERROR","debug":"Wrong paswd"}
             print(json.dumps(error))
+
 
     def parent(self,data):
         querry = "SELECT Superior FROM workers WHERE ID = %s"
@@ -115,14 +176,14 @@ class DBInterface:
                     print(json.dumps(error))
                 else:
                     parent =  res[0][0]
-                    ok = {"status": parent}
+                    ok = {"status": "OK", "data":parent}
                     print(json.dumps(ok))
             except Exception as e:
                 print(e)
                 error = {"status": "ERROR"}
                 print(json.dumps(error))
         else:
-            error = {"status": "ERROR"}
+            error = {"status": "ERROR","debug":"Wrong paswd"}
             print(json.dumps(error))  
 
     def update(self, data):
@@ -132,16 +193,18 @@ class DBInterface:
         admin = data["admin"]
         pwd = data["passwd"]
         newdata = data["newdata"]
-
-        try:
-            self.curr.execute(querry, (newdata,id,))
-            ok = {"status": "OK"}
-            print(json.dumps(ok))
-        except Exception as e:
-            print(e)
-            error = {"status": "ERROR"}
+        if(self.authenticate_hiearchy(admin, pwd, id)):
+            try:
+                self.curr.execute(querry, (newdata,id,))
+                ok = {"status": "OK", "debug":"Update information for id {0}".format(id)}
+                print(json.dumps(ok))
+            except Exception as e:
+                error = {"status": "ERROR", "debug": e}
+                print(json.dumps(error))
+            self.connection.commit()
+        else:
+            error = {"status": "ERROR", "debug":"Wrong paswd"}
             print(json.dumps(error))
-        self.connection.commit()
 
     def read(self,data):
         querry = "SELECT Data FROM workers WHERE ID = %s"
@@ -150,14 +213,18 @@ class DBInterface:
         admin = data["admin"]
         pwd = data["passwd"]
 
-        try:
-            self.curr.execute(querry, (id,))
-            parent =  self.curr.fetchall()[0][0]
-            ok = {"status": parent}
-            print(json.dumps(ok))
-        except Exception as e:
-            print(e)
-            error = {"status": "ERROR"}
+        if(self.authenticate_hiearchy(admin, pwd, id)):
+            try:
+                self.curr.execute(querry, (id,))
+                data =  self.curr.fetchall()[0][0]
+                ok = {"status": "OK", "data": data, "debug": "data for id {0}".format(id)}
+                print(json.dumps(ok))
+            except Exception as e:
+                print(e)
+                error = {"status": "ERROR", "debug": "read data failed id {0}".format(id)}
+                print(json.dumps(error))
+        else:
+            error = {"status": "ERROR", "debug":"Wrong paswd"}
             print(json.dumps(error))
 
     def descendants(self, data):
@@ -168,21 +235,27 @@ class DBInterface:
         pwd = data["passwd"]
         queue = [id]
         data = []
-        while(len(queue) != 0):
-            id = queue[0]
-            queue = queue[1:]
-            try:
-                self.curr.execute(querry, (id,))
-                childrens =  [r[0] for r in self.curr.fetchall()]
-                queue += childrens
-                data += childrens
-            except Exception as e:
-                print(e)
-                error = {"status": "ERROR"}
-                print(json.dumps(error))
+
+        if(self.authenticate(admin, pwd)):
+            while(len(queue) != 0):
+                id = queue[0]
+                queue = queue[1:]
+                try:
+                    self.curr.execute(querry, (id,))
+                    childrens =  [r[0] for r in self.curr.fetchall()]
+                    queue += childrens
+                    data += childrens
+                except Exception as e:
+                    error = {"status": "ERROR", "debug": "descendants error"}
+                    print(json.dumps(error))
         
-        output = {"status": data}
-        print(json.dumps(output))
+            output = {"status":"OK","data": data, "debug": "descendants for id {0}".format(id)}
+            print(json.dumps(output))
+
+        else:
+            error = {"status": "ERROR", "debug":"Wrong paswd"}
+            print(json.dumps(error))  
+        
 
     def ancestors(self, data):
         querry = "SELECT Superior FROM workers WHERE ID = %s"
@@ -193,21 +266,60 @@ class DBInterface:
 
         data = []
         
-        try:
-            self.curr.execute(querry, (id,))
-            res = self.curr.fetchall()[0][0]
-            while(res is not None):
-                self.curr.execute(querry, (res,))
-                data.append(res)
+        if(self.authenticate(admin, pwd)):
+            try:
+                self.curr.execute(querry, (id,))
                 res = self.curr.fetchall()[0][0]
-            ok = {"status": data}
+                while(res is not None):
+                    self.curr.execute(querry, (res,))
+                    data.append(res)
+                    res = self.curr.fetchall()[0][0]
+                ok = {"status": "OK", "data": data, "debug": "ancesotrs for id {0}".format(id)}
+                print(json.dumps(ok))
+            except Exception as e:
+                error = {"status": "ERROR", "debug":"ancestors error"}
+                print(json.dumps(error))   
+
+        else:
+            error = {"status": "ERROR","debug":"Wrong paswd"}
+            print(json.dumps(error))    
+    
+    def ancestor(self, data):
+        querry = "SELECT Superior FROM workers WHERE ID = %s"
+
+
+        admin = data["admin"]
+        pwd = data["passwd"]
+        id1 = data["emp1"]
+        id2 = data["emp2"]
+        ok =  {"status": "OK","data": False}
+
+
+
+        if(self.authenticate(admin, pwd)):
+            try:
+                self.curr.execute(querry, (id2,))
+                res = self.curr.fetchall()[0][0]
+                while(res is not None):
+                    self.curr.execute(querry, (res,))
+                    if(res == id1):
+                        ok = {"status": "OK","data": True}
+                        break
+                    res = self.curr.fetchall()[0][0]
+
+            except Exception as e:
+                print(e)
+                error = {"status": "ERROR","debug": "ancestor error"}
+                print(json.dumps(error))
+        
             print(json.dumps(ok))
-        except Exception as e:
-            print(e)
-            error = {"status": "ERROR"}
-            print(json.dumps(error))     
+
+        else:
+            error = {"status": "ERROR", "debug":"Wrong paswd"}
+            print(json.dumps(error)) 
 
 
+        
 
 class JsonInterpreter:
     def __init__(self, file):
@@ -225,7 +337,6 @@ class JsonInterpreter:
             print(json.dumps(error)) 
 
     def execute(self):
-        self.db.initialize()
         for line in self.file:
             json_data = json.loads(line)
             func = list(json_data.keys())[0]

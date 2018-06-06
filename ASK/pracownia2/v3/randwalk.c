@@ -92,6 +92,7 @@ static __noinline int randwalk2(uint8_t *arr, int n, int len) {
     i += ((d==1) & (i < n - 1));
     j -= ((d==2) & (j > 0));
     j += ((d!=0) & (d != 1) & (d != 2) & (j < n - 1));
+    // j+= ((d==3) & (j< n-1));
   } while (--len);
 
   return sum;
