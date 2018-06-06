@@ -27,7 +27,7 @@ transpose.o: transpose.c common.h
 common.o: common.c common.h
 
 # requires "markdown" and "gnuplot" packages to be installed
-raport.html: raport.md figure.png
+raport.html: raport.md zad1int.png zad1double.png
 
 %.html: %.md
 	markdown $< > $@

@@ -5,7 +5,7 @@ set terminal pngcairo size 640,480 enhanced font 'Arial,10'
 
 set ylabel "Czas (s)"
 set xlabel "n"
-#set yrange [0:20]
+set yrange [0:20]
 
 set style line 1 linecolor rgb '#0061ff' linetype 1
 set style line 2 linecolor rgb '#ff0000' linetype 1
