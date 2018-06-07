@@ -112,7 +112,12 @@ Funkcja `randomwalk1` składa się z 75 instrukcji maszynowych. Czas wykonania d
 
 Proces optymalizacji opierał się na spstrzeżenie że ciała instrukcji warunkowych mają za zadanie inkrementacje/dekrementacje zmiennych. Dzięki czemu można przetłumaczyć je na postać `<zmienan> -=/+= <wyrażenie porównania> & <wyrażenie porównania logiczny>...`. Taka optymalizacja pozwala na zastąpienie instrukcji skoków warunkowych instrukcjami `set`. Ciało funkcji `randomwalk2` po takiej optymalizacji ma 78 instrukcje. Natomiast ilość skoków warunkowych zmniejszyła się z 6 w `randomwalk1` do 2 w `randomwalk2`. Czas wykonania spadł o około 45% do 3,2s 
 
+Porównując czasy wykonania dla różnych n (w zakresie od 3 do 16) przy tych samych parametrach `-s -t` można stwierdzić że różnice w czasie działania są na nizauważalnym poziomie i rozmiar tablicy nie ma wpływu na działanie programu.
+
 # Zadanie 5
 `v0 czas: 9.35`
-`v czas: 2.89`
+`v1 czas: 2.89`
+
 Budowa kopca polega na rekurencyjnym wyszukiwaniu środków tablic i umieszczaniu ich w korzeniu drzewa w taki sposób że dla środkowego elementu `a_n/2` jego lewo poddrzewo to elementy tablicy `a_1,a_2...,a_n/2-1` a prawe poddrzewo to `a_n/2+1...a_n`
+
+Zmiana organizacji danych spowodowała przyśpieszenie przez zwiększenie lokalności danych. Po pierwsze dane na początku tablicy są gęścij ułożone (kolejne elementy są na miejscu `2*i+1` lub `2*1+2`) przez co na początku istnieje duże prawdopodobieństwo że kolejny element już jest wczytany do pamięci cache, prawdopodobnieństow spada wraz ze wzrostem `i`. Po drugie algorytm idzie cały czas w prawą strone tablicy co również zmniejsza prawdopodobnieństwo konieczności wczytania fragmentu tablicy do pamięci cache.
