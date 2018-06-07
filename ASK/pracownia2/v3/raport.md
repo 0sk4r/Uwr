@@ -30,26 +30,12 @@ Pamięć TLB:
 
 # Zadanie 1
 
-|v1|v2|
-|:---:|:---:|
-|test|test|
+Rozmiar bloku uzależniony od rozmiaru lini cache
 
-int:
----
-|n      | v0 (ijk)      | v1 (kij)   | v2 (jki) | v3 (8)    | v3(16)    | v3(32)    |
-|:---:  |:---:          |:---:      |:---:      |:---:      | :---:     | :---:     |
-|512    | 0.195         | 0.083     | 0.673     | 0.085     | 0.0870    | 0.0933    | 
-|1024   | 2.871         | 0.656     | 14.624    | 0.698     | 0.703     | 1.0342    | 
-|2048   | 63.025        | 5.342     | 140.456   | 5.962     | 5.975     | 9.0423    | 
+![Wykres zależności czasu od rozmiaru macierzy (int)](zad1int.png)
 
-double:
---- 
-|n       | v0 (ijk) | v1 (kij)   | v2 (jki) | v3(8)     | v3(16)    | v3(32)|
-|:---:   |:---:     |:---:      |:---:      |:---:      | :---:     | :---: |   
-|512    |0.190     |0.078      | 1.012     | 0.087     | 0.096     | 0.135  |   
-|1024   |6.721     | 0.823     | 15.016    | 0.893     | 0.840     | 1.095  |   
-|2048   |75.610    |7.232      | 180.319   | 7.561     | 7.244     | 12.818 |   
 
+![Wykres zależności czasu od rozmiaru macierzy (double)](zad1double.png)
 
 # Zadnie 3
 
@@ -60,35 +46,15 @@ Roziązaniem jest transpozycja macierzy podzielonej na bloki w sposób przedstaw
 ![Transpozycja macierzy blokowo](img/transpose_block.png)
 
 
-int:
----
+![Wykres zależności czasu od rozmiaru macierzy (int)](zad3int.png)
 
-|n                  | v0        | v1 (8)    |v1 (16)    | v1 (32)   |
-|:---:              |:---:      |:---:      |:---:      | :---:     |
-|1024 (8 MiB)       | 0.00651   | 0.002537  |0.0035     |   0.0047  | 
-|2048 (16 MiB)      | 0.03771   | 0.008665  |0.0137     |   0.0147  |
-|4096 (64 MiB)      | 0.16307   | 0.036294  |0.0578     |   0.0701  |
-|8192 (256 MiB)     | 0.82793   | 0.168385  |0.3052     |   0.2966  |
-|16384 (1024 MiB)   | 3.639903  | 0.746810  |1.3051     |   1.2468  |
 
-![Wykres zależności czasu od rozmiaru macierzy (int)](img/zad3_int.png)
-
-double:
----
-
-|n                  | v0        | v1 (8)    |v1 (16)    | v1 (32)   |
-|:---:              |:---:      |:---:      |:---:      | :---:     |
-|1024 (8 MiB)       |0.0089     |0.0026     |0.0036     |0.0042     |
-|2048 (32 MiB)      |0.0432     |0.0116     |0.0169     |0.0217     |
-|4096 (128 MiB)     |0.2062     |0.0508     |0.0755     |0.0809     |
-|8192 (512 MiB)     |0.9004     |0.2137     |0.3279     |0.3355     |
-|16384 (2048 MiB)   |4.4905     |1.0510     |1.7912     |1.8474     |
-
-![Wykres zależności czasu od rozmiaru macierzy (double)](img/zad3_double.png)
+![Wykres zależności czasu od rozmiaru macierzy (double)](zad3double.png)
 
 Zrzut z programu `valgrind --tool=cachegrind`
 
 ```
+
     ==9578== Command: ./transpose -n 4096 -v 0
     ==9578== 
     --9578-- warning: L3 cache found, using its data for the LL simulation.
@@ -115,6 +81,7 @@ Zrzut z programu `valgrind --tool=cachegrind`
 ```
 
 ```
+
     ==9584== Command: ./transpose -n 4096 -v 1
     ==9584== 
     --9584-- warning: L3 cache found, using its data for the LL simulation.
