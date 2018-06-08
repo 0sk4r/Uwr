@@ -1,0 +1,17 @@
+{ "open": { "baza": "projekt", "login": "init", "password": ""}}
+{ "root": { "secret": "qwerty", "newpassword": "asd", "data": "IAMBOSS", "emp":0} }
+{ "new": { "admin": 0, "passwd": "asd", "data":"lvl1", "newpasswd":"asd", "emp1":0, "emp":1 } }
+{ "new": { "admin": 0, "passwd": "asd", "data":"lvl1", "newpasswd":"asd", "emp1":1, "emp":2 } }
+{ "new": { "admin": 0, "passwd": "asd", "data":"lvl1", "newpasswd":"asd", "emp1":2, "emp":3 } }
+{ "new": { "admin": 0, "passwd": "asd", "data":"lvl1", "newpasswd":"asd", "emp1":3, "emp":4 } }
+{ "new": { "admin": 0, "passwd": "asd", "data":"lvl1", "newpasswd":"asd", "emp1":4, "emp":5 } }
+{ "new": { "admin": 0, "passwd": "asd", "data":"lvl1", "newpasswd":"asd", "emp1":5, "emp":6 } }
+{ "new": { "admin": 0, "passwd": "asd", "data":"lvl1", "newpasswd":"asd", "emp1":6, "emp":7 } }
+{ "new": { "admin": 0, "passwd": "asd", "data":"lvl1", "newpasswd":"asd", "emp1":7, "emp":8 } }
+{ "new": { "admin": 0, "passwd": "asd", "data":"lvl1", "newpasswd":"asd", "emp1":8, "emp":9 } }
+{ "new": { "admin": 0, "passwd": "asd", "data":"lvl1", "newpasswd":"asd", "emp1":9, "emp":10 } }
+{ "new": { "admin": 0, "passwd": "asd", "data":"lvl1", "newpasswd":"asd", "emp1":10, "emp":11 } }
+{ "new": { "admin": 0, "passwd": "asd", "data":"lvl1", "newpasswd":"asd", "emp1":11, "emp":12 } }
+{ "new": { "admin": 0, "passwd": "asd", "data":"lvl1", "newpasswd":"asd", "emp1":12, "emp":13 } }
+{ "new": { "admin": 0, "passwd": "asd", "data":"lvl1", "newpasswd":"asd", "emp1":13, "emp":14 } }
+{ "new": { "admin": 0, "passwd": "asd", "data":"lvl1", "newpasswd":"asd", "emp1":14, "emp":15 } }

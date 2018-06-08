@@ -1,6 +1,6 @@
 import psycopg2
 import json
-
+import sys
 
 class DBInterface:
     def __init__(self, login, pwd, dbname):
@@ -233,15 +233,15 @@ class DBInterface:
         id = data["emp"]
         admin = data["admin"]
         pwd = data["passwd"]
-        queue = [id]
+        queue = [data["emp"]]
         data = []
 
         if(self.authenticate(admin, pwd)):
             while(len(queue) != 0):
-                id = queue[0]
+                search_id = queue[0]
                 queue = queue[1:]
                 try:
-                    self.curr.execute(querry, (id,))
+                    self.curr.execute(querry, (search_id,))
                     childrens =  [r[0] for r in self.curr.fetchall()]
                     queue += childrens
                     data += childrens
@@ -345,8 +345,12 @@ class JsonInterpreter:
 
 
 def main():
-    x = JsonInterpreter("test.json")
-    x.execute()
+    if (len(sys.argv) == 2):
+        file = sys.argv[1]
+        x = JsonInterpreter(file)
+        x.execute()
+    else:
+        print("Wrong argument number")
 
 
 if __name__ == "__main__":

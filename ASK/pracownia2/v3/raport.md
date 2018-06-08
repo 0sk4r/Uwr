@@ -39,9 +39,14 @@ Rozmiar bloku uzależniony od rozmiaru lini cache
 
 # Zadnie 3
 
-Rozwiązanie w wersji `v0` cechuje się niską lokalnością danych. Macierz ułożona jest w pamięci wiersz za wierszem. Dostęp do dowolnego elementu macierzy wymaga wczytania całego wiersza. Korzystając z funkcji `transpose1` aby stransponować jeden wiersz macirzy `src` potrzeba wczytania `n` wierszy macierzy `dst`. W zależności od rozmiaru pamięci cache ilość chybień może się zwiększać.
+Rozwiązanie w wersji `v0` cechuje się niską lokalnością danych. Macierz ułożona jest w pamięci wiersz za wierszem.
+Dostęp do dowolnego elementu macierzy wymaga wczytania całego wiersza. Korzystając z funkcji `transpose1` 
+aby stransponować jeden wiersz macirzy `src` potrzeba wczytania `n` wierszy macierzy `dst`.
+W zależności od rozmiaru pamięci cache ilość chybień może się zwiększać.
 
-Roziązaniem jest transpozycja macierzy podzielonej na bloki w sposób przedstawiony na rysunką poniżej. Została ona zaimplementowana w funkcji `transpose2`. Wykorzystanie takiej moetody zwiększa lokalność danych. Program wiele razy odwołuje się do danych już wczytanych w pamięci cache.
+Rozwiązaniem tego problemu jest podział macierzy na bloki. Następnie kady taki blok jest transponowany i zapisywany w macierzy docelowej.
+Została ona zaimplementowana w funkcji `transpose2`. Wykorzystanie takiej moetody zwiększa lokalność danych.
+Program wiele razy odwołuje się do danych już wczytanych w pamięci cache.
 
 ![Transpozycja macierzy blokowo](img/transpose_block.png)
 
