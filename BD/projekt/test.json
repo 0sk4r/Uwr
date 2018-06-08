@@ -1,4 +1,4 @@
-{ "open": { "baza": "projekt", "login": "projektdb", "password": "db2018"}}
+{ "open": { "baza": "projekt", "login": "app", "password": "projektdb"}}
 {"child": {"admin": 7, "passwd":"asd", "emp":0}}
 {"parent": {"admin": 8, "passwd":"asd", "emp":8}}
 {"update": {"admin": 3, "passwd": "asd", "emp":8, "newdata":"lvl3update"}}
@@ -7,3 +7,4 @@
 {"ancestors": {"admin": 5, "passwd":"asd", "emp": 8}}
 {"ancestor": {"admin": 5, "passwd": "asd", "emp1":7, "emp2": 1}}
 {"ancestor": {"admin": 5, "passwd": "asd", "emp1":1, "emp2": 7}}
+{ "remove": { "admin":0, "passwd": "asd", "emp":1}}

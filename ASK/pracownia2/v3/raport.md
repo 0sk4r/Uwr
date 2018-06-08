@@ -18,7 +18,6 @@ Pamięć podręczna:
  * L2: 256 KiB, 8-drożny (per rdzeń), rozmiar linii 64B
  * L3: 6MiB, 12-drożny (współdzielony), rozmiar linii 64B
 
-# ___Upewnić się___
 Pamięć TLB:
  * L1d: 4KiB strony, 4-drożny, 64 wpisy
  * L2: 4KiB strony, 6-drożny, 1536 wpisów
@@ -30,7 +29,7 @@ Pamięć TLB:
 
 # Zadanie 1
 
-Rozmiar bloku uzależniony od rozmiaru lini cache
+Mozemy zobserwować zanczną róznice czasu wykonania pomiędzy wersją w której uzyto bloku o rozmiarze 8 a bloku o rozmiarze 16.
 
 ![Wykres zależności czasu od rozmiaru macierzy (int)](zad1int.png)
 
@@ -46,7 +45,7 @@ W zależności od rozmiaru pamięci cache ilość chybień może się zwiększa�
 
 Rozwiązaniem tego problemu jest podział macierzy na bloki. Następnie kady taki blok jest transponowany i zapisywany w macierzy docelowej.
 Została ona zaimplementowana w funkcji `transpose2`. Wykorzystanie takiej moetody zwiększa lokalność danych.
-Program wiele razy odwołuje się do danych już wczytanych w pamięci cache.
+Program wiele razy odwołuje się do danych już wczytanych w pamięci cache. Kozystając z programu valgrind mozna sprawdzić ze ilość chybień w pamięci zmalała z 12,5% do 4%
 
 ![Transpozycja macierzy blokowo](img/transpose_block.png)
 
