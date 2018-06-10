@@ -308,7 +308,7 @@ class DBInterface:
         pwd = data["passwd"]
         id1 = data["emp1"]
         id2 = data["emp2"]
-        ok = {"status": "OK", "data": False}
+        ok = {"status": "OK", "data": [False]}
 
         if(self.authenticate(admin, pwd)):
             try:
@@ -319,7 +319,7 @@ class DBInterface:
                     while(res is not None):
                         self.curr.execute(querry, (res,))
                         if(res == id1):
-                            ok = {"status": "OK", "data": True}
+                            ok = {"status": "OK", "data": [True]}
                             break
                         res = self.curr.fetchall()[0][0]
 
@@ -342,13 +342,12 @@ class JsonInterpreter:
         connection_info = x["open"]
         try:
             self.db = DBInterface(
-                connection_info["login"], connection_info["password"], connection_info["baza"])
+                connection_info["login"], connection_info["password"], connection_info["database"])
             if(connection_info["login"] == "init"):
                 self.db.initialize()
             ok = {"status": "OK", "debug": "connected"}
             print(json.dumps(ok))
         except Exception as e:
-            print(e)
             error = {"status": "ERROR"}
             print(json.dumps(error))
 
