@@ -28,8 +28,9 @@ Pamięć TLB:
  Informacje uzyskane na podstawie programu `x86info` i `lstopo`.
 
 # Zadanie 1
-
+Zależności pomiędzy konkretnymi wersjami mają podobny stosunek co te przedstawione na slajdzie.
 Rozbieżności w czasie wykonania poszczególnych wersji wynika z z ilości chybień w pamięci cache.
+Rozmiar bloku powinien być tak dobrany żeby nie był za duży bo wtedy nie zmieści się w pamięci cache i nadal będą występować chybienia w pamięci. Gdy będzie za mały wzorost wydajności będzie nie odczuwalny.
 Można zaobserwować znaczną różnice w czasie wykonania wersji blokowej pomiędy blokami 16 a 32 dla wersji int oraz 8 i 16 dla double. Możemy z tego wywnioskować że w tym momencie blok przestaje się mieścić w pamięci cache L1. 
 
 ![Wykres zależności czasu od rozmiaru macierzy (int)](zad1int.png)
@@ -48,7 +49,8 @@ Rozwiązaniem tego problemu jest podział macierzy na bloki. Następnie każdy t
 Została ona zaimplementowana w funkcji `transpose2`. Wykorzystanie takiej metody zwiększa lokalność danych.
 Program wiele razy odwołuje się do danych już wczytanych w pamięci cache. Kozystając z programu valgrind mozna sprawdzić ze ilość chybień w pamięci zmalała z 12,5% do 4%. 
 
-![Transpozycja macierzy blokowo](img/transpose_block.png)
+Zauważalny jest wyraźne zmniejszenie wydajnosci przy zmianie bloku z 8 do 16. Takiej różnicy nie ma pomiędzy 16 a 32. Możemy z tego wywnnioskować że większe kafelki nie mieszczą sie w pamięci cache.
+
 
 
 ![Wykres zależności czasu od rozmiaru macierzy (int)](zad3int.png)
