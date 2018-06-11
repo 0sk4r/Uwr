@@ -109,7 +109,7 @@ class DBInterface:
 
             self.connection.commit()
         else:
-            error = {"status": "ERROR", "debug": "Wrong paswd"}
+            error = {"status": "ERROR", "debug": "Authentication problem"}
             print(json.dumps(error))
 
     def remove(self, data):
@@ -140,7 +140,7 @@ class DBInterface:
                          "debug": "remove operation failed id {0}".format(id)}
                 print(json.dumps(error))
         else:
-            error = {"status": "ERROR", "debug": "Wrong paswd"}
+            error = {"status": "ERROR", "debug": "Authentication problem"}
             print(json.dumps(error))
 
     def child(self, data):
@@ -163,7 +163,7 @@ class DBInterface:
                          "debug": "Children operation failed id {0}".format(id)}
                 print(json.dumps(error))
         else:
-            error = {"status": "ERROR", "debug": "Wrong paswd"}
+            error = {"status": "ERROR", "debug": "Authentication problem"}
             print(json.dumps(error))
 
     def parent(self, data):
@@ -190,7 +190,7 @@ class DBInterface:
                 error = {"status": "ERROR"}
                 print(json.dumps(error))
         else:
-            error = {"status": "ERROR", "debug": "Wrong paswd"}
+            error = {"status": "ERROR", "debug": "Authentication problem"}
             print(json.dumps(error))
 
     def update(self, data):
@@ -213,7 +213,7 @@ class DBInterface:
                 print(json.dumps(error))
             self.connection.commit()
         else:
-            error = {"status": "ERROR", "debug": "Wrong paswd"}
+            error = {"status": "ERROR", "debug": "Authentication problem"}
             print(json.dumps(error))
 
     def read(self, data):
@@ -238,7 +238,7 @@ class DBInterface:
                          "debug": "read data failed id {0}".format(id)}
                 print(json.dumps(error))
         else:
-            error = {"status": "ERROR", "debug": "Wrong paswd"}
+            error = {"status": "ERROR", "debug": "Authentication problem"}
             print(json.dumps(error))
 
     def descendants(self, data):
@@ -268,7 +268,7 @@ class DBInterface:
             print(json.dumps(output))
 
         else:
-            error = {"status": "ERROR", "debug": "Wrong paswd"}
+            error = {"status": "ERROR", "debug": "Authentication problem"}
             print(json.dumps(error))
 
     def ancestors(self, data):
@@ -298,7 +298,7 @@ class DBInterface:
                 print(json.dumps(error))
 
         else:
-            error = {"status": "ERROR", "debug": "Wrong paswd"}
+            error = {"status": "ERROR", "debug": "Authentication problem"}
             print(json.dumps(error))
 
     def ancestor(self, data):
@@ -331,15 +331,21 @@ class DBInterface:
             print(json.dumps(ok))
 
         else:
-            error = {"status": "ERROR", "debug": "Wrong paswd"}
+            error = {"status": "ERROR", "debug": "Authentication problem"}
             print(json.dumps(error))
 
 
 class JsonInterpreter:
     def __init__(self, file):
-        self.file = open(file)
+        try:
+            self.file = open(file)
+        except:
+            print("Json file problem")
+            raise
+
         x = json.loads(self.file.readline())
         connection_info = x["open"]
+
         try:
             self.db = DBInterface(
                 connection_info["login"], connection_info["password"], connection_info["database"])
@@ -348,8 +354,10 @@ class JsonInterpreter:
             ok = {"status": "OK", "debug": "connected"}
             print(json.dumps(ok))
         except Exception as e:
-            error = {"status": "ERROR"}
+            print(e)
+            error = {"status": "ERROR","debug":"DB conection problem"}
             print(json.dumps(error))
+            raise
 
     def execute(self):
         for line in self.file:
@@ -362,8 +370,11 @@ class JsonInterpreter:
 def main():
     if (len(sys.argv) == 2):
         file = sys.argv[1]
-        x = JsonInterpreter(file)
-        x.execute()
+        try:
+            x = JsonInterpreter(file)
+            x.execute()
+        except:
+            pass
     else:
         print("Wrong argument number")
 
