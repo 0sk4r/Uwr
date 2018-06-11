@@ -1,5 +1,6 @@
-#Oskar Sobczyk
-#Uruchamianie aplikacji main.py dane.json
+# Oskar Sobczyk
+# Uruchamianie aplikacji main.py dane.json
+# Program zawiera zakomentowane linie. Sa to dodatkowe statusy pomagajace w debugowaniu
 
 import psycopg2
 import json
@@ -21,11 +22,14 @@ class DBInterface:
     def authenticate(self, id, pwd):
         querry = "SELECT id FROM workers WHERE id = %s AND Password = crypt(%s, password)"
 
-        self.curr.execute(querry, (id, pwd,))
+        try:
+            self.curr.execute(querry, (id, pwd,))
 
-        if(self.curr.fetchone()):
-            return True
-        return False
+            if(self.curr.fetchone()):
+                return True
+            return False
+        except:
+            return False
 
     def authenticate_hiearchy(self, id_admin, pwd, id_worker):
         querry_search = "SELECT Superior FROM workers WHERE ID = %s"
@@ -62,8 +66,8 @@ class DBInterface:
                 self.curr.execute(querry)
             except:
                 pass
-        self.connection.commit()
 
+        self.connection.commit()
 
     def root(self, data):
         querry = "INSERT INTO workers(ID, Password, Data) VALUES(%s,crypt(%s, gen_salt('bf', 8)),%s)"
@@ -101,20 +105,20 @@ class DBInterface:
         if(self.authenticate_hiearchy(admin, pwd, id_superior)):
             try:
                 self.curr.execute(querry, (id, pwd, d, id_superior,))
-                ok = {"status": "OK",
-                      "debug": "created worker id {0}".format(id)}
-                print(json.dumps(ok))
+                # ok = {"status": "OK",
+                #       "debug": "created worker id {0}".format(id)}
+                # print(json.dumps(ok))
             except Exception as e:
-                print(e)
-                error = {"status": "ERROR",
-                         "debug": "worker creation failed id {0}".format(id)}
-                print(json.dumps(error))
+                # print(e)
+                # error = {"status": "ERROR",
+                #          "debug": "worker creation failed id {0}".format(id)}
+                # print(json.dumps(error))
                 pass
 
             self.connection.commit()
         else:
-            error = {"status": "ERROR", "debug": "Authentication problem"}
-            print(json.dumps(error))
+            # error = {"status": "ERROR", "debug": "Authentication problem"}
+            # print(json.dumps(error))
             pass
 
     def remove(self, data):
@@ -130,25 +134,21 @@ class DBInterface:
             res = self.curr.fetchall()
             if (res != []):
                 parent = res[0][0]
-        except:
-            pass
 
-        if(parent is not None and self.authenticate_hiearchy(admin, pwd, parent)):
-            try:
+            if(parent is not None and self.authenticate_hiearchy(admin, pwd, parent)):
                 self.curr.execute(querry, (id,))
                 self.connection.commit()
-                ok = {"status": "OK",
-                      "debug": "remove worker id {0}".format(id)}
-                print(json.dumps(ok))
-            except:
-                error = {"status": "ERROR",
-                         "debug": "remove operation failed id {0}".format(id)}
-                print(json.dumps(error))
+                # ok = {"status": "OK",
+                #       "debug": "remove worker id {0}".format(id)}
+                # print(json.dumps(ok))
+            else:
+                # error = {"status": "ERROR", "debug": "Authentication problem"}
+                # print(json.dumps(error))
                 pass
-        else:
-            error = {"status": "ERROR", "debug": "Authentication problem"}
+        except:
+            error = {"status": "ERROR",
+                     "debug": "Remove failed id {0}".format(id)}
             print(json.dumps(error))
-            pass
 
     def child(self, data):
         querry = "SELECT ID FROM workers WHERE Superior = %s"
@@ -157,20 +157,20 @@ class DBInterface:
         admin = data["admin"]
         pwd = data["passwd"]
 
-        if(self.authenticate(admin, pwd)):
-            try:
+        try:
+            if(self.authenticate(admin, pwd)):
                 self.curr.execute(querry, (id,))
                 childrens = [r[0] for r in self.curr.fetchall()]
                 ok = {"status": "OK", "data": childrens,
                       "debug": "childrens for id {0}".format(id)}
                 print(json.dumps(ok))
-            except Exception as e:
-                print(e)
-                error = {"status": "ERROR",
-                         "debug": "Children operation failed id {0}".format(id)}
+            else:
+                error = {"status": "ERROR", "debug": "Authentication problem"}
                 print(json.dumps(error))
-        else:
-            error = {"status": "ERROR", "debug": "Authentication problem"}
+        except Exception as e:
+            print(e)
+            error = {"status": "ERROR",
+                     "debug": "Children operation failed id {0}".format(id)}
             print(json.dumps(error))
 
     def parent(self, data):
@@ -180,8 +180,8 @@ class DBInterface:
         admin = data["admin"]
         pwd = data["passwd"]
 
-        if(self.authenticate(admin, pwd)):
-            try:
+        try:
+            if(self.authenticate(admin, pwd)):
                 self.curr.execute(querry, (id,))
                 res = self.curr.fetchall()
                 if (res == []):
@@ -192,12 +192,12 @@ class DBInterface:
                     ok = {"status": "OK", "data": [parent],
                           "debug": "Parent for id {0}".format(id)}
                     print(json.dumps(ok))
-            except Exception as e:
-                print(e)
-                error = {"status": "ERROR"}
+            else:
+                error = {"status": "ERROR", "debug": "Authentication problem"}
                 print(json.dumps(error))
-        else:
-            error = {"status": "ERROR", "debug": "Authentication problem"}
+        except Exception as e:
+            print(e)
+            error = {"status": "ERROR"}
             print(json.dumps(error))
 
     def update(self, data):
@@ -208,21 +208,23 @@ class DBInterface:
         admin = data["admin"]
         pwd = data["passwd"]
         newdata = data["newdata"]
-        if(self.authenticate_hiearchy(admin, pwd, id)):
-            try:
+        try:
+            if(self.authenticate_hiearchy(admin, pwd, id)):
                 self.curr.execute(querry, (newdata, id,))
-                ok = {"status": "OK",
-                      "debug": "Update information for id {0}".format(id)}
-                print(json.dumps(ok))
-            except Exception as e:
-                error = {"status": "ERROR",
-                         "debug": "Update failed for id {0}".format(id)}
-                print(json.dumps(error))
-            self.connection.commit()
-        else:
-            error = {"status": "ERROR", "debug": "Authentication problem"}
-            print(json.dumps(error))
+                # ok = {"status": "OK",
+                #       "debug": "Update information for id {0}".format(id)}
+                # print(json.dumps(ok))
+            else:
+                # error = {"status": "ERROR", "debug": "Authentication problem"}
+                # print(json.dumps(error))
+                pass
+        except Exception as e:
+            # error = {"status": "ERROR",
+            #          "debug": "Update failed for id {0}".format(id)}
+            # print(json.dumps(error))
             pass
+
+        self.connection.commit()
 
     def read(self, data):
         querry = "SELECT Data FROM workers WHERE ID = %s"
@@ -231,22 +233,22 @@ class DBInterface:
         admin = data["admin"]
         pwd = data["passwd"]
 
-        if(self.authenticate_hiearchy(admin, pwd, id)):
-            try:
+        try:
+            if(self.authenticate_hiearchy(admin, pwd, id)):
                 self.curr.execute(querry, (id,))
                 data = self.curr.fetchall()
                 if (data != []):
                     data = data[0][0]
                     ok = {"status": "OK", "data": data,
-                          "debug": "data for id {0}".format(data)}
+                          "debug": "data for id {0}".format(id)}
                     print(json.dumps(ok))
-            except Exception as e:
-                print(e)
-                error = {"status": "ERROR",
-                         "debug": "read data failed id {0}".format(id)}
+            else:
+                error = {"status": "ERROR", "debug": "Authentication problem"}
                 print(json.dumps(error))
-        else:
-            error = {"status": "ERROR", "debug": "Authentication problem"}
+        except Exception as e:
+            print(e)
+            error = {"status": "ERROR",
+                     "debug": "read data failed id {0}".format(id)}
             print(json.dumps(error))
 
     def descendants(self, data):
@@ -259,21 +261,23 @@ class DBInterface:
         data = []
 
         if(self.authenticate(admin, pwd)):
+            
+            try:
             while(len(queue) != 0):
                 search_id = queue[0]
                 queue = queue[1:]
-                try:
                     self.curr.execute(querry, (search_id,))
                     childrens = [r[0] for r in self.curr.fetchall()]
                     queue += childrens
                     data += childrens
-                except Exception as e:
-                    error = {"status": "ERROR", "debug": "descendants error"}
-                    print(json.dumps(error))
 
             output = {"status": "OK", "data": data,
                       "debug": "descendants for id {0}".format(id)}
             print(json.dumps(output))
+
+            except Exception as e:
+                error = {"status": "ERROR", "debug": "descendants error"}
+                print(json.dumps(error))
 
         else:
             error = {"status": "ERROR", "debug": "Authentication problem"}
@@ -288,8 +292,8 @@ class DBInterface:
 
         data = []
 
-        if(self.authenticate(admin, pwd)):
-            try:
+        try:
+            if(self.authenticate(admin, pwd)):
                 self.curr.execute(querry, (id,))
                 res = self.curr.fetchall()
                 if (res != []):
@@ -301,13 +305,14 @@ class DBInterface:
                     ok = {"status": "OK", "data": data,
                           "debug": "ancesotrs for id {0}".format(id)}
                     print(json.dumps(ok))
-            except Exception as e:
-                error = {"status": "ERROR", "debug": "ancestors error"}
+            else:
+                error = {"status": "ERROR", "debug": "Authentication problem"}
                 print(json.dumps(error))
 
-        else:
-            error = {"status": "ERROR", "debug": "Authentication problem"}
+        except Exception as e:
+            error = {"status": "ERROR", "debug": "ancestors error"}
             print(json.dumps(error))
+
 
     def ancestor(self, data):
         querry = "SELECT Superior FROM workers WHERE ID = %s"
@@ -318,8 +323,8 @@ class DBInterface:
         id2 = data["emp2"]
         ok = {"status": "OK", "data": [False]}
 
-        if(self.authenticate(admin, pwd)):
-            try:
+        try:
+            if(self.authenticate(admin, pwd)):
                 self.curr.execute(querry, (id2,))
                 res = self.curr.fetchall()
                 if(res != []):
@@ -330,17 +335,20 @@ class DBInterface:
                             ok = {"status": "OK", "data": [True]}
                             break
                         res = self.curr.fetchall()[0][0]
-
-            except Exception as e:
-                print(e)
-                error = {"status": "ERROR", "debug": "ancestor error"}
+                
+                print(json.dumps(ok))
+                
+            else:
+                error = {"status": "ERROR", "debug": "Authentication problem"}
                 print(json.dumps(error))
 
-            print(json.dumps(ok))
-
-        else:
-            error = {"status": "ERROR", "debug": "Authentication problem"}
+        
+        except Exception as e:
+            print(e)
+            error = {"status": "ERROR", "debug": "ancestor error"}
             print(json.dumps(error))
+
+
 
     def close(self):
         self.connection.close()
@@ -365,7 +373,7 @@ class JsonInterpreter:
             ok = {"status": "OK", "debug": "connected"}
             print(json.dumps(ok))
         except Exception as e:
-            error = {"status": "ERROR","debug":"DB conection problem"}
+            error = {"status": "ERROR", "debug": "DB conection problem"}
             print(json.dumps(error))
             raise
 
@@ -375,7 +383,6 @@ class JsonInterpreter:
             func = list(json_data.keys())[0]
             data = json_data[func]
             getattr(self.db, func)(data)
-
 
     def close(self):
         self.db.close()
