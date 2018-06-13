@@ -87,13 +87,13 @@
       <file leaf-file-name="init_table.sql" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/projekt/init_table.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="10" column="61" selection-start-line="10" selection-start-column="61" selection-end-line="10" selection-end-column="61" />
+            <state relative-caret-position="357">
+              <caret line="17" column="101" selection-start-line="17" selection-start-column="101" selection-end-line="17" selection-end-column="101" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DATABASE/e6b3c649-622e-4a24-8462-416a4f5c5c19.TABLE:projekt.public.workers" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DATABASE/e6b3c649-622e-4a24-8462-416a4f5c5c19.TABLE:projekt.public.workers" pinned="false" current-in-tab="false">
         <entry file="uml://DATABASE/e6b3c649-622e-4a24-8462-416a4f5c5c19.TABLE:projekt.public.workers">
           <provider selected="true" editor-type-id="UmlEditorProvider">
             <state>
@@ -112,12 +112,23 @@
                   <point x="-95.5" y="-0.0" />
                 </edge>
               </edges>
-              <settings layout="Hierarchic Group" zoom="1.8401066683232785" x="107.34023942904116" y="73.57072339334849" />
-              <SelectedNodes />
+              <settings layout="Hierarchic Group" zoom="1.0" x="105.5" y="74.0" />
+              <SelectedNodes>
+                <node>e6b3c649-622e-4a24-8462-416a4f5c5c19.TABLE:projekt.public.workers</node>
+              </SelectedNodes>
               <Categories>
                 <Category>Key columns</Category>
                 <Category>Columns</Category>
               </Categories>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="workers" pinned="false" current-in-tab="true">
+        <entry file="das://e6b3c649-622e-4a24-8462-416a4f5c5c19/database/projekt/schema/public/table/workers">
+          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+            <state>
+              <filtering enabled="true" />
             </state>
           </provider>
         </entry>
@@ -192,7 +203,8 @@
     <frame x="56" y="22" width="1624" height="1028" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19974716" />
+      <window_info active="true" anchor="bottom" id="Database Console" order="7" visible="true" weight="0.32867885" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2022756" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="right" id="Database" order="3" visible="true" weight="0.22313528" />
@@ -201,14 +213,13 @@
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Database Console" order="7" weight="0.32867885" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="1" />
     </layout>
   </component>
@@ -514,23 +525,6 @@
     <entry file="file://$PROJECT_DIR$/projekt/table.sql" />
     <entry file="das://e6b3c649-622e-4a24-8462-416a4f5c5c19/database/projekt/schema/public/table/workers" />
     <entry file="das://e6b3c649-622e-4a24-8462-416a4f5c5c19/database/projekt/schema/public/table/workers" />
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/e6b3c649-622e-4a24-8462-416a4f5c5c19/console.sql">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="das://e6b3c649-622e-4a24-8462-416a4f5c5c19/database/projekt/schema/public/table/workers">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projekt/init_table.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="10" column="61" selection-start-line="10" selection-start-column="61" selection-end-line="10" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
     <entry file="das://e6b3c649-622e-4a24-8462-416a4f5c5c19/database/projekt/schema/public/table/workers">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
@@ -556,12 +550,31 @@
               <point x="-95.5" y="-0.0" />
             </edge>
           </edges>
-          <settings layout="Hierarchic Group" zoom="1.8401066683232785" x="107.34023942904116" y="73.57072339334849" />
-          <SelectedNodes />
+          <settings layout="Hierarchic Group" zoom="1.0" x="105.5" y="74.0" />
+          <SelectedNodes>
+            <node>e6b3c649-622e-4a24-8462-416a4f5c5c19.TABLE:projekt.public.workers</node>
+          </SelectedNodes>
           <Categories>
             <Category>Key columns</Category>
             <Category>Columns</Category>
           </Categories>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/e6b3c649-622e-4a24-8462-416a4f5c5c19/console.sql">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projekt/init_table.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="17" column="101" selection-start-line="17" selection-start-column="101" selection-end-line="17" selection-end-column="101" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://e6b3c649-622e-4a24-8462-416a4f5c5c19/database/projekt/schema/public/table/workers">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
         </state>
       </provider>
     </entry>

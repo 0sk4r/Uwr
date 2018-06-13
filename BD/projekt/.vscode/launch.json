@@ -11,7 +11,7 @@
             "request": "launch",
             "program": "${file}",
             "args": [
-                "testinit.json"
+                "test1.init.json"
             ]
         },
         {
