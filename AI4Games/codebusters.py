@@ -1,5 +1,6 @@
 import sys
 import math
+import random
 
 # Send your busters out into the fog to trap ghosts and bring them home!
 
@@ -16,6 +17,7 @@ class Ghost:
     y = 0
     state = 0
     value = 0
+    seen = 0
 
 busters_per_player = int(input())  # the amount of busters you control
 ghost_count = int(input())  # the amount of ghosts on the map
@@ -34,8 +36,12 @@ for i in range(ghost_count):
 # game loop
 while True:
 
+
     entities = int(input())  # the number of busters and ghosts visible to you
 
+    for i in range(ghost_count):
+        ghostList[i].seen = 0
+    
     for i in range(entities):
         # entity_id: buster id or ghost id
         # y: position of this buster / ghost
@@ -48,21 +54,35 @@ while True:
         entity_id, x, y, entity_type, state, value = [int(j) for j in x.split()]
 
         if(entity_type == my_team_id):
-            print("aktualizacja danych", file = sys.stderr)
+            print("CZLOWIEK", file = sys.stderr)
             bustersList[entity_id].x = x
             bustersList[entity_id].y = y
             bustersList[entity_id].state = state
             bustersList[entity_id].value = value 
         
         if(entity_type == -1):
+            print("DUCH", file = sys.stderr)
             ghostList[entity_id].x = x
             ghostList[entity_id].y = y
             ghostList[entity_id].state = state
             ghostList[entity_id].value = value 
+            ghostList[entity_id].seen = 1
+
+    # idz do ducha ktorego widac
+    for ghost in ghostList:
+        if(ghost.seen == 1):
+            print("Widze ducha", file = sys.stderr)
+            for i in range(busters_per_player):
+                print("MOVE {} {}".format(ghost.x, ghost.y))
+            break
+        # else:
+        #     #go in random direction
+        #     print("Nie widze ducha", file = sys.stderr)
+        #     x = random.randint(0,16000)
+        #     y = random.randint(0,9000)
+        #     for i in range(busters_per_player):
+        #         print("MOVE {} {}".format(x,y))
         
-                 
-    print("MOVE 16000 0")
-    print("MOVE 16000 9000")
     # for i in range(busters_per_player):
     #     # MOVE x y | BUST id | RELEASE
         
