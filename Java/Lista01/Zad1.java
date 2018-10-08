@@ -1,9 +1,9 @@
 public class Zad1 {
 
-    private static String intToString(int number) {
+    private static String intToString(Integer number) {
         String unitsDict[] = { "", "jeden ", "dwa ", "trzy ", "cztery ", "pięć ", "sześć ", "siedem ", "osiem ",
             "dzewięć " };
-        String specialNum[] = { "", "jedenaście ", "dwanaście ", "czternaście ", "pietnaście ", "siedamnaście",
+        String specialNum[] = { "", "jedynaście ", "dwanaście ", "czternaście ", "pietnaście ", "siedamnaście",
             "osimnaście ", "dziewietnaście " };
         String tensDict[] = { "", "dziesięć ", "dwadzieścia ", "trzydzieści ", "czterdzieści ", "piećdziesiąt ",
             "sześćdziesiąt ", "siedemdziesiąt ", "osiemdziesiąt ", "dziewięćdziesiąt " };
@@ -18,8 +18,11 @@ public class Zad1 {
         String sign = new String();
 
         if (number < 0) {
-            sign = "minus";
-            number = -number;
+            if(number == Integer.MIN_VALUE){
+                throw new NumberFormatException();
+            }
+            sign = "minus ";
+            number = Math.abs(number);
         }
         else if (number == 0){
             return "zero";
@@ -57,7 +60,7 @@ public class Zad1 {
             }
 
             if (units + tens + hundreds + nastki >0){
-                resoult = String.format("%s%s%s%s%s ",hundredsDict[hundreds], tensDict[tens], specialNum[nastki], unitsDict[units], scaleUnit[g][scale]) + resoult;
+                resoult = String.format("%s%s%s%s%s",hundredsDict[hundreds], tensDict[tens], specialNum[nastki], unitsDict[units], scaleUnit[g][scale]) + resoult;
             }
             g++;
             number = number / 1000;
@@ -72,11 +75,12 @@ public class Zad1 {
         for (int i = 0; i < args.length; i++) {
 
             try {
+                System.out.println(args[i]);
                 int x = Integer.valueOf(args[i]);
                 String number_string = intToString(x);
                 System.out.println(number_string);
             } catch (NumberFormatException exception) {
-                System.err.println("Exception throw: " + exception);
+                System.err.println("Niepoprawny format liczby");
             }
 
         }
