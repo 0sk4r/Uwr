@@ -19,6 +19,6 @@ public class Wektor {
     }
 
     public String toString() {
-        return "(" + dx + "," + dy + ")";
+        return "Wektor [" + dx + "," + dy + "]";
     }
 }

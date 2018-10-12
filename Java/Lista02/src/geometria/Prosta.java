@@ -1,7 +1,5 @@
 package geometria;
 
-import java.awt.*;
-
 public final class Prosta {
 
     public final double a,b,c;
@@ -15,16 +13,16 @@ public final class Prosta {
     public Prosta przesun(Wektor v){
 
         double c = this.c + v.dy;
-        c = this.a * -v.dx;
+        c += this.a * -v.dx;
 
         return new Prosta(this.a, this.b, c);
     }
 
-    public static Boolean czyPorstopadla(Prosta p1, Prosta p2){
+    public static Boolean czyRownolegla(Prosta p1, Prosta p2){
         return p1.a == p2.a;
     }
 
-    public static Boolean czyRownolegla(Prosta p1, Prosta p2){
+    public static Boolean czyProstopadla(Prosta p1, Prosta p2){
         return p1.a * p2.a == -1;
     }
 
@@ -41,6 +39,6 @@ public final class Prosta {
 
     @Override
     public String toString() {
-        return "Ax:" + this.a + " By:" + this.b + " C:" + this.c;
+        return "Prosta Ax:" + this.a + " By:" + this.b + " C:" + this.c;
     }
 }
