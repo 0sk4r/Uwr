@@ -19,11 +19,11 @@ public final class Prosta {
     }
 
     public static Boolean czyRownolegla(Prosta p1, Prosta p2){
-        return p1.a == p2.a;
+        return p1.a * p2.b == p2.a * p1.b;
     }
 
     public static Boolean czyProstopadla(Prosta p1, Prosta p2){
-        return p1.a * p2.a == -1;
+        return (p1.a / p1.b) * (p2.a / p2.b) == -1.0f;
     }
 
     public static Punkt punktPrzeciecia(Prosta p1, Prosta p2){
