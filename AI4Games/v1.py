@@ -1,4 +1,6 @@
-#drewno miejsce 8
+# drewno miejsce 4
+#NAJLEPSZA KURWA WERSJA
+#TODO doadac stunowanie kiedy mozna
 import sys
 import math
 import random
@@ -7,9 +9,10 @@ import random
 # Send your busters out into the fog to trap ghosts and bring them home!
 
 def dist(v1, v2):
-    dx = v1.x-v2.x
-    dy = v1.y-v2.y
-    return math.sqrt(dx*dx+dy*dy)
+    dx = v1.x - v2.x
+    dy = v1.y - v2.y
+    return math.sqrt(dx * dx + dy * dy)
+
 
 class Buster:
 
@@ -20,10 +23,10 @@ class Buster:
         self.state = 0
         self.value = 0
         self.next_task = None
-       
+
         self.minX = 0
         self.minY = 0
-        
+
         self.direction = 16000
         area = 9000 / n
         self.minY = self.id * area
@@ -35,33 +38,32 @@ class Buster:
         elif self.x < 2000:
             self.direction = 16000
         y = random.randint(self.minY, self.maxY)
-        self.next_task = "MOVE {} {}".format(self.direction,y)
+        self.next_task = "MOVE {} {}".format(self.direction, y)
 
     # def findTarget(self, ghostList):
     #     dist = 0
     #     target = None
     #     for ghost in ghostList:
 
-
-    def goToBase(self,location):
+    def goToBase(self, location):
         if location == 0:
             if self.x < 1000 and self.y < 1000:
                 self.next_task = "RELEASE"
                 busted.append(self.value)
-                print(busted,file= sys.stderr)
-            else:    
+                print(busted, file=sys.stderr)
+            else:
                 self.next_task = "MOVE 600 600"
         else:
             if self.x > 14800 and self.y > 7800:
                 self.next_task = "RELEASE"
                 busted.append(self.value)
-                print(busted,file= sys.stderr)
-            else:    
+                print(busted, file=sys.stderr)
+            else:
                 self.next_task = "MOVE 15400 8400"
 
-
-    def setTask(self,task):
+    def setTask(self, task):
         self.next_task = task
+
 
 class Ghost:
     def __init__(self):
@@ -72,6 +74,7 @@ class Ghost:
         self.value = 0
         self.visible = 0
 
+
 class Enemy:
     def __init__(self):
         self.id = 0
@@ -81,6 +84,7 @@ class Enemy:
         self.value = 0
         self.visible = 0
 
+
 busters_per_player = int(input())  # the amount of busters you control
 ghost_count = int(input())  # the amount of ghosts on the map
 my_team_id = int(input())  # if this is 0, your base is on the top left of the map, if it is one, on the bottom right
@@ -88,7 +92,7 @@ if my_team_id == 0:
     enemy_team_id = 1
 else:
     enemy_team_id = 0
-print(my_team_id, file = sys.stderr)
+print(my_team_id, file=sys.stderr)
 
 busted = []
 bustersList = []
@@ -97,7 +101,7 @@ enemyList = []
 
 for i in range(busters_per_player):
     # print("BUSTER id {}".format(i), file = sys.stderr)
-    bustersList.append(Buster(i,busters_per_player))
+    bustersList.append(Buster(i, busters_per_player))
 
 for i in range(ghost_count):
     # print("GHOST id {}".format(i),file = sys.stderr)
@@ -105,7 +109,6 @@ for i in range(ghost_count):
 
 for i in range(busters_per_player):
     enemyList.append(Enemy())
-
 
 # game loop
 while True:
@@ -126,20 +129,19 @@ while True:
         # value: For busters: Ghost id being carried. For ghosts: number of busters attempting to trap this ghost.
         x = input()
         #
-        
+
         entity_id, x, y, entity_type, state, value = [int(j) for j in x.split()]
 
-
-        if(entity_type == my_team_id):
+        if (entity_type == my_team_id):
             if my_team_id == 1:
                 entity_id = entity_id - busters_per_player
             # print(entity_id, file = sys.stderr)
             bustersList[entity_id].x = x
             bustersList[entity_id].y = y
             bustersList[entity_id].state = state
-            bustersList[entity_id].value = value 
-        
-        elif(entity_type == -1):
+            bustersList[entity_id].value = value
+
+        elif (entity_type == -1):
             # print("DUCH", file = sys.stderr)
             # print(entity_id, file = sys.stderr)
 
@@ -147,13 +149,13 @@ while True:
             ghostList[entity_id].x = x
             ghostList[entity_id].y = y
             ghostList[entity_id].state = state
-            ghostList[entity_id].value = value 
+            ghostList[entity_id].value = value
             ghostList[entity_id].visible = 1
-        
+
         elif entity_type == enemy_team_id:
             print(x, file=sys.stderr)
             if my_team_id == 0:
-                i = entity_id -  busters_per_player
+                i = entity_id - busters_per_player
             else:
                 i = entity_id
             enemyList[i].id = entity_id
@@ -163,8 +165,6 @@ while True:
             enemyList[i].value = value
             enemyList[i].visible = 1
 
-
-
     for ghost in ghostList:
         if ghost.visible:
             ghost_in_range.append(ghost)
@@ -172,13 +172,13 @@ while True:
     if len(ghost_in_range) > 0:
         for g in ghost_in_range:
             if g.id not in busted:
-                print("lapie ducha {}".format(g.id), file = sys.stderr)
+                print("lapie ducha {}".format(g.id), file=sys.stderr)
                 busting_ghost = g
                 break
 
         for buster in bustersList:
-            print(dist(buster,busting_ghost),file = sys.stderr)
-            if(dist(buster,busting_ghost) < 1750):
+            print(dist(buster, busting_ghost), file=sys.stderr)
+            if (dist(buster, busting_ghost) < 1750):
                 buster.next_task = "BUST {}".format(busting_ghost.id)
             else:
                 buster.next_task = "MOVE {} {}".format(busting_ghost.x, busting_ghost.y)
@@ -195,14 +195,13 @@ while True:
 
     for buster in bustersList:
         if buster.state == 1:
-            print("ide do bazy", file= sys.stderr)
+            print("ide do bazy", file=sys.stderr)
             buster.goToBase(my_team_id)
-        
+
     # if len(enemy) > 0:
     #     for buster in bustersList:
     #         buster.next_task = "STUN {}".format(enemy[0])
     for buster in bustersList:
         print(buster.next_task)
-        print(buster.next_task, file = sys.stderr)
+        print(buster.next_task, file=sys.stderr)
 
-    
