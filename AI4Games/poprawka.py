@@ -1,5 +1,3 @@
-#drewno miejsce 8
-
 import sys
 import math
 import random
@@ -31,17 +29,46 @@ class Buster:
         self.maxY = (self.id + 1) * area
 
     def goInRandomDirection(self):
-        if self.x > 14000:
+        if self.x >= 14000:
             self.direction = 0
         elif self.x < 2000:
             self.direction = 16000
-        y = random.randint(self.minY, self.maxY)
-        self.next_task = "MOVE {} {}".format(self.direction,y)
+        y = random.randint(1, 7700)
+        x = random.randint(1, 14600)
+        self.next_task = "MOVE {} {}".format(x,y)
 
-    # def findTarget(self, ghostList):
-    #     dist = 0
-    #     target = None
-    #     for ghost in ghostList:
+    def findTarget(self, ghostList, enemyList):
+        print("Ilosc duchow {}".format(len(ghostList)), file = sys.stderr)
+        distance = 99999999
+        target = None
+        for ghost in ghostList:
+        
+            if ghost.id not in busted and ghost.visible:
+            # and ghost.y >= self.minY and ghost.y <= self.maxY:
+                # print("{} {} {}".format(ghost.id, ghost.x, ghost.y), file = sys.stderr)
+                x = dist(self, ghost)
+                if x < distance:
+                    target = ghost
+                    distance = x
+
+        for enemy in enemyList:
+            if enemy.visible == 1 and enemy.value < 5:
+                x = dist(self, enemy)
+                if x < distance:
+                    target = enemy
+                    distance = x
+        
+        if target is not None:
+            if(distance < 1500):
+                if type(target) is Ghost:
+                    self.next_task = "BUST {}".format(target.id)
+                else:
+                    self.next_task = "STUN {}".format(target.id)
+            else:
+                self.next_task = "MOVE {} {}".format(target.x, target.y)
+        else:
+            self.goInRandomDirection()
+
 
 
     def goToBase(self,location):
@@ -65,12 +92,22 @@ class Buster:
         self.next_task = task
 
 class Ghost:
-    id = 0
-    x = 0
-    y = 0
-    state = 0
-    value = 0
-    visible = 0
+    def __init__(self):
+        self.id = 0
+        self.x = 16000
+        self.y = 9000
+        self.state = 0
+        self.value = 0
+        self.visible = 0
+
+class Enemy:
+    def __init__(self):
+        self.id = 0
+        self.x = 16000
+        self.y = 9000
+        self.state = 0
+        self.value = 0
+        self.visible = 0
 
 busters_per_player = int(input())  # the amount of busters you control
 ghost_count = int(input())  # the amount of ghosts on the map
@@ -80,6 +117,7 @@ print(my_team_id, file = sys.stderr)
 busted = []
 bustersList = []
 ghostList = []
+enemyList = []
 
 for i in range(busters_per_player):
     # print("BUSTER id {}".format(i), file = sys.stderr)
@@ -89,17 +127,21 @@ for i in range(ghost_count):
     # print("GHOST id {}".format(i),file = sys.stderr)
     ghostList.append(Ghost())
 
+for i in range(busters_per_player):
+    enemyList.append(Enemy())
+
 
 # game loop
 while True:
 
     ghost_in_range = []
-    enemy = []
     entities = int(input())  # the number of busters and ghosts visible to you
     # print(entities, file = sys.stderr)
     for i in range(ghost_count):
         ghostList[i].visible = 0
-    
+    for i in range(len(enemyList)):
+        enemyList[i].visible = 0
+
     for i in range(entities):
         # entity_id: buster id or ghost id
         # y: position of this buster / ghost
@@ -133,35 +175,23 @@ while True:
             ghostList[entity_id].visible = 1
         
         else:
-            enemy.append(entity_id)
+            if my_team_id == 0:
+                entity_id = entity_id - busters_per_player
+            enemyList[entity_id].id = entity_id
+            enemyList[entity_id].x = x
+            enemyList[entity_id].y = y
+            enemyList[entity_id].state = state
+            enemyList[entity_id].value = value 
+            enemyList[entity_id].visible = 1
 
 
 
-    for ghost in ghostList:
-        if ghost.visible:
-            ghost_in_range.append(ghost)
-
-    if len(ghost_in_range) > 0:
-        for g in ghost_in_range:
-            if g.id not in busted:
-                print("lapie ducha {}".format(g.id), file = sys.stderr)
-                busting_ghost = g
-                break
-
-        for buster in bustersList:
-            print(dist(buster,busting_ghost),file = sys.stderr)
-            if(dist(buster,busting_ghost) < 1500):
-                buster.next_task = "BUST {}".format(busting_ghost.id)
-            else:
-                buster.next_task = "MOVE {} {}".format(busting_ghost.x, busting_ghost.y)
-    else:
-        for buster in bustersList:
-            buster.goInRandomDirection()
-        
     for buster in bustersList:
         if buster.state == 1:
             print("ide do bazy", file= sys.stderr)
             buster.goToBase(my_team_id)
+        else:
+            buster.findTarget(ghostList,enemyList)
         
     # if len(enemy) > 0:
     #     for buster in bustersList:
