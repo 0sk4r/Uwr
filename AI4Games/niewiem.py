@@ -1,6 +1,4 @@
-# drewno miejsce 4
-#NAJLEPSZA KURWA WERSJA
-#TODO doadac stunowanie kiedy mozna
+# drewno miejsce 8
 import sys
 import math
 import random
@@ -23,7 +21,6 @@ class Buster:
         self.state = 0
         self.value = 0
         self.next_task = None
-        self.last_stun = 0
 
         self.minX = 0
         self.minY = 0
@@ -38,7 +35,7 @@ class Buster:
             self.direction = 0
         elif self.x < 2000:
             self.direction = 16000
-        y = random.randrange(self.minY, self.maxY,1800)
+        y = random.randint(self.minY, self.maxY)
         self.next_task = "MOVE {} {}".format(self.direction, y)
 
     # def findTarget(self, ghostList):
@@ -121,7 +118,6 @@ while True:
         ghostList[i].visible = 0
     for i in range(busters_per_player):
         enemyList[i].visible = 0
-        bustersList[i].last_stun -= 1
 
     for i in range(entities):
         # entity_id: buster id or ghost id
@@ -191,9 +187,8 @@ while True:
     for e in enemyList:
         if e.visible == 1 and e.value < 4:
             for buster in bustersList:
-                if dist(buster, e) < 1750 and buster.last_stun <= 0:
+                if dist(buster, e) < 1750:
                     buster.next_task = "STUN {}".format(e.id)
-                    buster.last_stun = 20
             break
 
     for buster in bustersList:
