@@ -1,4 +1,4 @@
-# drewno miejsce 4
+# bronziu 360
 #NAJLEPSZA KURWA WERSJA
 #TODO doadac stunowanie kiedy mozna
 import sys
@@ -25,10 +25,9 @@ class Buster:
         self.next_task = None
         self.last_stun = 0
 
-        self.minX = 0
-        self.minY = 0
-
         self.direction = 16000
+
+        #calculate area for buster
         area = 9000 / n
         self.minY = self.id * area
         self.maxY = (self.id + 1) * area
@@ -41,29 +40,21 @@ class Buster:
         y = random.randrange(self.minY, self.maxY,1800)
         self.next_task = "MOVE {} {}".format(self.direction, y)
 
-    # def findTarget(self, ghostList):
-    #     dist = 0
-    #     target = None
-    #     for ghost in ghostList:
-
     def goToBase(self, location):
         if location == 0:
             if self.x < 1000 and self.y < 1000:
                 self.next_task = "RELEASE"
-                busted.append(self.value)
-                print(busted, file=sys.stderr)
+                bustedList.append(self.value)
+                print(bustedList, file=sys.stderr)
             else:
                 self.next_task = "MOVE 600 600"
         else:
             if self.x > 14800 and self.y > 7800:
                 self.next_task = "RELEASE"
-                busted.append(self.value)
-                print(busted, file=sys.stderr)
+                bustedList.append(self.value)
+                print(bustedList, file=sys.stderr)
             else:
                 self.next_task = "MOVE 15400 8400"
-
-    def setTask(self, task):
-        self.next_task = task
 
 
 class Ghost:
@@ -89,13 +80,13 @@ class Enemy:
 busters_per_player = int(input())  # the amount of busters you control
 ghost_count = int(input())  # the amount of ghosts on the map
 my_team_id = int(input())  # if this is 0, your base is on the top left of the map, if it is one, on the bottom right
+
 if my_team_id == 0:
     enemy_team_id = 1
 else:
     enemy_team_id = 0
-print(my_team_id, file=sys.stderr)
 
-busted = []
+bustedList = []
 bustersList = []
 ghostList = []
 enemyList = []
@@ -116,9 +107,11 @@ while True:
 
     ghost_in_range = []
     entities = int(input())  # the number of busters and ghosts visible to you
+
     # print(entities, file = sys.stderr)
-    for i in range(ghost_count):
-        ghostList[i].visible = 0
+    for ghost in ghostList:
+        ghost.visible = 0
+
     for i in range(busters_per_player):
         enemyList[i].visible = 0
         bustersList[i].last_stun -= 1
@@ -130,7 +123,6 @@ while True:
         # state: For busters: 0=idle, 1=carrying a ghost.
         # value: For busters: Ghost id being carried. For ghosts: number of busters attempting to trap this ghost.
         x = input()
-        #
 
         entity_id, x, y, entity_type, state, value = [int(j) for j in x.split()]
 
@@ -155,11 +147,12 @@ while True:
             ghostList[entity_id].visible = 1
 
         elif entity_type == enemy_team_id:
-            print(x, file=sys.stderr)
+
             if my_team_id == 0:
                 i = entity_id - busters_per_player
             else:
                 i = entity_id
+
             enemyList[i].id = entity_id
             enemyList[i].x = x
             enemyList[i].y = y
@@ -173,7 +166,7 @@ while True:
 
     if len(ghost_in_range) > 0:
         for g in ghost_in_range:
-            if g.id not in busted:
+            if g.id not in bustedList:
                 print("lapie ducha {}".format(g.id), file=sys.stderr)
                 busting_ghost = g
                 break
@@ -201,10 +194,7 @@ while True:
             print("ide do bazy", file=sys.stderr)
             buster.goToBase(my_team_id)
 
-    # if len(enemy) > 0:
-    #     for buster in bustersList:
-    #         buster.next_task = "STUN {}".format(enemy[0])
     for buster in bustersList:
         print(buster.next_task)
-        print(buster.next_task, file=sys.stderr)
+        # print(buster.next_task, file=sys.stderr)
 
