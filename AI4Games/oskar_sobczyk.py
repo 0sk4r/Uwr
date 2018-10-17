@@ -1,6 +1,6 @@
-#CG username: 0sk4r
-#Oskar Sobczyk 281822
-#Algorytm dla każdego bustera przewiduje następujące akcje w hierarchii od najwyższej do najniższej:
+# CG username: 0sk4r
+# Oskar Sobczyk 281822
+# Algorytm dla każdego bustera przewiduje następujące akcje w hierarchii od najwyższej do najniższej:
 # 1. Kiedy widzisz przeciwnika w zasięgu ataku ogłusz go
 # 2. Kiedy widzisz ducha łap go
 # 3. Kiedy niesiesz ducha idź do bazy
@@ -32,7 +32,7 @@ class Buster:
 
         self.direction = 16000
 
-        #calculate area for buster
+        # calculate area for buster
         area = 9000 / n
 
         self.minY = self.id * area
@@ -43,7 +43,7 @@ class Buster:
             self.direction = 0
         elif self.x < 2000:
             self.direction = 16000
-        y = random.randrange(self.minY, self.maxY,1800)
+        y = random.randrange(self.minY, self.maxY, 1800)
         self.next_task = "MOVE {} {}".format(self.direction, y)
 
     def goToBase(self, location):
@@ -199,4 +199,3 @@ while True:
 
     for buster in bustersList:
         print(buster.next_task)
-
