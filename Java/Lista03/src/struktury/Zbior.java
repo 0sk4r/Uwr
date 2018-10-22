@@ -1,5 +1,12 @@
 package struktury;
 
+/**
+ * Bazowa klasa
+ * @author  Oskar Sobczyk
+ * @version 1.0
+ * @since   2018-20-10
+ */
+
 public abstract class Zbior {
     /** metoda ma szukać pary z określonym kluczem */
     public abstract Para szukaj (String k) throws Exception;

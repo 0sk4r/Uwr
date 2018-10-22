@@ -53,11 +53,8 @@ public class ZbiorNaTablicyDynamicznej extends ZbiorNaTablicy {
 
     @Override
     public double czytaj(String k) throws Exception {
-        for (Para p : this.tablica) {
-            if(p.klucz == k)
-                return p.getWartosc();
-        }
-        throw new Exception("Nie znaleziono pary");
+        Para p = this.szukaj(k);
+        return p.getWartosc();
     }
 
     @Override

@@ -31,22 +31,25 @@ public class ZbiorNaTablicy extends Zbior {
 
     @Override
     public void wstaw(Para p) throws Exception {
-        if(this.last != tablica.length) {
-            this.tablica[this.last] = p;
-            this.last++;
+        try{
+            this.szukaj(p.klucz);
+            throw new Exception("Ten sam element");
         }
-        else{
-            throw new Exception("Brak miejsca");
+        catch(Exception e){
+            if(this.last != tablica.length) {
+                this.tablica[this.last] = p;
+                this.last++;
+            }
+            else{
+                throw new Exception("Brak miejsca");
+            }
         }
     }
 
     @Override
     public double czytaj(String k) throws Exception {
-        for (Para p : this.tablica) {
-            if(p.klucz == k)
-                return p.getWartosc();
-        }
-        throw new Exception("Nie znaleziono pary");
+        Para p = this.szukaj(k);
+        return p.getWartosc();
     }
 
     @Override
@@ -66,15 +69,11 @@ public class ZbiorNaTablicy extends Zbior {
         for(int i = 0; i < this.tablica.length; i++){
             this.tablica[i] = null;
         }
+        this.last = 0;
     }
 
     @Override
     public int ile() {
-        int licznik=0;
-
-        for(Para p : this.tablica){
-            if(p != null) licznik++;
-        }
-        return licznik;
+        return this.last;
     }
 }

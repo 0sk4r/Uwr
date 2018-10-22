@@ -20,7 +20,7 @@ public class Para {
 
     /**
      * Funkcja przyjmuje wartosc double i ustawia ja dla danej pary
-     * @param wartosc
+     * @param wartosc double
      */
     public void setWartosc(double wartosc) {
         this.wartosc = wartosc;
