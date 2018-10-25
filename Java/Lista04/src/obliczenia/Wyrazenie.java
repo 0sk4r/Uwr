@@ -9,6 +9,10 @@ abstract class Wyrazenie implements Obliczalny {
     abstract public double oblicz() throws Exception;
 
 
+    /** Metoda mnozaca wyrazenia
+     * @param args Ciag wyrazen
+     * @return wynik operacji sumowania argumentow
+     */
     public static double sumuj (Wyrazenie...args) throws Exception {
         double suma=0f;
         for (Wyrazenie arg : args) {
@@ -34,7 +38,6 @@ abstract class Wyrazenie implements Obliczalny {
      * @param o Obiekt do porównania
      * @return  boolowskie true albo false
      */
-
     @Override
     public boolean equals(Object o) {
         if(this==o) return true;

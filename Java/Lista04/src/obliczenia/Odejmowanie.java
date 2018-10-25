@@ -1,5 +1,8 @@
 package obliczenia;
 
+/**
+ * Odejmowanie wyrażeń
+ */
 public class Odejmowanie extends Op2Arg {
     public Odejmowanie(Wyrazenie a1, Wyrazenie a2) {
         super(a1, a2);

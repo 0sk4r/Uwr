@@ -1,5 +1,8 @@
 package obliczenia;
 
+/**
+ * Dodawanie wyrażeń
+ */
 public class Dodawanie extends Op2Arg {
 
     public Dodawanie(Wyrazenie a1, Wyrazenie a2) {

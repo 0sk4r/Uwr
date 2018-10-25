@@ -1,5 +1,8 @@
 package obliczenia;
 
+/**
+ * Logarytm
+ */
 public class Logarytmowanie extends Op2Arg {
     public Logarytmowanie(Wyrazenie a1, Wyrazenie a2) {
         super(a1, a2);

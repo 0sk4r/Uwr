@@ -1,5 +1,8 @@
 package obliczenia;
 
+/**
+ * Dzielenie wyrażeń
+ */
 public class Dzielenie extends Op2Arg {
 
     public Dzielenie(Wyrazenie a1, Wyrazenie a2) {

@@ -1,5 +1,8 @@
 package obliczenia;
 
+/**
+ * Wybór maksumum spośród dwóch wyrażeń
+ */
 public class Maksimum extends Op2Arg {
     public Maksimum(Wyrazenie a1, Wyrazenie a2) {
         super(a1, a2);

@@ -1,5 +1,8 @@
 package obliczenia;
 
+/**
+ * Operator 2 argumentowy
+ */
 public class Op2Arg extends  Op1Arg {
 
     protected final Wyrazenie y;

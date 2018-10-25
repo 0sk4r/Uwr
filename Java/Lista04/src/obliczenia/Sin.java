@@ -1,5 +1,8 @@
 package obliczenia;
 
+/**
+ * Sinus
+ */
 public class Sin extends Op1Arg {
     public Sin(Wyrazenie arg1) {
         super(arg1);

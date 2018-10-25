@@ -1,5 +1,8 @@
 package obliczenia;
 
+/**
+ * Wartość bezwzględna wyrażenia
+ */
 public class WartBezwzgledna extends Op1Arg{
 
     public WartBezwzgledna(Wyrazenie arg1) {

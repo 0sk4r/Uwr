@@ -2,6 +2,9 @@ package obliczenia;
 
 import java.util.Objects;
 
+/**
+ * Liczba
+ */
 public class Liczba extends Wyrazenie {
 
     private final double liczba;

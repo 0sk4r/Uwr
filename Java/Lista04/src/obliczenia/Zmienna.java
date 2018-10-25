@@ -2,6 +2,9 @@ package obliczenia;
 
 import java.util.HashMap;
 
+/**
+ * Zmienna
+ */
 public class Zmienna extends Wyrazenie {
 
     public static final HashMap zmienne = new HashMap<String, Double>();
@@ -12,6 +15,10 @@ public class Zmienna extends Wyrazenie {
     }
 
 
+    /**
+     * Oblicza wyrazenie dla podanej klasy
+     * @return Wynik wyrazenia
+     */
     @Override
     public double oblicz() throws Exception {
         try{
@@ -23,6 +30,10 @@ public class Zmienna extends Wyrazenie {
         }
     }
 
+    /**
+     *
+     * @return Reprezentacja wyrazenia
+     */
     @Override
     public String toString() {
         return x;

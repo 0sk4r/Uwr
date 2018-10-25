@@ -1,5 +1,8 @@
 package obliczenia;
 
+/**
+ * Mnożenie dwoch wyrażeń
+ */
 public class Mnozenie extends Op2Arg {
     public Mnozenie(Wyrazenie a1, Wyrazenie a2) {
         super(a1, a2);

@@ -1,5 +1,8 @@
 package obliczenia;
 
+/**
+ * Arctangens
+ */
 public class ArcTan extends Op1Arg {
     public ArcTan(Wyrazenie arg1) {
         super(arg1);

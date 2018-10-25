@@ -1,5 +1,8 @@
 package obliczenia;
 
+/**
+ * Odwrotność liczby
+ */
 public class Odwrotnosc extends Op1Arg {
 
     /** Oblicza wyrażenie dla podanej klasy

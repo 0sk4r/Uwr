@@ -1,5 +1,8 @@
 package obliczenia;
 
+/**
+ * Cosinus
+ */
 public class Cos extends Op1Arg {
     public Cos(Wyrazenie arg1) {
         super(arg1);

@@ -1,5 +1,8 @@
 package obliczenia;
 
+/**
+ * Liczba przeciwna do wyrażenia
+ */
 public class Przeciwienstwo extends Op1Arg {
 
     public Przeciwienstwo(Wyrazenie arg1) {

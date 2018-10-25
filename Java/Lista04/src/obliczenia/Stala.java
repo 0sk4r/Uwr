@@ -1,5 +1,8 @@
 package obliczenia;
 
+/**
+ * Stała
+ */
 public class Stala extends Wyrazenie {
 
     private final double liczba;

@@ -1,5 +1,8 @@
 package obliczenia;
 
+/**
+ * Wybór minimum
+ */
 public class Minimum extends Op2Arg {
 
     public Minimum(Wyrazenie a1, Wyrazenie a2) {

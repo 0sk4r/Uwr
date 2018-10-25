@@ -1,5 +1,8 @@
 package obliczenia;
 
+/**
+ * Potęgowanie
+ */
 public class Potegowanie extends Op2Arg {
     public Potegowanie(Wyrazenie a1, Wyrazenie a2) {
         super(a1, a2);
