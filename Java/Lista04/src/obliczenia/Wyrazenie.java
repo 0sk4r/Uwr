@@ -3,11 +3,6 @@ package obliczenia;
 abstract class Wyrazenie implements Obliczalny {
 
 
-    /** Metoda abstrakcyjna, rozbudowywana w podrzędnych klasach
-     * @return Wynik obliczeń klasy podrzędnej
-     */
-    abstract public double oblicz() throws Exception;
-
 
     /** Metoda mnozaca wyrazenia
      * @param args Ciag wyrazen
