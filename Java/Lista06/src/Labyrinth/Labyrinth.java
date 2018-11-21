@@ -17,8 +17,6 @@ public class Labyrinth {
         initLabyrinth(width, height);
 
         generateLabyrinth(0,0);
-        display();
-
     }
 
     private void initLabyrinth(int width, int height){
@@ -42,56 +40,24 @@ public class Labyrinth {
 
             if (((nx >= 0) && (nx < this.width)) && ((ny >=0) && (ny < this.height)) && (!cells[nx][ny].visited)) {
                 if(dir == DIR.UP){
-                    cells[cx][cy].top = false;
-                    cells[nx][ny].bottom = false;
+                    cells[cy][cx].top = false;
+                    cells[ny][nx].bottom = false;
                 }
                 else if(dir == DIR.DOWN){
-                    cells[cx][cy].bottom = false;
-                    cells[nx][ny].top = false;
+                    cells[cy][cx].bottom = false;
+                    cells[ny][nx].top = false;
                 }
                 else if(dir == DIR.LEFT){
-                    cells[cx][cy].left = false;
-                    cells[nx][ny].right = false;
+                    cells[cy][cx].left = false;
+                    cells[ny][nx].right = false;
                 }
                 else if(dir == DIR.RIGHT){
-                    cells[cx][cy].right = false;
-                    cells[nx][ny].left = false;
+                    cells[cy][cx].right = false;
+                    cells[ny][nx].left = false;
                 }
                 generateLabyrinth(nx, ny);
             }
         }
-    }
-
-    private enum DIR {
-        UP(0,1), DOWN(0,-1), LEFT(-1,0), RIGHT(1,0);
-
-        private final int dx;
-        private final int dy;
-
-        DIR(int dx, int dy) {
-            this.dx = dx;
-            this.dy = dy;
-        }
-    }
-
-    private void display() {
-        for (int i = 0; i < height; i++) {
-            // draw the north edge
-            for (int j = 0; j < width; j++) {
-                System.out.print((cells[j][i].top) ? "+---" : "+   ");
-            }
-            System.out.println("+");
-            // draw the west edge
-            for (int j = 0; j < width; j++) {
-                System.out.print((cells[j][i].left) ? "|   " : "    ");
-            }
-            System.out.println("|");
-        }
-        // draw the bottom line
-        for (int j = 0; j < width; j++) {
-            System.out.print("+---");
-        }
-        System.out.println("+");
     }
 
 }

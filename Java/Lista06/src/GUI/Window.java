@@ -13,8 +13,6 @@ import java.awt.event.*;
 
 public class Window extends Frame
 {
-    private Color kolor = Color.BLACK;
-
     private Canvas LabirynthCanvas;
 
     private WindowListener frameList = new WindowAdapter()
@@ -27,25 +25,13 @@ public class Window extends Frame
     };
 
 
-    private void define(int size){
-        LabirynthCanvas=new LabirynthCanvas(this,10,10);
-    }
-
-    private void add(){
-        add(LabirynthCanvas);
-    }
-
-    public Canvas getPanel() {
-        return LabirynthCanvas;
-    }
-
-    public Window()
+    public Window(int size, int width, int height)
     {
         super("Labirynth");
-        setSize(500, 500);
+        setSize(size, size);
         setLocation(500, 500);
         addWindowListener(frameList);
-        LabirynthCanvas=new LabirynthCanvas(this,10,10);
+        LabirynthCanvas=new LabirynthCanvas(this, size, width,height);
         add(LabirynthCanvas);
         setVisible(true);
     }
