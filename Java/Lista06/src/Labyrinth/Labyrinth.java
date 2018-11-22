@@ -26,6 +26,8 @@ public class Labyrinth {
             }
         }
 
+        cells[height-1][width-1].traget = true;
+
     }
 
     private void generateLabyrinth(int cx, int cy){

@@ -21,6 +21,8 @@ public class LabirynthCanvas extends Canvas {
     private int playerX = 0, playerY=0;
     private int playerIMGX, playerIMGY;
     private BufferedImage player;
+    private boolean end = false;
+    Font font = new Font("Arial", Font.BOLD, 30);
 
     public LabirynthCanvas(Window window, int windowSize, int width, int height){
         this.window = window;
@@ -74,22 +76,22 @@ public class LabirynthCanvas extends Canvas {
         Random generator = new Random();
         int side = generator.nextInt(4);
         System.out.println(side);
-        switch (side){
+        switch (2){
             case 0:
                 playerY = 0;
-                playerIMGY = cellSize;
+                playerIMGY = cellSize * height;
                 playerX = generator.nextInt(width);
                 playerIMGX = (playerX + 1) * cellSize;
                 break;
             case 1:
-                playerX = width;
-                playerIMGX = cellSize * playerX;
+                playerX = width - 1;
+                playerIMGX = cellSize * width;
                 playerY = generator.nextInt(height);
-                playerIMGY = (playerY + 1) * cellSize;
+                playerIMGY = (height - playerY) * cellSize;
                 break;
             case 2:
-                playerY = height;
-                playerIMGY = cellSize * playerY;
+                playerY = height - 1;
+                playerIMGY = cellSize;
                 playerX = generator.nextInt(width);
                 playerIMGX = (playerX + 1) * cellSize;
                 break;
@@ -97,13 +99,15 @@ public class LabirynthCanvas extends Canvas {
                 playerX = 0;
                 playerIMGX = cellSize;
                 playerY = generator.nextInt(height);
-                playerIMGY = (playerY + 1) * cellSize;
+                playerIMGY = (height - playerY) * cellSize;
                 break;
 
         }
     }
 
     public void paint(Graphics graphics){
+
+        graphics.setFont(font);
         //(0,0) cordinates
         int x =cellSize, y = cellSize * height;
 
@@ -129,6 +133,9 @@ public class LabirynthCanvas extends Canvas {
         }
 
         graphics.drawImage(player,playerIMGX, playerIMGY,cellSize,cellSize, this);
+        if(end){
+            graphics.drawString("Win!",windowSize/2,windowSize/2);
+        }
     }
 
     public void movePlayer(DIR direction){
@@ -136,8 +143,11 @@ public class LabirynthCanvas extends Canvas {
         playerY += direction.dy;
 
         playerIMGX += direction.dx * cellSize;
-        playerIMGY -= direction.dy * cellSize;
+        playerIMGY -= (direction.dy * cellSize);
 
+        if(lab.cells[playerX][playerY].traget){
+            end = true;
+        }
         repaint();
     }
 

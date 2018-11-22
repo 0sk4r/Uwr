@@ -4,7 +4,7 @@ public class Cell {
 
     public boolean left, right, top, bottom;
     public boolean visited;
-    private boolean traget;
+    public boolean traget;
 
     public Cell() {
         this.left = true;
