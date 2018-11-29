@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Grafika.GUI">
+  <grid id="27dc6" binding="rootPanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="3" left="3" bottom="3" right="3"/>
+    <constraints>
+      <xy x="20" y="20" width="868" height="570"/>
+    </constraints>
+    <properties>
+      <foreground color="-16777216"/>
+    </properties>
+    <border type="none">
+      <title-color color="-4473925"/>
+    </border>
+    <children>
+      <toolbar id="45aea" binding="toolbar">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="288" height="36"/>
+          </grid>
+        </constraints>
+        <properties>
+          <borderPainted value="true"/>
+          <floatable value="false"/>
+          <foreground color="-16777216"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="38570" class="javax.swing.JButton" binding="saveButton">
+            <constraints/>
+            <properties>
+              <borderPainted value="false"/>
+              <focusPainted value="false"/>
+              <foreground color="-16777216"/>
+              <icon value="Grafika/icons/new.png"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="40d4" class="javax.swing.JButton" binding="fileButton">
+            <constraints/>
+            <properties>
+              <borderPainted value="false"/>
+              <enabled value="true"/>
+              <focusPainted value="false"/>
+              <foreground color="-16777216"/>
+              <icon value="Grafika/icons/file.png"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="4b85a" class="javax.swing.JButton" binding="zoomInButton">
+            <constraints/>
+            <properties>
+              <borderPainted value="false"/>
+              <enabled value="true"/>
+              <focusPainted value="false"/>
+              <foreground color="-16777216"/>
+              <icon value="Grafika/icons/zoomIn.png"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="ae394" class="javax.swing.JButton" binding="zoomOutButton">
+            <constraints/>
+            <properties>
+              <borderPainted value="false"/>
+              <focusPainted value="false"/>
+              <foreground color="-16777216"/>
+              <icon value="Grafika/icons/zoomOut.png"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="3beb1" class="javax.swing.JButton" binding="zoomResetButton">
+            <constraints/>
+            <properties>
+              <borderPainted value="false"/>
+              <focusPainted value="false"/>
+              <foreground color="-16777216"/>
+              <icon value="Grafika/icons/zoomReset.png"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="a570d" class="javax.swing.JButton" binding="upButton">
+            <constraints/>
+            <properties>
+              <borderPainted value="false"/>
+              <focusPainted value="false"/>
+              <foreground color="-16777216"/>
+              <icon value="Grafika/icons/up.png"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="92e4c" class="javax.swing.JButton" binding="downButton">
+            <constraints/>
+            <properties>
+              <borderPainted value="false"/>
+              <focusPainted value="false"/>
+              <foreground color="-16777216"/>
+              <icon value="Grafika/icons/down.png"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="ad5b8" class="javax.swing.JButton" binding="leftButton">
+            <constraints/>
+            <properties>
+              <borderPainted value="false"/>
+              <focusPainted value="false"/>
+              <foreground color="-16777216"/>
+              <icon value="Grafika/icons/left.png"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="7f23" class="javax.swing.JButton" binding="rightButton">
+            <constraints/>
+            <properties>
+              <borderPainted value="false"/>
+              <focusPainted value="false"/>
+              <foreground color="-16777216"/>
+              <icon value="Grafika/icons/right.png"/>
+              <text value=""/>
+            </properties>
+          </component>
+        </children>
+      </toolbar>
+      <splitpane id="31e21" binding="split">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="200"/>
+          </grid>
+        </constraints>
+        <properties>
+          <continuousLayout value="false"/>
+          <dividerLocation value="140"/>
+          <dividerSize value="0"/>
+          <enabled value="false"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <scrollpane id="6610c" binding="canvasScroll">
+            <constraints>
+              <splitpane position="right"/>
+            </constraints>
+            <properties>
+              <alignmentX value="0.0"/>
+              <alignmentY value="0.0"/>
+              <autoscrolls value="false"/>
+              <foreground color="-16777216"/>
+              <horizontalScrollBarPolicy value="30"/>
+              <verticalScrollBarPolicy value="20"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <grid id="d8e34" binding="canvas" custom-create="true" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints/>
+                <properties>
+                  <foreground color="-16777216"/>
+                  <preferredSize width="-1" height="-1"/>
+                </properties>
+                <border type="none"/>
+                <children/>
+              </grid>
+            </children>
+          </scrollpane>
+          <grid id="94170" binding="sidemenu" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <splitpane position="left"/>
+            </constraints>
+            <properties>
+              <foreground color="-16777216"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <scrollpane id="4b8ec" binding="colorPaletteScroll">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                    <minimum-size width="-1" height="120"/>
+                    <preferred-size width="-1" height="120"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <foreground color="-16777216"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <component id="3297e" class="javax.swing.JList" binding="colorPalette" custom-create="true">
+                    <constraints/>
+                    <properties>
+                      <dragEnabled value="false"/>
+                      <layoutOrientation value="0"/>
+                      <selectionBackground color="-15914690"/>
+                      <selectionMode value="0"/>
+                      <visibleRowCount value="3"/>
+                    </properties>
+                    <clientProperties>
+                      <List.isFileList class="java.lang.Boolean" value="false"/>
+                    </clientProperties>
+                  </component>
+                </children>
+              </scrollpane>
+              <component id="75e5c" class="javax.swing.JButton" binding="colorButton" default-binding="true">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                    <minimum-size width="70" height="40"/>
+                    <preferred-size width="70" height="40"/>
+                    <maximum-size width="70" height="40"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <borderPainted value="true"/>
+                  <enabled value="true"/>
+                  <focusPainted value="false"/>
+                  <foreground color="-16777216"/>
+                  <label value=""/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <vspacer id="a26dd">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
+                    <preferred-size width="-1" height="300"/>
+                  </grid>
+                </constraints>
+              </vspacer>
+            </children>
+          </grid>
+        </children>
+      </splitpane>
+      <component id="e8983" class="javax.swing.JLabel" binding="footer">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <alignmentY value="0.0"/>
+          <foreground color="-16777216"/>
+          <text value=""/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
