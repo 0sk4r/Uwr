@@ -12,9 +12,9 @@ import java.io.File;
 import java.io.IOException;
 
 public class GUI extends JFrame {
-    private PictureControler pictureControler;
+    private PictureController pictureController;
 
-    private JList colorPaletteLeft;
+    private JList<MyColor> colorPaletteLeft;
     private JPanel rootPanel;
     private JPanel sidemenu;
     private JPanel canvas;
@@ -33,18 +33,21 @@ public class GUI extends JFrame {
     private JSplitPane split;
     private JButton newImageButton;
     private JButton saveButton;
-    private JList colorPaletteRight;
+    private JList<MyColor> colorPaletteRight;
     private JButton colorButtonRight;
     private JFileChooser fileChooser;
-    private DefaultListModel colorPaletteList;
+    private DefaultListModel<MyColor> colorPaletteList;
 
 
-    public GUI(PictureControler pictureControler) {
+    public GUI() {
         super("Paint");
 
-        this.pictureControler = pictureControler;
+        this.pictureController = PictureController.getInstance();
+
         this.fileChooser = new JFileChooser();
-        this.fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "png", "bmp"));
+        this.fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("jpg", "jpg"));
+        this.fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("png", "png"));
+        this.fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("bmp", "bmp"));
 
         setContentPane(rootPanel);
 
@@ -56,23 +59,23 @@ public class GUI extends JFrame {
     private void createUIComponents() {
 
 
-        colorPaletteList = new DefaultListModel();
-        colorPaletteList.addElement(new ColorItem("BLACK", Color.BLACK));
-        colorPaletteList.addElement(new ColorItem("BLUE", Color.BLUE));
-        colorPaletteList.addElement(new ColorItem("CYAN", Color.CYAN));
-        colorPaletteList.addElement(new ColorItem("GRAY", Color.GRAY));
-        colorPaletteList.addElement(new ColorItem("DARK GRAY", Color.DARK_GRAY));
-        colorPaletteList.addElement(new ColorItem("GREEN", Color.GREEN));
-        colorPaletteList.addElement(new ColorItem("LIGHT GRAY", Color.LIGHT_GRAY));
-        colorPaletteList.addElement(new ColorItem("MAGENTA", Color.MAGENTA));
-        colorPaletteList.addElement(new ColorItem("ORANGE", Color.ORANGE));
-        colorPaletteList.addElement(new ColorItem("PINK", Color.PINK));
-        colorPaletteList.addElement(new ColorItem("RED", Color.RED));
-        colorPaletteList.addElement(new ColorItem("WHITE", Color.WHITE));
-        colorPaletteList.addElement(new ColorItem("YELLOW", Color.YELLOW));
+        colorPaletteList = new DefaultListModel<MyColor>();
+        colorPaletteList.addElement(new MyColor("BLACK", Color.BLACK));
+        colorPaletteList.addElement(new MyColor("BLUE", Color.BLUE));
+        colorPaletteList.addElement(new MyColor("CYAN", Color.CYAN));
+        colorPaletteList.addElement(new MyColor("GRAY", Color.GRAY));
+        colorPaletteList.addElement(new MyColor("DARK GRAY", Color.DARK_GRAY));
+        colorPaletteList.addElement(new MyColor("GREEN", Color.GREEN));
+        colorPaletteList.addElement(new MyColor("LIGHT GRAY", Color.LIGHT_GRAY));
+        colorPaletteList.addElement(new MyColor("MAGENTA", Color.MAGENTA));
+        colorPaletteList.addElement(new MyColor("ORANGE", Color.ORANGE));
+        colorPaletteList.addElement(new MyColor("PINK", Color.PINK));
+        colorPaletteList.addElement(new MyColor("RED", Color.RED));
+        colorPaletteList.addElement(new MyColor("WHITE", Color.WHITE));
+        colorPaletteList.addElement(new MyColor("YELLOW", Color.YELLOW));
 
-        colorPaletteLeft = new JList(colorPaletteList);
-        colorPaletteRight = new JList(colorPaletteList);
+        colorPaletteLeft = new JList<MyColor>(colorPaletteList);
+        colorPaletteRight = new JList<>(colorPaletteList);
 
         // canvas
         canvas = new JPanel() {
@@ -81,9 +84,9 @@ public class GUI extends JFrame {
 
                 Graphics2D g2 = (Graphics2D) g;
                 super.paintComponent(g2);
-                BufferedImage img = pictureControler.getImage();
+                BufferedImage img = pictureController.getImage();
                 if (img != null) {
-                    g2.drawImage(img, pictureControler.getTransformation(), this);
+                    g2.drawImage(img, pictureController.getTransformation(), this);
                     updateCanvasViewport();
                 }
 
@@ -96,7 +99,7 @@ public class GUI extends JFrame {
         // Open file
         fileButton.addActionListener(e -> {
             if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                pictureControler.setFile(fileChooser.getSelectedFile());
+                pictureController.setFile(fileChooser.getSelectedFile());
                 updateCanvasViewport();
                 updateUI();
                 updateLabel();
@@ -108,10 +111,12 @@ public class GUI extends JFrame {
         //Save File
         saveButton.addActionListener(e -> {
             File saveFile;
+            String extension;
             if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
                 saveFile = fileChooser.getSelectedFile();
+                extension = fileChooser.getFileFilter().getDescription();
                 try {
-                    ImageIO.write(pictureControler.getImage(), "png", saveFile.getAbsoluteFile());
+                    ImageIO.write(pictureController.getImage(), extension, saveFile.getAbsoluteFile());
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
@@ -121,35 +126,16 @@ public class GUI extends JFrame {
 
         //Zoom action
         zoomInButton.addActionListener(e -> {
-            JScrollBar vertical = canvasScroll.getVerticalScrollBar();
-            JScrollBar horizontal = canvasScroll.getHorizontalScrollBar();
 
-            vertical.setValue((int) (vertical.getValue() / pictureControler.getTransformation().getScaleX()));
-            horizontal.setValue((int) (horizontal.getValue() / pictureControler.getTransformation().getScaleY()));
+            pictureController.zoomIn();
 
-            pictureControler.zoomIn();
-
-            vertical.setValue((int) (vertical.getValue() * pictureControler.getTransformation().getScaleX()));
-            horizontal.setValue((int) (horizontal.getValue() * pictureControler.getTransformation().getScaleY()));
-            canvas.repaint();
-            updateCanvasViewport();
-            updateLabel();
+            scaleInterface();
         });
 
         zoomOutButton.addActionListener(e -> {
-            JScrollBar vertical = canvasScroll.getVerticalScrollBar();
-            JScrollBar horizontal = canvasScroll.getHorizontalScrollBar();
+            pictureController.zoomOut();
 
-            vertical.setValue((int) (vertical.getValue() / pictureControler.getTransformation().getScaleX()));
-            horizontal.setValue((int) (horizontal.getValue() / pictureControler.getTransformation().getScaleY()));
-
-            pictureControler.zoomOut();
-
-            vertical.setValue((int) (vertical.getValue() * pictureControler.getTransformation().getScaleX()));
-            horizontal.setValue((int) (horizontal.getValue() * pictureControler.getTransformation().getScaleY()));
-            canvas.repaint();
-            updateCanvasViewport();
-            updateLabel();
+            scaleInterface();
         });
 
 
@@ -175,34 +161,34 @@ public class GUI extends JFrame {
         // Color list
         colorPaletteLeft.addListSelectionListener(e -> {
             if (colorPaletteLeft.getSelectedValue() != null) {
-                Color color = ((ColorItem) colorPaletteLeft.getSelectedValue()).color;
-                pictureControler.setLeftColor(color);
+                Color color = (colorPaletteLeft.getSelectedValue()).color;
+                pictureController.setLeftColor(color);
             }
             updateUI();
         });
 
-        colorPaletteRight.addListSelectionListener(e -> {
+        colorPaletteRight.addListSelectionListener( e -> {
             if (colorPaletteRight.getSelectedValue() != null) {
-                Color color = ((ColorItem) colorPaletteRight.getSelectedValue()).color;
-                pictureControler.setRightColor(color);
+                Color color = (colorPaletteRight.getSelectedValue()).color;
+                pictureController.setRightColor(color);
             }
             updateUI();
         });
 
         // Color button
         colorButtonLeft.addActionListener(e -> {
-            Color selected = JColorChooser.showDialog(null, "Select color", pictureControler.getLeftColor());
+            Color selected = JColorChooser.showDialog(null, "Select color", pictureController.getLeftColor());
             if (selected != null) {
-                pictureControler.setLeftColor(selected);
+                pictureController.setLeftColor(selected);
                 colorPaletteLeft.clearSelection();
             }
             updateUI();
         });
 
         colorButtonRight.addActionListener(e -> {
-            Color selected = JColorChooser.showDialog(null, "Select color", pictureControler.getRightColor());
+            Color selected = JColorChooser.showDialog(null, "Select color", pictureController.getRightColor());
             if (selected != null) {
-                pictureControler.setRightColor(selected);
+                pictureController.setRightColor(selected);
                 colorPaletteRight.clearSelection();
             }
             updateUI();
@@ -214,9 +200,9 @@ public class GUI extends JFrame {
             @Override
             public void mouseMoved(MouseEvent e) {
                 if (e.getSource() == canvas) {
-                    Point mouse = pictureControler.toImageCoordinates(e.getPoint());
-                    if (mouse.x < pictureControler.getImage().getWidth() && mouse.y < pictureControler.getImage().getHeight()) {
-                        pictureControler.setLastMousePos(pictureControler.toImageCoordinates(e.getPoint()));
+                    Point mouse = pictureController.convertToImgCordiantes(e.getPoint());
+                    if (mouse.x < pictureController.getImage().getWidth() && mouse.y < pictureController.getImage().getHeight()) {
+                        pictureController.setLastMousePos(pictureController.convertToImgCordiantes(e.getPoint()));
                         updateLabel();
                     }
                 }
@@ -232,12 +218,12 @@ public class GUI extends JFrame {
         canvas.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (pictureControler.getImage() == null || e.getSource() != canvas)
+                if (pictureController.getImage() == null || e.getSource() != canvas)
                     return;
                 if (e.getButton() == MouseEvent.BUTTON1)
-                    pictureControler.draw(e.getPoint(), pictureControler.getLeftColor());
+                    pictureController.draw(e.getPoint(), pictureController.getLeftColor());
                 else
-                    pictureControler.draw(e.getPoint(), pictureControler.getRightColor());
+                    pictureController.draw(e.getPoint(), pictureController.getRightColor());
                 canvas.repaint();
             }
         });
@@ -246,31 +232,43 @@ public class GUI extends JFrame {
         canvas.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                if (pictureControler.getImage() == null || e.getSource() != canvas)
+                if (pictureController.getImage() == null || e.getSource() != canvas)
                     return;
                 if (SwingUtilities.isLeftMouseButton(e))
-                    pictureControler.draw(e.getPoint(), pictureControler.getLeftColor());
+                    pictureController.draw(e.getPoint(), pictureController.getLeftColor());
                 else
-                    pictureControler.draw(e.getPoint(), pictureControler.getRightColor());
+                    pictureController.draw(e.getPoint(), pictureController.getRightColor());
                 canvas.repaint();
             }
 
         });
     }
 
+    private void scaleInterface() {
+        JScrollBar vertical = canvasScroll.getVerticalScrollBar();
+        JScrollBar horizontal = canvasScroll.getHorizontalScrollBar();
+
+        vertical.setValue((int) (vertical.getValue() / pictureController.getTransformation().getScaleX()));
+        horizontal.setValue((int) (horizontal.getValue() / pictureController.getTransformation().getScaleY()));
+
+        canvas.repaint();
+        updateCanvasViewport();
+        updateLabel();
+    }
+
     private void updateUI() {
 
-        colorButtonLeft.setBackground(pictureControler.getLeftColor());
-        colorButtonRight.setBackground(pictureControler.getRightColor());
+        colorButtonLeft.setBackground(pictureController.getLeftColor());
+        colorButtonRight.setBackground(pictureController.getRightColor());
     }
 
     private void updateCanvasViewport() {
-        BufferedImage img = pictureControler.getImage();
+        BufferedImage img = pictureController.getImage();
         if (img != null)
             canvas.setPreferredSize(
                     new Dimension(
-                            (int) (img.getWidth() * pictureControler.getTransformation().getScaleX()),
-                            (int) (img.getHeight() * pictureControler.getTransformation().getScaleY())
+                            (int) (img.getWidth() * pictureController.getTransformation().getScaleX()),
+                            (int) (img.getHeight() * pictureController.getTransformation().getScaleY())
                     )
             );
         canvas.revalidate();
@@ -279,15 +277,15 @@ public class GUI extends JFrame {
 
     private void updateLabel() {
         footer.setText(
-                "x: " + pictureControler.getLastMousePos().x +
-                        ", y: " + pictureControler.getLastMousePos().y);
+                "x: " + pictureController.getLastMousePos().x +
+                        ", y: " + pictureController.getLastMousePos().y);
     }
 
-    private class ColorItem {
+    private class MyColor {
         String name;
         Color color;
 
-        public ColorItem(String name, Color color) {
+        public MyColor(String name, Color color) {
             this.name = name;
             this.color = color;
         }
