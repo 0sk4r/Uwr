@@ -6,12 +6,11 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
 
-public class Engine {
+public class PictureControler {
 
-    private static final double SCALE_MAX = 8;
-    private static Engine ourInstance = new Engine();
+    private static final double ZOOM_MAX = 8;
+    private static PictureControler ourInstance = new PictureControler();
     private Color leftColor, rightColor;
     private File file;
     private BufferedImage image;
@@ -19,12 +18,12 @@ public class Engine {
     private Point lastMousePos = new Point(0, 0);
     private AffineTransform transformation = new AffineTransform();
 
-    private Engine() {
+    private PictureControler() {
         leftColor = Color.BLACK;
         rightColor = Color.WHITE;
     }
 
-    public static Engine getInstance() {
+    public static PictureControler getInstance() {
         return ourInstance;
     }
 
@@ -59,7 +58,7 @@ public class Engine {
     }
 
     public void zoomIn() {
-        if (zoom < SCALE_MAX) {
+        if (zoom < ZOOM_MAX) {
             transformation.scale(1f / zoom, 1f / zoom);
             if (zoom >= 1.0)
                 zoom += 1.0;
@@ -70,7 +69,7 @@ public class Engine {
     }
 
     public void zoomOut() {
-        if (zoom > 1.0 / SCALE_MAX) {
+        if (zoom > 1.0) {
             transformation.scale(1f / zoom, 1f / zoom);
             if (zoom > 1)
                 zoom -= 1.0;
@@ -87,11 +86,6 @@ public class Engine {
 
     public AffineTransform getTransformation() {
         return this.transformation;
-    }
-
-    public void resetZoom() {
-        zoom = 1;
-        transformation.setToIdentity();
     }
 
     public Point getLastMousePos() {
