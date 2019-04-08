@@ -1,3 +1,4 @@
+-- Zadania egzamin haskell
 multiply :: (Integer,Integer) -> Integer
 multiply (x, y) =  if x==0 then 0 else x * y
 

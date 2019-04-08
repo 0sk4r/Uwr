@@ -1,3 +1,4 @@
+%Zadania z egzaminu MP PROLOG
 p([],X,X).
 p([H|Y],X,Y):- p(T,[H|X],Y),!.
 

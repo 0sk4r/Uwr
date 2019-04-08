@@ -1,2 +1,0 @@
-def test(A) = 
-    let C = 1 in A & C

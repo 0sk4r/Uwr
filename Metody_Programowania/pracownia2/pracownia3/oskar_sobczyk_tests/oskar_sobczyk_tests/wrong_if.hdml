@@ -1,2 +1,0 @@
-def test(A) = 
-    if A > 0 then 1
