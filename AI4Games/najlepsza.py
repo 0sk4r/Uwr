@@ -1,6 +1,4 @@
 # drewno miejsce 4
-#NAJLEPSZA KURWA WERSJA
-#TODO doadac stunowanie kiedy mozna
 import sys
 import math
 import random
