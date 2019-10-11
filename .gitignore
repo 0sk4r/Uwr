@@ -59,6 +59,7 @@ Temporary Items
 .in
 
 *.o
+*.out
 node_modules
 .idea
 *.class
