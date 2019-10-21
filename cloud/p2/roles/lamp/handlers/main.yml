@@ -1,0 +1,7 @@
+---
+# handlers file for lamp
+
+- name: Restart Apache2
+  service:
+    name: apache2
+    state: restarted

@@ -1,0 +1,8 @@
+---
+# tasks file for security
+- name: Turn off password login
+  replace:
+    path: /etc/ssh/sshd_config
+    regexp: PasswordAuthentication yes
+    replace: PasswordAuthentication no
+  tags: [ssh]

@@ -1,0 +1,51 @@
+---
+# tasks file for joomla
+
+- name: Ensure dependencies are installed
+  apt: 
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - python-pymysql 
+      - unzip
+  tags: [packages]
+
+- name: Download and unpack Joomla
+  unarchive:
+    src: https://downloads.joomla.org/cms/joomla3/3-9-12/Joomla_3-9-12-Stable-Full_Package.zip?format=zip
+    dest: /var/www/html/
+    remote_src: yes
+    owner: www-data
+    group: www-data
+    mode: '755'
+  tags: [packages, joomla]
+
+- name: Create joomla DB user
+  mysql_user:
+    name: joomla
+    password: joomla
+    priv: '*.*:ALL'
+    state: present
+    check_implicit_admin: true
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  tags: [joomla, db]
+
+- name: Create a new database 'joomla'
+  mysql_db:
+    login_user: joomla
+    login_password: joomla
+    name: joomla
+    state: present
+  tags: [joomla, db]
+  
+- name: Copy joomla config
+  template:
+    src: templates/configuration.php
+    dest: /var/www/html/configuration.php
+
+# - name: Remove installation folder
+#   file:
+#     state: absent
+#     path: /var/www/html/installation
+

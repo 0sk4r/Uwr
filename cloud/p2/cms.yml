@@ -1,0 +1,5 @@
+- hosts: cms
+  become: yes
+  roles:
+    - lamp
+    - joomla
