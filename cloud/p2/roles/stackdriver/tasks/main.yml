@@ -1,0 +1,29 @@
+---
+# tasks file for stackdriver
+
+- name: Download monitoring agent
+  get_url:
+    url: https://dl.google.com/cloudagents/install-monitoring-agent.sh
+    dest: /tmp/install-monitoring-agent.sh
+    mode: '764'
+  tags: [logging, packages]
+
+- name: Install monitoring agent
+  shell: /tmp/install-monitoring-agent.sh
+  notify:
+    - Restart stackdriver
+  tags: [logging, packages]
+
+- name: Download logging agent
+  get_url:
+    url: https://dl.google.com/cloudagents/install-logging-agent.sh
+    dest: /tmp/install-logging-agent.sh
+    mode: '764'
+  tags: [logging, packages]
+
+- name: Install logging agent
+  shell: /tmp/install-logging-agent.sh
+  notify:
+    - Restart logging agent
+  tags: [logging, packages]
+

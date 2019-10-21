@@ -1,0 +1,36 @@
+---
+- name: Ensure MariaDB is installed
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+  vars:
+    packages:
+      - mariadb-server 
+      - mariadb-client
+  tags: [database, packages]
+
+- name: Install MariaDB config
+  template:
+    src: templates/.my.cnf
+    dest: /root/.my.cnf
+- name: Ensure Apache2 is installed
+  apt:
+    name: "apache2"
+    state: present
+    update_cache: yes
+  tags: [httpserver, packages]
+
+- name: Ensure PHP is installed
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+  vars: 
+    packages: 
+      - php7.0 
+      - libapache2-mod-php7.0
+      - php7.0-mysql
+  notify:
+    - Restart Apache2
+  

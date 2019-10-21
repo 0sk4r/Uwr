@@ -1,0 +1,24 @@
+{
+    "builders": [
+      {
+        "type": "googlecompute",
+        "project_id": "coral-shoreline-234300",
+        "account_file": "/Users/oskar/.gcp/pracownia.json",
+        "zone": "europe-west1-b",
+        "machine_type": "f1-micro",
+        "source_image_family": "debian-9",
+        "source_image": "debian-9-stretch-v20191014",
+        "ssh_username": "admin",
+        "image_name": "webserver"
+      }
+    ],
+    "provisioners": [
+      {
+        "type": "ansible",
+        "playbook_file": "../webservers.yml",
+        "ansible_env_vars": [],
+        "groups": ["webservers"]
+        
+      }
+    ]
+  }

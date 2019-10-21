@@ -1,0 +1,11 @@
+---
+# handlers file for stackdriver
+- name: Restart logging agent
+  service:
+    name: google-fluentd 
+    state: restarted
+    
+- name: Restart stackdriver
+  service:
+    name: stackdriver-agent
+    state: restarted

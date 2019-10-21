@@ -1,0 +1,12 @@
+plugin: gcp_compute
+projects:
+  - coral-shoreline-234300
+zones:
+  - "europe-west1-b"
+groups:
+  webservers: "'server' in name"
+  loadbalancer: "'loadbalancer' in name"
+  cms: "'cms' in name"
+filters: []
+auth_kind: serviceaccount
+service_account_file: "/Users/oskar/.gcp/pracownia.json"

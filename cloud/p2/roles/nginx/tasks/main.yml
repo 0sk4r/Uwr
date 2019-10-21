@@ -1,0 +1,41 @@
+---
+# tasks file for nginx
+
+- name: Ensure apache is not installed
+  apt:
+    name: apache2
+    state: absent
+  tags: [http_server, packages]
+
+- name: Ensure nginx is present or install it
+  apt:
+    name: nginx
+    state: present
+    update_cache: true
+  tags: [http_server, packages]
+
+- name: Replace nginx site config
+  copy:
+    src: site.conf
+    dest: /etc/nginx/sites-enabled/default
+  tags: [http_server, system_config]
+  notify:
+   - Restart Nginx
+
+- name: Configure nginx
+  get_url:
+    url: https://raw.githubusercontent.com/Stackdriver/stackdriver-agent-service-configs/master/etc/nginx/conf.d/status.conf
+    dest: /etc/nginx/conf.d/
+    mode: '764'
+  notify:
+    - Restart Nginx
+  tags: [logging]
+
+- name: Enable logging
+  get_url: 
+    url: https://raw.githubusercontent.com/Stackdriver/stackdriver-agent-service-configs/master/etc/collectd.d/nginx.conf
+    dest: /opt/stackdriver/collectd/etc/collectd.d/
+  notify:
+    - Restart stackdriver
+  tags: [logging]
+

@@ -1,0 +1,28 @@
+---
+# tasks file for joomla
+
+- name: Ensure dependencies are installed
+  apt: 
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - python-pymysql 
+      - unzip
+- name: Download and unpack Joomla
+  unarchive:
+    src: https://downloads.joomla.org/cms/joomla3/3-9-12/Joomla_3-9-12-Stable-Full_Package.zip?format=zip
+    dest: /var/www/html/
+    remote_src: yes
+- name: Create joomla DB user
+  mysql_user:
+    login_user: root
+    login_password: "{{ mariadb_root_paswd }}"
+    name: joomla
+    password: joomla
+    priv: '*.*:ALL'
+    state: present
+- name: Create a new database 'joomla'
+  mysql_db:
+    name: joomla
+    state: present
