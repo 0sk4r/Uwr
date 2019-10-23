@@ -6,7 +6,10 @@
     name: rsync
     state: present
   tags: [website, packages]
+<<<<<<< HEAD
   
+=======
+>>>>>>> master
 - name: Upload example site
   synchronize:
     src: site/

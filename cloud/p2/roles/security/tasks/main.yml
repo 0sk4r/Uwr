@@ -4,5 +4,9 @@
   replace:
     path: /etc/ssh/sshd_config
     regexp: PasswordAuthentication yes
+<<<<<<< HEAD
     replace: PasswordAuthentication no
   tags: [ssh]
+=======
+    replace: PasswordAuthentication no
+>>>>>>> master

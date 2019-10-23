@@ -5,30 +5,46 @@
   apt:
     name: apache2
     state: absent
+<<<<<<< HEAD
   tags: [packages]
+=======
+>>>>>>> master
 - name: Ensure nginx is not installed
   apt:
     name: nginx
     state: absent
+<<<<<<< HEAD
   tags: [packages]
 
+=======
+>>>>>>> master
 - name: Ensure haproxy is present or install it
   apt:
     name: haproxy
     state: present
     update_cache: true
+<<<<<<< HEAD
   tags: [packages]
 
+=======
+>>>>>>> master
 - name: Enable haproxy
   replace: dest=/etc/default/haproxy
               regexp="ENABLED=0"
               replace="ENABLED=1"
+<<<<<<< HEAD
   tags: [loadbalancer, config]
 
+=======
+>>>>>>> master
 - name: Install haproxy config
   template:
     src: templates/haproxy.cfg
     dest: /etc/haproxy/haproxy.cfg
   notify:
+<<<<<<< HEAD
    - Restart Haproxy
   tags: [loadbalancer, config]
+=======
+   - Restart Haproxy
+>>>>>>> master

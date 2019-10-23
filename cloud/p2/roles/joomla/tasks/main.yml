@@ -9,13 +9,17 @@
     packages:
       - python-pymysql 
       - unzip
+<<<<<<< HEAD
   tags: [packages]
 
+=======
+>>>>>>> master
 - name: Download and unpack Joomla
   unarchive:
     src: https://downloads.joomla.org/cms/joomla3/3-9-12/Joomla_3-9-12-Stable-Full_Package.zip?format=zip
     dest: /var/www/html/
     remote_src: yes
+<<<<<<< HEAD
     owner: www-data
     group: www-data
     mode: '755'
@@ -23,10 +27,17 @@
 
 - name: Create joomla DB user
   mysql_user:
+=======
+- name: Create joomla DB user
+  mysql_user:
+    login_user: root
+    login_password: "{{ mariadb_root_paswd }}"
+>>>>>>> master
     name: joomla
     password: joomla
     priv: '*.*:ALL'
     state: present
+<<<<<<< HEAD
     check_implicit_admin: true
     login_unix_socket: /var/run/mysqld/mysqld.sock
   tags: [joomla, db]
@@ -49,3 +60,9 @@
 #     state: absent
 #     path: /var/www/html/installation
 
+=======
+- name: Create a new database 'joomla'
+  mysql_db:
+    name: joomla
+    state: present
+>>>>>>> master

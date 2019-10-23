@@ -13,7 +13,11 @@
 - name: Install MariaDB config
   template:
     src: templates/.my.cnf
+<<<<<<< HEAD
     dest: /etc/.my.cnf
+=======
+    dest: /root/.my.cnf
+>>>>>>> master
 - name: Ensure Apache2 is installed
   apt:
     name: "apache2"
@@ -21,6 +25,7 @@
     update_cache: yes
   tags: [httpserver, packages]
 
+<<<<<<< HEAD
 - name: Change folder ownership, group and permissions
   file:
     path: /var/www/html
@@ -33,6 +38,8 @@
     state: absent
     path: /var/www/html/index.html
 
+=======
+>>>>>>> master
 - name: Ensure PHP is installed
   apt:
     name: "{{ packages }}"
@@ -43,7 +50,10 @@
       - php7.0 
       - libapache2-mod-php7.0
       - php7.0-mysql
+<<<<<<< HEAD
       - php7.0-xml
+=======
+>>>>>>> master
   notify:
     - Restart Apache2
   
