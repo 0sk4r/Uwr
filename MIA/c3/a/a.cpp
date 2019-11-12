@@ -6,7 +6,7 @@ vector<long long> edges[100010];
 int cats[100010];
 long long n, m;
 long long ans = 0;
-void dfs(int ver, int maxcat, int last)
+void dfs(long long ver, long long maxcat, long long last)
 {
     if (maxcat > m)
         return;
@@ -26,6 +26,7 @@ void dfs(int ver, int maxcat, int last)
         ans++;
     }
 }
+
 int main()
 {
     ios_base::sync_with_stdio(false);
@@ -43,6 +44,7 @@ int main()
         int x, y;
         cin >> x >> y;
         edges[x - 1].push_back(y - 1);
+        edges[y-1].push_back(x-1);
     }
 
     dfs(0, cats[0], -1);
