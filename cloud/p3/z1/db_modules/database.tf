@@ -14,7 +14,7 @@ variable "main_server_name" {
 ###### DATABASE ######
 
 resource "google_sql_database_instance" "terraform-db" {
-  name             = "terraform-db1233"
+  name             = "terraform-db12331"
   database_version = "POSTGRES_9_6"
 
   settings {

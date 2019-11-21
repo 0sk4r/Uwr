@@ -42,7 +42,7 @@ resource "google_compute_instance" "loadbalancer" {
   }
 
   provisioner "local-exec" {
-    command = "ansible-playbook -u oskar --key-file '~/.ssh/id_rsa' ./ansible/loadbalancer.yml -i ./ansible/hosts --extra-vars '{ip_list: [${join(",", var.ip-list)}]}' "
+    command = "ansible-playbook --key-file '~/.ssh/id_rsa' ./ansible/loadbalancer.yml -i ./ansible/hosts --extra-vars '{ip_list: [${join(",", var.ip-list)}]}' "
   }
 }
 

@@ -28,6 +28,8 @@ resource "google_compute_firewall" "allowwww" {
     ports    = ["80", "443"]
   }
 
+  source_ranges = ["0.0.0.0/0"]
+
 }
 
 resource "google_compute_firewall" "allowssh" {
@@ -39,7 +41,7 @@ resource "google_compute_firewall" "allowssh" {
     ports    = ["22"]
   }
 
-  source_ranges = ["88.156.131.231/32"]
+  source_ranges = ["88.156.131.231/32", "156.17.151.242/32"]
 }
 
 // A single Google Cloud Engine instance
