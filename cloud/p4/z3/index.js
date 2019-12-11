@@ -1,0 +1,8 @@
+const express = require('express')
+const app = express()
+const port = 3000
+
+app.get('/', (req, res) => res.send(`Hello World v3 dadadad! env variable = ${process.env.VAR}`))
+app.get('/:id', (req, res) => res.send(`${req.params.id * process.env.VAR}`))
+
+app.listen(port, () => console.log(`Example app listening on port ${port}!`))
