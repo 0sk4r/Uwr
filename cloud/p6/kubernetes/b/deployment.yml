@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: writer-deployment
+  labels:
+    app: writer
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: writer
+  template:
+    metadata:
+      labels:
+        app: writer
+    spec:
+      containers:
+      - name: writer
+        image: osk4r/writer:v1.02
+        resources:
+          requests:
+            cpu: 50m
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DB_USER
+          value: postgres
+        - name: DB_IP
+          value: 34.76.155.162
+        - name: DB_DB
+          value: test
+        - name: DB_PASSWORD
+          value: haslo123
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: writersrv
+spec:
+  type: LoadBalancer
+  selector:
+    app: writer
+  ports:
+  - port: 3000
+    targetPort: 3000  

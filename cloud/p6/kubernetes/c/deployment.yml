@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reader-deployment
+  labels:
+    app: reader
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: reader
+  template:
+    metadata:
+      labels:
+        app: reader
+    spec:
+      containers:
+      - name: reader
+        image: osk4r/reader:v1.02
+        resources:
+          requests:
+            cpu: 50m
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DB_USER
+          value: postgres
+        - name: DB_IP
+          value: 34.76.155.162
+        - name: DB_DB
+          value: test
+        - name: DB_PASSWORD
+          value: haslo123
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: reader-service
+spec:
+  selector:
+    app: reader
+  type: LoadBalancer  # ClusterIP, NodePort, ...
+  ports:
+  - port: 3000
+    targetPort: 3000
+    protocol: TCP
