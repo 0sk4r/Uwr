@@ -74,15 +74,15 @@ min_perimeter solve(const vector<pair<int, int>> &Px, const vector<pair<int, int
 
     double d = best.perimeter / 2;
 
-    // vector<pair<int, int>> closePoints;
+    vector<pair<int, int>> closePoints;
 
-    // for (unsigned int i = 0; i < Py.size(); i++)
-    // {
-    //     if (abs(Py[i].first - Px[middle].first) <= d)
-    //     {
-    //         closePoints.push_back(Py[i]);
-    //     }
-    // }
+    for (unsigned int i = 0; i < Py.size(); i++)
+    {
+        if (abs(Py[i].first - Px[middle].first) <= d)
+        {
+            closePoints.push_back(Py[i]);
+        }
+    }
     // cout << "bliskich punktow: " << closePoints.size() << endl;
 
     // cout << "######################################################" << endl;
@@ -93,16 +93,15 @@ min_perimeter solve(const vector<pair<int, int>> &Px, const vector<pair<int, int
     // cout << "######################################################" << endl;
 
     pair<int, int> a, b, c;
-    for (unsigned int i = 0; i < Py.size() - 2 && abs(Py[i].first - Px[middle].first) <= d; i++)
+    for (unsigned int i = 0; i < closePoints.size() - 2; i++)
     {
-        // a = closePoints[i];
-        a = Py[i];
-        for (unsigned int j = i + 1; j < (Py.size() - 1) && abs(Py[j].first - Px[middle].first) <= d; j++)
+        a = closePoints[i];
+        for (unsigned int j = i + 1; j < (closePoints.size() - 1); j++)
         {
-            for (unsigned int k = j + 1; k < Py.size() && abs(Py[k].first - Px[middle].first) <= d; k++)
+            for (unsigned int k = j + 1; k < closePoints.size(); k++)
             {
-                b = Py[j];
-                c = Py[k];
+                b = closePoints[j];
+                c = closePoints[k];
                 double per = dist(a, b) + dist(b, c) + dist(c, a);
                 // cout << "new per: " << per << endl;
 
