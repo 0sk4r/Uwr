@@ -97,9 +97,9 @@ min_perimeter solve(const vector<pair<int, int>> &Px, const vector<pair<int, int
     {
         // a = closePoints[i];
         a = Py[i];
-        for (unsigned int j = i + 1; j < (Py.size() - 1); j++)
+        for (unsigned int j = i + 1; j < (Py.size() - 1) && abs(Py[j].first - Px[middle].first) <= d; j++)
         {
-            for (unsigned int k = j + 1; k < Py.size(); k++)
+            for (unsigned int k = j + 1; k < Py.size() && abs(Py[k].first - Px[middle].first) <= d; k++)
             {
                 b = Py[j];
                 c = Py[k];
