@@ -65,3 +65,6 @@ node_modules
 *.class
 
 .vscode
+
+*.in
+sprawdzaczka
