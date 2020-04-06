@@ -20,11 +20,11 @@ double dist(pair<int, int> x, pair<int, int> y)
     return sqrt(pow(x.first - y.first, 2.0) + pow(x.second - y.second, 2.0));
 }
 
-min_perimeter solve(vector<pair<int, int>> Px, vector<pair<int, int>> Py, int start, int end)
+min_perimeter solve(const vector<pair<int, int>> &Px, const vector<pair<int, int>> &Py, int start, int end)
 {
     float middle = float(start) + (float(end) - float(start)) / 2;
-    // cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
-    // cout << "start: " << start << " end: " << end << " middle: " << middle << endl;
+        // cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+        // cout << "start: " << start << " end: " << end << " middle: " << middle << endl;
     if (end - start < 3)
     {
         min_perimeter x;
@@ -47,7 +47,7 @@ min_perimeter solve(vector<pair<int, int>> Px, vector<pair<int, int>> Py, int st
     // cout << "=====KONIEC=================" << endl;
     vector<pair<int, int>> LeftPy, RightPy;
 
-    for (int i = 0; i < Py.size(); i++)
+    for (unsigned int i = 0; i < Py.size(); i++)
     {
         if (Py[i].first < Px[middle].first)
         {
@@ -74,15 +74,15 @@ min_perimeter solve(vector<pair<int, int>> Px, vector<pair<int, int>> Py, int st
 
     double d = best.perimeter / 2;
 
-    vector<pair<int, int>> closePoints;
+    // vector<pair<int, int>> closePoints;
 
-    for (int i = 0; i < Py.size(); i++)
-    {
-        if (abs(Py[i].first - Px[middle].first) < d)
-        {
-            closePoints.push_back(Py[i]);
-        }
-    }
+    // for (unsigned int i = 0; i < Py.size(); i++)
+    // {
+    //     if (abs(Py[i].first - Px[middle].first) <= d)
+    //     {
+    //         closePoints.push_back(Py[i]);
+    //     }
+    // }
     // cout << "bliskich punktow: " << closePoints.size() << endl;
 
     // cout << "######################################################" << endl;
@@ -92,16 +92,17 @@ min_perimeter solve(vector<pair<int, int>> Px, vector<pair<int, int>> Py, int st
     // }
     // cout << "######################################################" << endl;
 
-    for (int i = 0; i < closePoints.size() - 2; i++)
+    pair<int, int> a, b, c;
+    for (unsigned int i = 0; i < Py.size() - 2 && abs(Py[i].first - Px[middle].first) <= d; i++)
     {
-        pair<int, int> a, b, c;
-        a = closePoints[i];
-        for (int j = i + 1; j < (closePoints.size() - 1); j++)
+        // a = closePoints[i];
+        a = Py[i];
+        for (unsigned int j = i + 1; j < (Py.size() - 1); j++)
         {
-            for (int k = j + 1; k < closePoints.size(); k++)
+            for (unsigned int k = j + 1; k < Py.size(); k++)
             {
-                b = closePoints[j];
-                c = closePoints[k];
+                b = Py[j];
+                c = Py[k];
                 double per = dist(a, b) + dist(b, c) + dist(c, a);
                 // cout << "new per: " << per << endl;
 
