@@ -5,8 +5,9 @@
 #include <iomanip>
 
 using namespace std;
+vector<pair<int, int>> Ax;
+vector<int> Ay;
 
-vector<pair<int, int>> Px;
 struct min_perimeter
 {
     double perimeter;
@@ -15,14 +16,13 @@ struct min_perimeter
     pair<int, int> c;
 };
 
-
 double dist(pair<int, int> x, pair<int, int> y)
 {
 
     return sqrt(pow(x.first - y.first, 2.0) + pow(x.second - y.second, 2.0));
 }
 
-min_perimeter solve(const vector<pair<int, int>> &Py, int start, int end)
+min_perimeter solve(const vector<pair<int, int>> &Px, const vector<int> Py, int start, int end)
 {
     float middle = float(start) + (float(end) - float(start)) / 2;
     // cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
@@ -31,57 +31,69 @@ min_perimeter solve(const vector<pair<int, int>> &Py, int start, int end)
     {
         min_perimeter x;
         x.perimeter = 9999999999999;
+        x.a = make_pair(0, 0);
+        x.b = make_pair(0, 0);
+        x.c = make_pair(0, 0);
         // cout << "koniec" << endl;
         return x;
     }
 
-    // // cout << "====DANE ROZWAZANE=================" << endl;
+    // cout << "====DANE ROZWAZANE=================" << endl;
     // for (int i = start; i < end; i++)
     // {
     //     cout << Px[i].first << " " << Px[i].second << endl;
     // }
-    // // cout << "=====KONIEC=================" << endl;
-    // // cout << "====Sortowane po Y =================" << endl;
+    // cout << "=====KONIEC=================" << endl;
+    // cout << "====Sortowane po Y =================" << endl;
     // for (int i = 0; i < Py.size(); i++)
     // {
-    //     cout << Py[i].first << " " << Py[i].second << endl;
+    //     cout << Px[Py[i]].first << " " << Px[Py[i]].second << endl;
     // }
-    // // cout << "=====KONIEC=================" << endl;
-    vector<pair<int, int>> LeftPy, RightPy;
-
+    // cout << "=====KONIEC=================" << endl;
+    vector<int> LeftPy, RightPy;
+    LeftPy.reserve((end - start)/2);
+    RightPy.reserve((end - start)/2);
     // cout << "MiddleX: " <<  Px[floor(middle)].first << endl;
+    // cout << "Py size: " << Py.size() << endl;
     for (unsigned int i = 0; i < Py.size(); i++)
     {
-        // cout << "X: " << Py[i].first << " Y: " << Py[i].second << endl;
-        if (Py[i].first < Px[floor(middle)].first)
+        // cout << "X: " << Px[Py[i]].first << " Y: " << Px[Py[i]].second << endl;
+        if (Px[Py[i]].first < Px[floor(middle)].first)
         {
             // cout << "lewy" << endl;
-            LeftPy.push_back(Py[i]);
+            LeftPy.push_back(i);
         }
         else
         {
+
             // cout << "prawy" << endl;
-            RightPy.push_back(Py[i]);
+            RightPy.push_back(i);
         }
     }
-
     // cout << "Left Py: " << LeftPy.size() << endl;
-    // for(unsigned int i=0; i<LeftPy.size(); i++){
-    //     // cout << "i: " << LeftPy[i] << endl;
-    //     cout << LeftPy[i].first << " " << LeftPy[i].second << endl;
+    // for(auto i : LeftPy){
+    //     cout << "i: " << LeftPy[i] << endl;
+    //     cout << Px[LeftPy[i]].first << " " << Px[LeftPy[i]].second << endl;
+    // }
+    // for (int i = 0; i < LeftPy.size(); i++)
+    // {
+    //     cout << Px[LeftPy[i]].first << " " << Px[LeftPy[i]].second << endl;
     // }
     // cout << "=====KONIEC=================" << endl;
     // cout << "Right Py: " << RightPy.size() << endl;
-    //     for (unsigned int i = 0; i < RightPy.size(); i++)
+    //     for (int i = 0; i < RightPy.size(); i++)
     // {
-    //     cout << RightPy[i].first << " " << RightPy[i].second << endl;
+    //     cout << Px[RightPy[i]].first << " " << Px[RightPy[i]].second << endl;
     // }
     // cout << "=====KONIEC=================" << endl;
-    min_perimeter left = solve(LeftPy, start, floor(middle));
-    min_perimeter right = solve(RightPy, floor(middle), end);
+    min_perimeter left = solve(Px, LeftPy, start, floor(middle));
+    min_perimeter right = solve(Px, RightPy, floor(middle), end);
 
     min_perimeter best;
-
+    best.perimeter = 9999999999999;
+    best.a = make_pair(0, 0);
+    best.b = make_pair(0, 0);
+    best.c = make_pair(0, 0);
     if (left.perimeter < right.perimeter)
     {
         best = left;
@@ -92,37 +104,37 @@ min_perimeter solve(const vector<pair<int, int>> &Py, int start, int end)
     }
 
     double d = best.perimeter / 2;
-
-    vector<pair<int, int>> closePoints;
+    // cout << "d " << d << endl;
+    vector<int> closePoints;
 
     for (unsigned int i = 0; i < Py.size(); i++)
     {
-        if (abs(Py[i].first - Px[middle].first) <= d)
+        if (abs(Px[Py[i]].first - Px[floor(middle)].first) <= d)
         {
-            closePoints.push_back(Py[i]);
+            closePoints.push_back(i);
         }
     }
-    // cout << "D: " << d << endl;
     // cout << "bliskich punktow: " << closePoints.size() << endl;
 
     // cout << "######################################################" << endl;
     // for (int i = 0; i < closePoints.size(); i++)
     // {
-    //     cout << closePoints[i].first << " " << closePoints[i].second << endl;
+    //     cout << Px[Py[closePoints[i]]].first << " " << Px[Py[closePoints[i]]].second << endl;
     // }
     // cout << "######################################################" << endl;
 
     pair<int, int> a, b, c;
-    for (unsigned int i = 0; i + 2 < closePoints.size(); i++)
+    for (long i = 0; i < closePoints.size() - 2; i++)
     {
-        // cout << "iiiii " << i << " < " << (int)closePoints.size()-2 << endl;
-        a = closePoints[i];
-        for (unsigned int j = i + 1; j + 1 < closePoints.size() &&  abs(closePoints[j].second - a.second) <= d; j++)
+        a = Px[Py[closePoints[i]]];
+        for (long j = i + 1; j < (closePoints.size() - 1); j++)
         {
-            b = closePoints[j];
-            for (unsigned int k = j + 1; k < closePoints.size() &&  abs(closePoints[k].second - b.second) <= d ; k++)
+            for (long k = j + 1; k < closePoints.size(); k++)
             {
-                c = closePoints[k];
+
+                // cout << i << " " << j << " " << k << endl;
+                b = Px[Py[closePoints[j]]];
+                c = Px[Py[closePoints[k]]];
                 double per = dist(a, b) + dist(b, c) + dist(c, a);
                 // cout << "new per: " << per << endl;
 
@@ -139,12 +151,9 @@ min_perimeter solve(const vector<pair<int, int>> &Py, int start, int end)
         }
     }
 
-    // cout << "start: " << start << " end: " << end << " middle: " << middle << endl;
     // cout << "Perimeter: " << best.perimeter << endl;
-    // cout << "Ax: " << best.a.first << " Ay: " << best.a.second << endl;
-    // cout << "Bx: " << best.b.first << " By: " << best.b.second << endl;
-    // cout << "Cx: " << best.c.first << " Cy: " << best.c.second << endl;
-    // cout << "*****************wychodze****************" << endl;
+    // cout << "!!!!!!!!!!!!!!!!!!!!!!!!WYCHODZE!!!!!!!!!!!!!!!!!" << endl;
+
     return best;
 }
 
@@ -156,7 +165,6 @@ int main()
     std::cout << std::setprecision(10);
     int n, x, y;
     // vector<pair<int, int>> Ax, Ay;
-    vector<pair<int, int>> Ay;
     // pair<int, int> Ax[500010], Ay[500010];
 
     cin >> n;
@@ -166,18 +174,19 @@ int main()
         cin >> x >> y;
         // cout << x << " " << y << endl;
         // Ax.push_back(make_pair(x, y));
-        Px.push_back(make_pair(x, y));
+        Ax.push_back(make_pair(x, y));
+        Ay.push_back(i);
     }
 
-    sort(Px.begin(), Px.end(), [](pair<int, int> a, pair<int, int> b) {
+    sort(Ax.begin(), Ax.end(), [](pair<int, int> a, pair<int, int> b) {
         return a.first < b.first;
     });
 
     // copy(Ax, Ax + n, Ay);
-    Ay = Px;
+    // Ay = Ax;
 
-    sort(Ay.begin(), Ay.end(), [](pair<int, int> a, pair<int, int> b) {
-        return a.second < b.second;
+    sort(Ay.begin(), Ay.end(), [](int a, int b) {
+        return Ax[a].second < Ax[b].second;
     });
 
     // cout << "========================================================" << endl;
@@ -186,7 +195,7 @@ int main()
     //     cout << Ax[i].first << " " << Ax[i].second << endl;
     // }
 
-    min_perimeter ans = solve(Ay, 0, n);
+    min_perimeter ans = solve(Ax, Ay, 0, n);
 
     // cout << ans.perimeter << endl;
     cout << ans.a.first << " " << ans.a.second << endl;
