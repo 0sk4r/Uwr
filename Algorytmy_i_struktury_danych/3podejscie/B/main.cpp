@@ -113,73 +113,113 @@ min_perimeter solve(const vector<pair<int, int>> &Py, int start, int end)
     // cout << "D: " << d << endl;
     // cout << "bliskich punktow: " << closePoints.size() << endl;
 
-    // cout << "######################################################" << endl;
-    // for (int i = 0; i < closePoints.size(); i++)
+    // cout << "#####################LEWE#################################" << endl;
+    // for (int i = 0; i < closePointsL.size(); i++)
     // {
-    //     cout << closePoints[i].first << " " << closePoints[i].second << endl;
+    //     cout << closePointsL[i].first << " " << closePointsL[i].second << endl;
+    // }
+    // cout << "######################################################" << endl;
+
+    // cout << "#####################PRAWE#################################" << endl;
+    // for (int i = 0; i < closePointsL.size(); i++)
+    // {
+    //     cout << closePointsR[i].first << " " << closePointsR[i].second << endl;
     // }
     // cout << "######################################################" << endl;
 
     pair<int, int> a, b, c;
 
+    int oknoS = 0, oknoE = 0;
+
+    // cout << "***************LEWA**************************" << endl;
+
     for (unsigned int i = 0; i < closePointsL.size(); i++)
     {
         a = closePointsL[i];
-        for (unsigned int j = 0; j + 1 < closePointsR.size(); j++)
+        // cout << "Ax: " << a.first << " Ay: " << a.second << endl;
+        while (abs(a.second - closePointsR[oknoS].second) > d)
+        {
+            oknoS++;
+            oknoE++;
+        }
+        // oknoE++;
+        while (abs(a.second - closePointsR[oknoE].second) < d && oknoE < closePointsR.size())
+        {
+            oknoE++;
+        }
+
+        // cout << "OknoS: " << oknoS << " OknoE: " << oknoE << endl;
+        for (unsigned int j = oknoS; j + 1 < oknoE; j++)
         {
             b = closePointsR[j];
-            if (abs(b.second - a.second) > d)
-                break;
-            for (unsigned int k = j + 1; k < closePointsR.size(); k++)
+            // cout << "Bx: " << b.first << " By: " << b.second << endl;
+
+            for (unsigned int k = j + 1; k < oknoE; k++)
             {
                 c = closePointsR[k];
-                if (abs(c.second - a.second) > d)
-                    break;
+                // cout << "Cx: " << c.first << " Cy: " << c.second << endl;
+
                 double per = dist(a, b) + dist(b, c) + dist(c, a);
                 // cout << "new per: " << per << endl;
 
                 if (per < best.perimeter)
                 {
-
+                    // cout << "lepsze" << endl;
                     // cout << "jest lepszy!" << endl;
                     best.perimeter = per;
                     best.a = a;
                     best.b = b;
                     best.c = c;
                 }
-                // if (abs(c.second - a.second) > d)
-                //     break;
             }
         }
     }
 
+
+    // cout << "***************PRAWA**************************" << endl;
+    oknoS = 0, oknoE = 0;
+
     for (unsigned int i = 0; i < closePointsR.size(); i++)
     {
         a = closePointsR[i];
-        for (unsigned int j = 0; j + 1 < closePointsL.size(); j++)
+        // cout << "Ax: " << a.first << " Ay: " << a.second << endl;
+        while (abs(a.second - closePointsL[oknoS].second) > d)
+        {
+            oknoS++;
+            oknoE++;
+        }
+        // oknoE++;
+        while (abs(a.second - closePointsL[oknoE].second) < d && oknoE < closePointsL.size())
+        {
+            oknoE++;
+        }
+
+        for (unsigned int j = oknoS; j + 1 < oknoE; j++)
         {
             b = closePointsL[j];
-            if (abs(b.second - a.second) > d)
-                break;
-            for (unsigned int k = j + 1; k < closePointsL.size(); k++)
+            // cout << "Bx: " << b.first << " By: " << b.second << endl;
+
+            // cout << "Bx: " << b.first << " By: " << b.second << endl;
+
+            for (unsigned int k = j + 1; k < oknoE; k++)
             {
                 c = closePointsL[k];
-                if (abs(c.second - a.second) > d)
-                    break;
+                // cout << "Cx: " << c.first << " Cy: " << c.second << endl;
+
+                // cout << "Cx: " << c.first << " Cy: " << c.second << endl;
+
                 double per = dist(a, b) + dist(b, c) + dist(c, a);
                 // cout << "new per: " << per << endl;
 
                 if (per < best.perimeter)
                 {
-
+                    // cout << "lepsze" << endl;
                     // cout << "jest lepszy!" << endl;
                     best.perimeter = per;
                     best.a = a;
                     best.b = b;
                     best.c = c;
                 }
-                // if (abs(c.second - a.second) > d)
-                //     break;
             }
         }
     }
