@@ -1,151 +1,141 @@
-#include <algorithm>
-#include <cassert>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
+#include <iostream>
 #include <vector>
+#include <algorithm>
+#include <cmath>
+#include <iomanip>
+
 using namespace std;
-#define REP(i, n) for (int i = 0; i < (n); ++i)
-template <class T>
-inline int size(const T &c)
-{
-    return c.size();
-}
 
-const int BILLION = 1000000000;
-const double INF = 1e20;
-typedef long long LL;
-
-struct Point
+vector<pair<int, int>> Px;
+struct min_perimeter
 {
-    int x, y;
-    Point() {}
-    Point(int x, int y) : x(x), y(y) {}
+    double perimeter;
+    pair<int, int> a;
+    pair<int, int> b;
+    pair<int, int> c;
 };
 
-inline Point middle(const Point &a, const Point &b)
+double dist(pair<int, int> x, pair<int, int> y)
 {
-    return Point((a.x + b.x) / 2, (a.y + b.y) / 2);
+
+    return sqrt(pow(x.first - y.first, 2.0) + pow(x.second - y.second, 2.0));
 }
 
-struct CmpX
+min_perimeter solve(const vector<pair<int, int>> &Py, int start, int end)
 {
-    inline bool operator()(const Point &a, const Point &b)
+    float middle = float(start) + (float(end) - float(start)) / 2;
+
+    if (end - start < 3)
     {
-        if (a.x != b.x)
-            return a.x < b.x;
-        return a.y < b.y;
+        min_perimeter x;
+        x.perimeter = 9999999999999;
+        return x;
     }
-} cmpx;
 
-struct CmpY
-{
-    inline bool operator()(const Point &a, const Point &b)
+    vector<pair<int, int>> LeftPy, RightPy;
+
+    for (unsigned int i = 0; i < Py.size(); i++)
     {
-        if (a.y != b.y)
-            return a.y < b.y;
-        return a.x < b.x;
-    }
-} cmpy;
-
-inline LL sqr(int x) { return LL(x) * LL(x); }
-
-inline double dist(const Point &a, const Point &b)
-{
-    return sqrt(double(sqr(a.x - b.x) + sqr(a.y - b.y)));
-}
-
-inline double perimeter(const Point &a,
-                        const Point &b,
-                        const Point &c)
-{
-    return dist(a, b) + dist(b, c) + dist(c, a);
-}
-
-double calc(int n, const Point points[],
-            const vector<Point> &pointsByY)
-{
-    if (n < 3)
-        return INF;
-    int left = n / 2;
-    int right = n - left;
-    Point split = middle(points[left - 1], points[left]);
-    vector<Point> pointsByYLeft, pointsByYRight;
-    pointsByYLeft.reserve(left);
-    pointsByYRight.reserve(right);
-    REP(i, n)
-    {
-        if (cmpx(pointsByY[i], split))
-            pointsByYLeft.push_back(pointsByY[i]);
-        else
-            pointsByYRight.push_back(pointsByY[i]);
-    }
-    double res = INF;
-    res = min(res, calc(left, points, pointsByYLeft));
-    res = min(res, calc(right, points + left, pointsByYRight));
-    static vector<Point> closeToTheLine;
-    int margin = (res > INF / 2) ? 2 * BILLION : int(res / 2);
-    closeToTheLine.clear();
-    closeToTheLine.reserve(n);
-    int start = 0;
-
-
-    for (int i = 0; i < n; ++i)
-    {
-        Point p = pointsByY[i];
-        if (abs(p.x - split.x) > margin)
-            continue;
-        while (start < size(closeToTheLine) &&
-               p.y - closeToTheLine[start].y > margin)
-            ++start;
-        for (int i = start; i < size(closeToTheLine); ++i)
+        if (Py[i].first < Px[floor(middle)].first)
         {
-            for (int j = i + 1; j < size(closeToTheLine); ++j)
+            LeftPy.push_back(Py[i]);
+        }
+        else
+        {
+            RightPy.push_back(Py[i]);
+        }
+    }
+
+    min_perimeter left = solve(LeftPy, start, floor(middle));
+    min_perimeter right = solve(RightPy, floor(middle), end);
+
+    min_perimeter best;
+
+    if (left.perimeter < right.perimeter)
+    {
+        best = left;
+    }
+    else
+    {
+        best = right;
+    }
+
+    double d = best.perimeter / 2;
+
+    vector<pair<int, int>> closePoints;
+
+    for (unsigned int i = 0; i < Py.size(); i++)
+    {
+        if (abs(Py[i].first - Px[middle].first) <= d)
+        {
+            closePoints.push_back(Py[i]);
+        }
+    }
+
+    pair<int, int> a, b, c;
+    int okno = 0;
+
+    for (unsigned int i = 2; i < closePoints.size(); i++)
+    {
+        a = closePoints[i];
+        while (abs(a.second - closePoints[okno].second > d))
+        {
+            okno++;
+        }
+
+        for (unsigned int j = okno; j + 1 < i; j++)
+        {
+            b = closePoints[j];
+
+            for (unsigned int k = j + 1; k < i; k++)
             {
-                res = min(res, perimeter(p, closeToTheLine[i],
-                                         closeToTheLine[j]));
+                c = closePoints[k];
+
+                double per = dist(a, b) + dist(b, c) + dist(c, a);
+
+                if (per < best.perimeter)
+                {
+                    best.perimeter = per;
+                    best.a = a;
+                    best.b = b;
+                    best.c = c;
+                }
             }
         }
-        closeToTheLine.push_back(p);
     }
-
-    
-    return res;
-}
-
-double calc(vector<Point> &points)
-{
-    sort(points.begin(), points.end(), cmpx);
-    vector<Point> pointsByY = points;
-    sort(pointsByY.begin(), pointsByY.end(), cmpy);
-    return calc(size(points), &points[0], pointsByY);
+    return best;
 }
 
 int main()
 {
-    assert(0 == system("cat > Input.java"));
-    fprintf(stderr, "Compiling generator\n");
-    assert(0 == system("javac Input.java"));
-    fprintf(stderr, "Running generator\n");
-    assert(0 == system("java -Xmx512M Input > input.tmp"));
-    fprintf(stderr, "Solving\n");
-    FILE *f = fopen("input.tmp", "r");
-    int ntc;
-    fscanf(f, "%d", &ntc);
-    REP(tc, ntc)
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    std::cout << std::fixed;
+    std::cout << std::setprecision(10);
+    int n, x, y;
+    vector<pair<int, int>> Ay;
+
+    cin >> n;
+
+    for (int i = 0; i < n; i++)
     {
-        int n;
-        fscanf(f, "%d", &n);
-        vector<Point> points;
-        points.reserve(n);
-        REP(i, n)
-        {
-            int x, y;
-            fscanf(f, "%d%d", &x, &y);
-            points.push_back(Point(2 * x - BILLION, 2 * y - BILLION));
-        }
-        double res = calc(points);
-        printf("Case #%d: %.15e\n", tc + 1, res / 2);
+        cin >> x >> y;
+        Px.push_back(make_pair(x, y));
     }
-    fclose(f);
+
+    sort(Px.begin(), Px.end(), [](pair<int, int> a, pair<int, int> b) {
+        return a.first < b.first;
+    });
+
+    Ay = Px;
+
+    sort(Ay.begin(), Ay.end(), [](pair<int, int> a, pair<int, int> b) {
+        return a.second < b.second;
+    });
+
+    min_perimeter ans = solve(Ay, 0, n);
+
+    cout << ans.a.first << " " << ans.a.second << endl;
+    cout << ans.b.first << " " << ans.b.second << endl;
+    cout << ans.c.first << " " << ans.c.second << endl;
 }

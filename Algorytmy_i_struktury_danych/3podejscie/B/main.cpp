@@ -92,13 +92,22 @@ min_perimeter solve(const vector<pair<int, int>> &Py, int start, int end)
 
     double d = best.perimeter / 2;
 
-    vector<pair<int, int>> closePoints;
+    vector<pair<int, int>> closePointsL;
+    vector<pair<int, int>> closePointsR;
 
     for (unsigned int i = 0; i < Py.size(); i++)
     {
         if (abs(Py[i].first - Px[middle].first) <= d)
         {
-            closePoints.push_back(Py[i]);
+            if (Py[i].first < Px[middle].first)
+            {
+
+                closePointsL.push_back(Py[i]);
+            }
+            else
+            {
+                closePointsR.push_back(Py[i]);
+            }
         }
     }
     // cout << "D: " << d << endl;
@@ -112,18 +121,18 @@ min_perimeter solve(const vector<pair<int, int>> &Py, int start, int end)
     // cout << "######################################################" << endl;
 
     pair<int, int> a, b, c;
-    for (unsigned int i = 0; i + 2 < closePoints.size(); i++)
+
+    for (unsigned int i = 0; i < closePointsL.size(); i++)
     {
-        // cout << "iiiii " << i << " < " << (int)closePoints.size()-2 << endl;
-        a = closePoints[i];
-        for (unsigned int j = i + 1; j + 1 < closePoints.size(); j++)
+        a = closePointsL[i];
+        for (unsigned int j = 0; j + 1 < closePointsR.size(); j++)
         {
-            b = closePoints[j];
+            b = closePointsR[j];
             if (abs(b.second - a.second) > d)
                 break;
-            for (unsigned int k = j + 1; k < closePoints.size(); k++)
+            for (unsigned int k = j + 1; k < closePointsR.size(); k++)
             {
-                c = closePoints[k];
+                c = closePointsR[k];
                 if (abs(c.second - a.second) > d)
                     break;
                 double per = dist(a, b) + dist(b, c) + dist(c, a);
@@ -138,11 +147,73 @@ min_perimeter solve(const vector<pair<int, int>> &Py, int start, int end)
                     best.b = b;
                     best.c = c;
                 }
+                // if (abs(c.second - a.second) > d)
+                //     break;
             }
-            if (abs(c.second - a.second) > d)
-                break;
         }
     }
+
+    for (unsigned int i = 0; i < closePointsR.size(); i++)
+    {
+        a = closePointsR[i];
+        for (unsigned int j = 0; j + 1 < closePointsL.size(); j++)
+        {
+            b = closePointsL[j];
+            if (abs(b.second - a.second) > d)
+                break;
+            for (unsigned int k = j + 1; k < closePointsL.size(); k++)
+            {
+                c = closePointsL[k];
+                if (abs(c.second - a.second) > d)
+                    break;
+                double per = dist(a, b) + dist(b, c) + dist(c, a);
+                // cout << "new per: " << per << endl;
+
+                if (per < best.perimeter)
+                {
+
+                    // cout << "jest lepszy!" << endl;
+                    best.perimeter = per;
+                    best.a = a;
+                    best.b = b;
+                    best.c = c;
+                }
+                // if (abs(c.second - a.second) > d)
+                //     break;
+            }
+        }
+    }
+    // for (unsigned int i = 0; i + 2 < closePoints.size(); i++)
+    // {
+    //     // cout << "iiiii " << i << " < " << (int)closePoints.size()-2 << endl;
+    //     a = closePoints[i];
+    //     for (unsigned int j = i + 1; j + 1 < closePoints.size(); j++)
+    //     {
+    //         b = closePoints[j];
+    //         if (abs(b.second - a.second) > d)
+    //             break;
+    //         for (unsigned int k = j + 1; k < closePoints.size(); k++)
+    //         {
+    //             c = closePoints[k];
+    //             if (abs(c.second - a.second) > d)
+    //                 break;
+    //             double per = dist(a, b) + dist(b, c) + dist(c, a);
+    //             // cout << "new per: " << per << endl;
+
+    //             if (per < best.perimeter)
+    //             {
+
+    //                 // cout << "jest lepszy!" << endl;
+    //                 best.perimeter = per;
+    //                 best.a = a;
+    //                 best.b = b;
+    //                 best.c = c;
+    //             }
+    //         }
+    //         if (abs(c.second - a.second) > d)
+    //             break;
+    //     }
+    // }
 
     // cout << "start: " << start << " end: " << end << " middle: " << middle << endl;
     // cout << "Perimeter: " << best.perimeter << endl;
