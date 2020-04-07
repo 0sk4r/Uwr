@@ -74,7 +74,7 @@ min_perimeter solve(const vector<pair<int, int>> &Py, int start, int end)
 
     pair<int, int> a, b, c;
     int okno = 0;
-
+    int mid_x = Px[middle].first;
     for (unsigned int i = 2; i < closePoints.size(); i++)
     {
         a = closePoints[i];
@@ -90,6 +90,7 @@ min_perimeter solve(const vector<pair<int, int>> &Py, int start, int end)
             for (unsigned int k = j + 1; k < i; k++)
             {
                 c = closePoints[k];
+                if(a.first < mid_x && b.first < mid_x )
 
                 double per = dist(a, b) + dist(b, c) + dist(c, a);
 
