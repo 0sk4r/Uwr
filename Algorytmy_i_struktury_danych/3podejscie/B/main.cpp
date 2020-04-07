@@ -15,7 +15,6 @@ struct min_perimeter
     pair<int, int> c;
 };
 
-
 double dist(pair<int, int> x, pair<int, int> y)
 {
 
@@ -117,12 +116,16 @@ min_perimeter solve(const vector<pair<int, int>> &Py, int start, int end)
     {
         // cout << "iiiii " << i << " < " << (int)closePoints.size()-2 << endl;
         a = closePoints[i];
-        for (unsigned int j = i + 1; j + 1 < closePoints.size() &&  abs(closePoints[j].second - a.second) <= d; j++)
+        for (unsigned int j = i + 1; j + 1 < closePoints.size(); j++)
         {
             b = closePoints[j];
-            for (unsigned int k = j + 1; k < closePoints.size() &&  abs(closePoints[k].second - b.second) <= d ; k++)
+            if (abs(b.second - a.second) > d)
+                break;
+            for (unsigned int k = j + 1; k < closePoints.size(); k++)
             {
                 c = closePoints[k];
+                if (abs(c.second - a.second) > d)
+                    break;
                 double per = dist(a, b) + dist(b, c) + dist(c, a);
                 // cout << "new per: " << per << endl;
 
@@ -136,6 +139,8 @@ min_perimeter solve(const vector<pair<int, int>> &Py, int start, int end)
                     best.c = c;
                 }
             }
+            if (abs(c.second - a.second) > d)
+                break;
         }
     }
 
