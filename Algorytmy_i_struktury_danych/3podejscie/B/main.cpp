@@ -24,7 +24,7 @@ double dist(pair<int, int> x, pair<int, int> y)
 min_perimeter solve(const vector<pair<int, int>> &Py, int start, int end)
 {
     float middle = float(start) + (float(end) - float(start)) / 2;
-
+    // cout << "start: " << start << " end: " << end << " middle: " << middle << endl;
     if (end - start < 3)
     {
         min_perimeter x;
@@ -46,6 +46,8 @@ min_perimeter solve(const vector<pair<int, int>> &Py, int start, int end)
         }
     }
 
+    // cout << "Ly: " << LeftPy.size() << endl;
+    // cout << "Ry: " << RightPy.size() << endl;
     min_perimeter left = solve(LeftPy, start, floor(middle));
     min_perimeter right = solve(RightPy, floor(middle), end);
 
@@ -76,6 +78,17 @@ min_perimeter solve(const vector<pair<int, int>> &Py, int start, int end)
     bool al, bl, cl;
     int okno = 0;
     int jx=0, kx=0;
+
+    // cout << "bliskich punktow: " << closePoints.size() << endl;
+
+    // cout << "######################################################" << endl;
+    // for (int i = 0; i < closePoints.size(); i++)
+    // {
+    //     cout << closePoints[i].first << " " << closePoints[i].second << endl;
+    // }
+    // cout << "######################################################" << endl;
+
+
     for (unsigned int i = 2; i < closePoints.size(); i++)
     {
         a = closePoints[i];
@@ -86,22 +99,22 @@ min_perimeter solve(const vector<pair<int, int>> &Py, int start, int end)
         }
 
         jx=0;
-        for (unsigned int j = okno; j + 1 < i && jx <= 16 ; j++)
+        for (unsigned int j = okno; j + 1 < i && jx <= 17 ; j++)
         {
             jx++;
             b = closePoints[j];
             bl = b.first < Px[floor(middle)].first;
             kx=0;
-            for (unsigned int k = j + 1; k < i && kx <= 16; k++)
+            for (unsigned int k = j + 1; k < i && kx <= 17; k++)
             {
                 kx++;
                 c = closePoints[k];
                 cl = c.first < Px[floor(middle)].first;
 
-                if ((al && bl && cl) || (!al && !bl && !cl))
-                {
-                    break;
-                }
+                // if ((al && bl && cl) || (!al && !bl && !cl))
+                // {
+                //     break;
+                // }
 
                 double per = dist(a, b) + dist(b, c) + dist(c, a);
 
@@ -115,6 +128,7 @@ min_perimeter solve(const vector<pair<int, int>> &Py, int start, int end)
             }
         }
     }
+    // cout << "best: " <<  best.perimeter << endl;
     return best;
 }
 
