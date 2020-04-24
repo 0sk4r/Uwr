@@ -1,38 +1,33 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 int selection(vector<int> tab, int start, int end, int k);
 
 int median(vector<int> tab, int start, int end)
 {
-    cout << "end= " << end << endl;
     vector<int> medians;
 
     for (int i = start; i < end; i+= 5)
     {   
-        cout << " i " << i << endl;
         if(i + 5 >= end){
             sort(tab.begin() + i, tab.end());
             int middle = (end - i) /2;
-            cout << "mediana = " << tab[i + middle] << endl;
             medians.push_back(tab[i+middle]);
         }
         else{
 
         sort(tab.begin() + i, tab.begin() + 5);
-        cout << "mediana = " << tab[i + 2] << endl;
         medians.push_back(tab[i + 2]);
         }
     }
-    cout << "lol" << endl;
 
     return selection(medians, 0, medians.size(), medians.size() / 2);
 }
 
 int selection(vector<int> tab, int start, int end, int k)
 {
-    cout << "k= " << k << endl;
 
     if (tab.size() <= 5)
     {
@@ -40,8 +35,7 @@ int selection(vector<int> tab, int start, int end, int k)
         return tab[start + k];
     }
     int p = median(tab, start, end);
-    cout << "p=" << p << endl;
-    int mediana = tab[p];
+    int mediana = p;
     int l = start, h = end;
 
     vector<int> smaller, larger;
@@ -49,7 +43,7 @@ int selection(vector<int> tab, int start, int end, int k)
     for (int i = 0; i < tab.size(); i++)
     {
 
-        if (tab[i] < mediana)
+        if (tab[i] <= mediana)
             smaller.push_back(tab[i]);
         else
             larger.push_back(tab[i]);
@@ -78,6 +72,7 @@ int main()
     int n, k;
 
     cin >> n >> k;
+    k--;
     int tmp;
     for (int i = 0; i < n; i++)
     {
@@ -86,7 +81,7 @@ int main()
         tab.push_back(tmp);
     }
 
-    cout << selection(tab, 0, tab.size(), k);
+    cout << selection(tab, 0, tab.size(), k) << endl;
 
     return 0;
 }
