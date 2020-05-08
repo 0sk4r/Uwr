@@ -14,6 +14,7 @@ int main()
     cin.tie(NULL);
 
     long long tab[1000010];
+    long long massa[1000010];
     int solutions[1000010];
     int ans_max[1000010], ans_min[1000010];
 
@@ -31,9 +32,10 @@ int main()
 
     for (long i = 0; i <= total_mass; i++)
     {
-        tab[i] = 0;
+        // tab[i] = 0;
         ans_max[i] = 0;
         ans_min[i] = 0;
+
     }
     int value, mass;
 
@@ -43,26 +45,11 @@ int main()
         monets.push_back(make_pair(value, mass));
     }
 
-    sort(monets.begin(), monets.end(), [](pair<int, int> a, pair<int, int> b) {
-        if(a.first < b.first) {
-            return true;
-        } else if( a.first > b.first) {
-            return false;
-        }
-        return a.second < b.second;
-    });
-
-    for(int i = 1; i < (monets.size() - 1); i++){
-        if(monets[i-1].first == monets[i].first && monets[i+1].first == monets[i].first){
-            monets.erase(monets.begin() + i);
-        }
-    }
-
     tab[0] = 0;
-
+    massa[0] = 0;
     for (long weight = 1; weight <= total_mass; weight++)
     {
-
+        // cout << "weight "<< weight << endl;
         for (long unsigned int j = 0; j < monets.size(); j++)
         {
 
@@ -71,10 +58,11 @@ int main()
             if (monet.second <= weight)
             {
                 long long new_val = tab[weight - monet.second] + monet.first;
-
-                if (tab[weight] < new_val)
+                // cout << "masa: " << massa[weight - monet.second] + monet.second << endl;
+                if (tab[weight] < new_val && massa[weight - monet.second] + monet.second == weight)
                 {
                     tab[weight] = new_val;
+                    massa[weight] = massa[weight - monet.second] + monet.second;
                     solutions[weight] = j;
                 }
             }
@@ -127,9 +115,10 @@ int main()
 
                     long long new_val = tab[weight - monet.second] + monet.first;
 
-                    if (tab[weight] > new_val)
+                    if (tab[weight] > new_val && massa[weight - monet.second] + monet.second == weight)
                     {
                         tab[weight] = new_val;
+                        massa[weight] = massa[weight - monet.second] + monet.second;
                         solutions[weight] = j;
                     }
                 }
@@ -172,7 +161,6 @@ int main()
         {
             cout << ans_max[i] << " ";
         }
-        return 0;
     }
     else
     {
