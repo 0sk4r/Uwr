@@ -68,3 +68,7 @@ node_modules
 
 *.in
 sprawdzaczka
+
+KPABD/.vs/
+
+KPABD/Lista01/.vs/
